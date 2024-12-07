@@ -14,12 +14,6 @@
 
     <!-- core:css -->
     <link rel="stylesheet" href="./assets/vendors/core/core.css">
-    <!-- endinject -->
-
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-
-    <!-- inject:css -->
     <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css">
     <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <!-- endinject -->
@@ -31,7 +25,7 @@
     <link rel="shortcut icon" href="./assets/images/favicon.png" />
 </head>
 
-<body>
+<body id="bbbb">
     <div class="main-wrapper">
         <div class="horizontal-menu">
             <nav class="navbar top-navbar">
@@ -199,18 +193,18 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img class="wd-30 ht-30 rounded-circle" src="./assets/images/faces/face1.jpg"
+                                    <img class="wd-30 ht-30 rounded-circle" src="./assets/images/faces/face7.jpg"
                                         alt="profile">
                                 </a>
                                 <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                                     <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                                         <div class="mb-3">
                                             <img class="wd-80 ht-80 rounded-circle"
-                                                src="./assets/images/faces/face1.jpg" alt="">
+                                                src="./assets/images/faces/face7.jpg" alt="">
                                         </div>
                                         <div class="text-center">
-                                            <p class="tx-16 fw-bolder">آرزو محبی</p>
-                                            <p class="tx-12 text-muted">arezomohebi@gmail.com</p>
+                                            <p id="fullName" class="tx-16 fw-bolder"></p>
+                                            <p id="telegramUserName" class="tx-12 text-muted"></p>
                                         </div>
                                     </div>
                                     <ul class="list-unstyled p-1">
@@ -324,6 +318,7 @@
             <script src="./assets/vendors/feather-icons/feather.min.js"></script>
             <script src="./assets/js/template.js"></script>
             <script src="./assets/js/dashboard-dark.js"></script>
+            <script type="module" src="./assets/js/main.js"></script>
 </body>
 
 </html>
