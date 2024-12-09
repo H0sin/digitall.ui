@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css">
     <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css">
+    <link rel="stylesheet" href="./assets/css/notifications.css">
+
 </head>
 
 <body>
@@ -227,17 +229,10 @@
         </div>
 
         <div class="page-wrapper">
-            <div class="page-content py-1" style="min-height:0">
+            <div class="page-content py-1" style="min-height: 0">
                 <ul class="nav nav-pills nav-fill pt-4">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">نمایندگی</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Users.html">کاربران</a>
-
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">گزارشات</a>
+                        <h2 class="nav-link active">ویرایش اطلاعات کاربر</h2>
                     </li>
                 </ul>
             </div>
@@ -245,41 +240,47 @@
             <div class="page-content">
                 <div class="row">
                     <div class="col grid-margin stretch-card">
-                        <div class="card">
+                        <div class="card" id="user_information">
                             <div class="card-body">
-                                <h6 class="card-title mb-0">رشد فروش</h6>
-                                <div class="row">
-                                    <div class="col-6 col-md-12 col-xl-5">
-                                        <h3 class="mb-2">89.87%</h3>
-                                        <div class="d-flex align-items-baseline">
-                                            <p class="text-success">
-                                                <span>+2.8%</span>
-                                                <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                            </p>
+                                <h4 class="card-title mb-3"> اطلاعات کاربر </h4>
+                                <section class="row">
+                                    <div class="col-12">
+                                        <h5 class="card-text text-muted mb-2" id="user-id"></h5>
+                                        <p class="card-text" id="email-id"></p>
+                                        <p class="card-text" id="first-name"></p>
+                                        <p class="card-text" id="agentId"></p>
+                                        <p class="card-text" id="create-date"></p>
+                                        <p class="card-text" id="modified-date"></p>
+                                        <p class="card-text" id="chatId"></p>
+                                        <p class="card-text" id="cardToCardPayment"></p>
+                                        <p class="card-text" id="is-agent"></p>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col grid-margin stretch-card">
+                        <div class="card" id="Transaction-Detail-b">
+                            <div class="card-body">
+                                <h5 class="card-title">اطلاعات حساب کاربر</h5>
+                                <section class="row">
+                                    <div class="col-6">
+                                        <p class="card-text text-muted" id="balance"></p>
+                                    </div>
+                                        <div class="grid-margin stretch-card">
+                                            <div class="btn-group col">
+                                                <button type="button" class="w-50 btn btn-outline-primary"
+                                                    data-bs-toggle="modal" data-bs-target="#IncreaseModal">
+                                                    افزایش موجودی
+                                                </button>
+                                                <button type="button" class="w-50 btn btn-outline-primary"
+                                                    data-bs-toggle="modal" data-bs-target="#decreaseModal">
+                                                    کاهش موجودی
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-6 col-md-12 col-xl-7">
-                                        <div id="growthChart" class="mt-md-3 mt-xl-0">میزان رشد</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col grid-margin stretch-card">
-                        <div class="card" id="agent_information">
-                            <div class="card-body">
-                                <h5 class="card-title">اطلاعات نمایندگی</h5>
-                                <section class="row">
-                                    <div class="col-6">
-                                        <p class="card-text text-muted" id="agent-brand-name"></p>
-                                        <p class="card-text text-muted" id="agent-code"></p>
-                                    </div>
-                                    <div class="col-6">
-                                        <p class="card-text text-muted" id="agent-Percent"></p>
-                                        <p class="card-text text-muted" id="user-Percent"></p>
-                                    </div>
                                 </section>
                             </div>
                         </div>
@@ -287,28 +288,15 @@
                 </div>
                 <div class="row">
                     <div class="col grid-margin stretch-card">
-                        <div class="card" id="Transaction-Detail">
-                            <div class="card-body">
-                                <h5 class="card-title">اطلاعات پرداخت</h5>
-                                <section class="row">
-                                    <div class="col-6">
-                                        <p class="card-text text-muted" id="card-holder-name"></p>
-                                        <p class="card-text text-muted" id="card-number"></p>
-                                    </div>
-                                    <div class="col-6">
-                                        <p class="card-text text-muted" id="maximum-payment"></p>
-                                        <p class="card-text text-muted" id="minimum-payment"></p>
-                                    </div>
-                                </section>
-                            </div>
+                        <div class="btn-group col">
+                            <button type="submit" class="w-100 btn btn-outline-primary">
+                                <i data-feather="edit-3"></i>
+                                ثبت تغییرات
+                            </button>
+                            <a class="w-100 btn btn-outline-primary" href="./index.html" role="button">
+                                <i data-feather="x"></i>
+                                برگشت</a>
                         </div>
-                    </div>
-                </div>
-                    <div class="row">
-                        <div class="col grid-margin stretch-card">
-                        <a class="w-100 btn btn-primary" href="./edit-agent.html" role="button">
-                            <i data-feather="edit"></i>
-                             ویرایش اطلاعات نمایندگی</a>
                     </div>
                 </div>
             </div>
@@ -321,13 +309,64 @@
                 </div>
             </div>
         </div>
-
-        <script src="./assets/vendors/apexcharts/apexcharts.min.js"></script>
+        <div id="modal_form_edit">
+        <div class="modal fade" id="IncreaseModal" tabindex="-1" aria-labelledby="varyingModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="IncreaseModalLabel">تغییر دستی موجودی کاربر </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="recipient-name1" class="form-label">افزایش موجودی :</label>
+                                <input type="number" name="recipient-name1" class="form-control" id="recipient-name1">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
+                                data-feather="x"></i> بستن</button>
+                        <button type="button" class="btn btn-outline-primary"><i data-feather="check"></i> ثبت تراکنش
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="decreaseModal" tabindex="-1" aria-labelledby="varyingModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="decreaseModalLabel">تغییر دستی موجودی کاربر </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="recipient-name2" class="form-label">کاهش موجودی :</label>
+                                <input type="number" name="recipient-name2" class="form-control" id="recipient-name2">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
+                                data-feather="x"></i> بستن</button>
+                        <button type="button" class="btn btn-outline-primary"><i data-feather="check"></i> ثبت تراکنش
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- <script src="./assets/vendors/apexcharts/apexcharts.min.js"></script> -->
         <script src="./assets/vendors/core/core.js"></script>
         <script src="./assets/vendors/feather-icons/feather.min.js"></script>
         <script src="./assets/js/template.js"></script>
         <script src="./assets/js/dashboard-dark.js"></script>
-        <script type="module" src="./assets/js/main.js"></script>
+        <script src="./assets/js/notifications.js"></script>
+
+        <script type="module" src="./assets/js/users-information.js"></script>
 </body>
 
 </html>

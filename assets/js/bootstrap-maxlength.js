@@ -1,10 +1,10 @@
 // npm package: bootstrap-maxlength
 // github link: https://github.com/mimo84/bootstrap-maxlength
 
-$(function() {
+$(function () {
   'use strict';
 
-  $('#defaultconfig').maxlength({
+  $('#brand-Name-info').maxlength({
     warningClass: "badge mt-1 bg-success",
     limitReachedClass: "badge mt-1 bg-danger"
   });

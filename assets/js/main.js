@@ -1,6 +1,5 @@
 // ''
 
-
 export const baseUrl = "https://test.samanii.com";
 export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
@@ -15,6 +14,21 @@ export const infoTitle = "پیغام اطلاع";
 export const infoTheme = "info";
 export const warningTitle = "پیغام هشدار";
 export const warningTheme = "warning";
+
+// ------------------------------------------------------- L O D I N G -------------------------------------------------------------
+
+export const loadingContainer = $("#loading-container");
+export const loading = $();
+
+export async function showLoading() {
+    await $(loadingContainer).toggleClass("d-none");
+}
+
+export async function hiddenLoading() {
+    await $(loadingContainer).toggleClass("d-none");
+}
+
+//start variable meessage information---------------------------------------------------------------------------------------------------
 
 export function notificationMessage(title, text, theme) {
     window.createNotification({
@@ -61,12 +75,12 @@ export const DigitallLogin = async (action, credentials) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
+        const { data, isSuccess } = await response.json();
 
-        if (data.isSuccess) {
-            if (data.data) {
+        if (isSuccess) {
+            if (data) {
                 localStorage.setItem("token", "bearer " + data.data);
-                notificationMessage(successTitle, "خوش آمدید", successTheme);
+                await notificationMessage(successTitle, "خوش آمدید", successTheme);
                 console.log("Token stored in localStorage:", data.data);
             } else {
                 console.warn("No token received.");
@@ -88,9 +102,8 @@ export const DigitallLogin = async (action, credentials) => {
 
 // end login api -------------------------------------------------------------------------------------------
 
-// call with token ---------------------------------------------------------------
+// start post token from header ---------------------------------------------------------------------------
 
-// post token from header ---------------------------------------------------------------
 export const postDigitallApi = async (url, credentials) => {
     let response;
 
@@ -107,48 +120,111 @@ export const postDigitallApi = async (url, credentials) => {
             //todo : notification error for mserver message = data.message
             response = data;
         },
-        erorr: async function (ex) { },
+        error: async function (ex) { },
     });
 
     return response;
 };
 
-// get token from header ---------------------------------------------------------------
+// end post token from header ---------------------------------------------------------------------------
+
+// start get token from header ---------------------------------------------------------------------------
+
 export const getDigitallApi = async (url) => {
     let response;
     await $.ajax({
         type: "GET",
         url: baseApiRequest + url,
         headers: {
-            Authorization: localStorage.getItem('token'),
+            Authorization: localStorage.getItem("token"),
             "Content-Type": "application/json",
         },
         success: async function (result) {
-            //check if (data.statusCode != 0 | data.isSuccess == false) {}
-            //todo : notification error for mserver message = data.message
             response = result;
-            // return response;
         },
-        erorr: async function (ex) { },
+        error: async function (ex) { },
     });
 
     return response;
 };
 
+// end get token from header -----------------------------------------------------------------------------
 
-$(document).ready(function () {
+
+
+
+// update method  token from header  -----------------------------------------------------------------------------
+
+export const updateDigitallApi = async (url, credentials, id = 0) => {
+    let response;
+    await $.ajax({
+        type: "PUT",
+        url: baseApiRequest + url,
+        data: JSON.stringify(credentials),
+        headers: {
+            Authorization: localStorage.getItem("token"),
+            "Content-Type": "application/json",
+        },
+        success: async function (result) {
+            response = result;
+        },
+        error: async function (ex) { },
+    });
+
+    return response;
+}
+
+
+
+// --------------------------------------------------------------------------------------------------------
+
+
+
+// start information -------------------------------------------------------------------------------------
+$(document).ready(async function () {
+    await showLoading();
+
     let token = localStorage.getItem("token");
     if (!token) {
         const currentUrl = window.location.href;
         const url = new URL(currentUrl);
         const params = new URLSearchParams(url.search);
-        localStorage.setItem("token", "bearer " + params.get('token'));
+        localStorage.setItem("token", "bearer " + params.get("token"));
     }
 
-    // set agent information
-    getDigitallApi("/User/GetUser").then(({ data }) => {
-        $("#fullName").html(
-            (data.firstName || "") + " " + (data.lastName || "")
+
+
+    //get agent information data
+    await getDigitallApi("/Agent/GetAdminAgentInformation").then(({ data }) => {
+        $(`#agent_information > div.card-body #agent-brand-name`).html(
+            "نمایندگی : " + data.brandName || "ثبت نشده"
+        );
+        $(`#agent_information > div.card-body #agent-code`).html(
+            "کد نمایندگی : " + data.agentCode
+        );
+        $(`#agent_information > div.card-body #agent-Percent`).html(
+            "درصد نمایندگان  : " + data.agentPercent || "ثبت نشده"
+        );
+        $(`#agent_information > div.card-body #user-Percent`).html(
+            "درصد کاربران  : " + data.userPercent || "ثبت نشده"
         );
     });
+
+    //get agent information payment
+    await getDigitallApi("/Transaction/GetTransactionDetail").then(({ data }) => {
+        $(`#Transaction-Detail > div.card-body #card-holder-name`).html(
+            " نام صاحب کارت : " + data.cardHolderName || "ثبت نشده"
+        );
+        $(`#Transaction-Detail > div.card-body #card-number`).html(
+            "شماره کارت : " + data.cardNumber || "ثبت نشده"
+        );
+        $(`#Transaction-Detail > div.card-body #maximum-payment`).html(
+            " سقف تراکنش نماینده : " + data.maximumAmountForAgent
+        );
+        $(`#Transaction-Detail > div.card-body #minimum-payment`).html(
+            " کف تراکنش نماینده :" + data.minimalAmountForAgent
+        );
+    });
+
+    await hiddenLoading();
 });
