@@ -15,6 +15,9 @@ export const infoTheme = "info";
 export const warningTitle = "پیغام هشدار";
 export const warningTheme = "warning";
 
+// ------------------------------------------------------ U T I L I T I E S -------------------------------------------------------
+
+// export const formattedNumber = (number) => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 // ------------------------------------------------------- L O D I N G -------------------------------------------------------------
 
 export const loadingContainer = $("#loading-container");
@@ -57,6 +60,7 @@ export function gregorianToJalali(dateString) {
         .toString()
         .padStart(2, "0")}/${jDate.getDate().toString().padStart(2, "0")}`;
 }
+
 
 // end convert date ---------------------------------------------------------------------------------------
 
@@ -181,50 +185,98 @@ export const updateDigitallApi = async (url, credentials, id = 0) => {
 
 
 // start information -------------------------------------------------------------------------------------
-$(document).ready(async function () {
-    await showLoading();
+// $(document).ready(async function () {
+//     await showLoading();
 
-    let token = localStorage.getItem("token");
-    if (!token) {
-        const currentUrl = window.location.href;
-        const url = new URL(currentUrl);
-        const params = new URLSearchParams(url.search);
-        localStorage.setItem("token", "bearer " + params.get("token"));
-    }
+//     let token = localStorage.getItem("token");
+//     if (!token) {
+//         const currentUrl = window.location.href;
+//         const url = new URL(currentUrl);
+//         const params = new URLSearchParams(url.search);
+//         localStorage.setItem("token", "bearer " + params.get("token"));
+//     }
 
 
 
-    //get agent information data
-    await getDigitallApi("/Agent/GetAdminAgentInformation").then(({ data }) => {
-        $(`#agent_information > div.card-body #agent-brand-name`).html(
-            "نمایندگی : " + data.brandName || "ثبت نشده"
-        );
-        $(`#agent_information > div.card-body #agent-code`).html(
-            "کد نمایندگی : " + data.agentCode
-        );
-        $(`#agent_information > div.card-body #agent-Percent`).html(
-            "درصد نمایندگان  : " + data.agentPercent || "ثبت نشده"
-        );
-        $(`#agent_information > div.card-body #user-Percent`).html(
-            "درصد کاربران  : " + data.userPercent || "ثبت نشده"
-        );
-    });
+//     //get agent information data
+//     await getDigitallApi("/Agent/GetAdminAgentInformation").then(({ data }) => {
+//         $(`#agent_information > div.card-body #agent-brand-name`).html(
+//             "نمایندگی : " + data.brandName || "ثبت نشده"
+//         );
+//         $(`#agent_information > div.card-body #agent-code`).html(
+//             "کد نمایندگی : " + data.agentCode
+//         );
+//         $(`#agent_information > div.card-body #agent-Percent`).html(
+//             "درصد نمایندگان  : " + data.agentPercent || "ثبت نشده"
+//         );
+//         $(`#agent_information > div.card-body #user-Percent`).html(
+//             "درصد کاربران  : " + data.userPercent || "ثبت نشده"
+//         );
+//     });
 
-    //get agent information payment
-    await getDigitallApi("/Transaction/GetTransactionDetail").then(({ data }) => {
-        $(`#Transaction-Detail > div.card-body #card-holder-name`).html(
-            " نام صاحب کارت : " + data.cardHolderName || "ثبت نشده"
-        );
-        $(`#Transaction-Detail > div.card-body #card-number`).html(
-            "شماره کارت : " + data.cardNumber || "ثبت نشده"
-        );
-        $(`#Transaction-Detail > div.card-body #maximum-payment`).html(
-            " سقف تراکنش نماینده : " + data.maximumAmountForAgent
-        );
-        $(`#Transaction-Detail > div.card-body #minimum-payment`).html(
-            " کف تراکنش نماینده :" + data.minimalAmountForAgent
-        );
-    });
+//     //get agent information payment
+//     await getDigitallApi("/Transaction/GetTransactionDetail").then(({ data }) => {
+//         $(`#Transaction-Detail > div.card-body #card-holder-name`).html(
+//             " نام صاحب کارت : " + data.cardHolderName || "ثبت نشده"
+//         );
+//         $(`#Transaction-Detail > div.card-body #card-number`).html(
+//             "شماره کارت : " + data.cardNumber || "ثبت نشده"
+//         );
+//         $(`#Transaction-Detail > div.card-body #maximum-payment`).html(
+//             " سقف تراکنش نماینده : " + data.maximumAmountForAgent
+//         );
+//         $(`#Transaction-Detail > div.card-body #minimum-payment`).html(
+//             " کف تراکنش نماینده :" + data.minimalAmountForAgent
+//         );
+//     });
 
-    await hiddenLoading();
-});
+//     await hiddenLoading();
+
+
+
+//     // Growth Chart
+//     if ($('#growthChart').length) {
+//         await getDigitallApi("/Agent/ProfitReport?TakeEntity=0").then(({ data }) => {
+//             const dailyProfits = {};
+//             data.entities.forEach(item => {
+//                 const date = item.createDate.split("T")[0];
+//                 const jalaliDate = gregorianToJalali2(data);
+//                 if (!dailyProfits[jalaliDate]) dailyProfits[jalaliDate] = 0;
+//                 dailyProfits[jalaliDate] += item.profit;
+//             });
+
+//             const categories = Object.keys(dailyProfits);
+//             const seriesData = Object.values(dailyProfits);
+
+
+//             const options3 = {
+//                 chart: {
+//                     type: "line",
+//                     height: 60,
+//                     sparkline: {
+//                         enabled: true
+//                     }
+//                 },
+//                 series: [{
+//                     name: 'سود روزانه',
+//                     data: seriesData
+//                 }],
+//                 xaxis: {
+//                     type: 'datetime',
+//                     categories: categories,
+//                 },
+//                 stroke: {
+//                     width: 2,
+//                     curve: "smooth"
+//                 },
+//                 markers: {
+//                     size: 0
+//                 },
+//                 colors: ['#0d6efd'], // رنگ دلخواه
+//             };
+
+//             new ApexCharts(document.querySelector("#growthChart"), options3).render();
+//         });
+//     }
+
+// });

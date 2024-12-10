@@ -1,22 +1,26 @@
 import * as api from "./main.js";
 
 $(document).ready(async function () {
-    // await api.showLoading();
+    await api.showLoading();
 
-    let id = $("#hidenId").val();
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const params = new URLSearchParams(url.search);
+    const id = params.get("id");
+
     //get user information data
+    // if api have bug show bog and go users page
+    // fixed block or not block user
     await api.getDigitallApi(`/User/GetUser/${id}`).then(({ data }) => {
+        // todo : check is success and status code
         $(`#user_information > div.card-body #user-id`).html(
             "ایدی کاربر : " + data.id || "ثبت نشده"
         );
         $(`#user_information > div.card-body #email-id`).html(
-            "ایمیل: " + data.email || "ثبت نشده"
+            "ایمیل: " + (data.email ? "null" : "ثبت نشده")
         );
         $(`#user_information > div.card-body #first-name`).html(
             " نام کاربر  : " + data.firstName || "ثبت نشده"
-        );
-        $(`#user_information > div.card-body #agentId`).html(
-            "  ایدی نمایندگی  : " + data.agentId || "ثبت نشده"
         );
         $(`#user_information > div.card-body #create-date`).html(
             "   زمان شروع کاربر   : " + (api.gregorianToJalali(data.createDate ?? "-"))
@@ -28,7 +32,7 @@ $(document).ready(async function () {
             "  ایدی عددی کاربر  : " + data.chatId || "ثبت نشده"
         );
         $(`#user_information > div.card-body #cardToCardPayment`).html(
-            "   کارت بانکی  : " + (data.cardToCardPayment ? "ثبت شده" : "ثبت نشده")
+            "   نمایش شماره کارت  : " + (data.cardToCardPayment ? "فعال" : "غیر فعال")
         );
         $(`#user_information > div.card-body #is-agent`).html(
             "  عنوان : " + (data.isAgent ? "نماینده" : "کاربر عادی")
@@ -36,17 +40,7 @@ $(document).ready(async function () {
     });
 
 
-
-    //get user information payment
-    await api.getDigitallApi("/User/GetUser/4").then(({ data }) => {
-        $(`#Transaction-Detail-b > div.card-body #balance`).html(
-            " موجودی : " + data.balance || "ثبت نشده"
-        );
-    });
-    // await api.hiddenLoading();
-
-
-
+    await api.hiddenLoading();
 });
 
 
