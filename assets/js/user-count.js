@@ -28,7 +28,6 @@ $(document).ready(async function () {
                       <p class="text-muted tx-13">${user.isAgent ? "نماینده" : "کاربر عادی"}</p>
                     </div>
                 </a>`);
-
           $("#user-container").append(user_info);
         });
       })
