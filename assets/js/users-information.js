@@ -73,7 +73,8 @@ $(document).ready(async function () {
         },
         convertToAgent: {
             text: "نماینده کردن کاربر",
-            classes: "col-12"
+            classes: "col-12",
+            btnEvent: async () => await $.representTheUser(),
         },
         specialPercent: {
             text: "گذاشتن درصد ویژه برای کاربر",
@@ -83,6 +84,27 @@ $(document).ready(async function () {
     }
 
     //----------------------------------- user update -------------------------------------------
+
+    $.representTheUser = async () => {
+        await api.showLoading();
+
+        let data = {
+            agentAdminId: user.id
+        }
+
+        let { statusCode, isSuccess, message } = await api.postDigitallApi("/Agent/AddAgent", data);
+
+        if (statusCode == 0 && isSuccess == true) {
+            api.notificationMessage(api.successTitle, message, api.successTheme)
+        } else {
+            api.notificationMessage(api.errorTitle, message, api.errorTheme)
+        }
+
+        await $.getUserInformation();
+
+        await api.hiddenLoading();
+    }
+
 
     $.changeCardToCardPaymentStatus = async () => {
         await api.showLoading();
@@ -128,7 +150,6 @@ $(document).ready(async function () {
 
         await api.hiddenLoading();
     }
-
 
 
     $.getUserInformation = async () => {
