@@ -54,14 +54,14 @@ $(document).ready(async function () {
     const btns = {
         increaseBalance: {
             text: "افزایش موجودی",
-            dataBsTarget: "#IncreaseModal"
+            dataBsTarget: "#increaseModal"
         },
         decreaseBalance: {
             text: "کاهش موجودی",
             dataBsTarget: "#decreaseModal"
         },
         sendMessage: {
-            text: "ارسال پیام به کابر",
+            text: "ارسال پیام به کاربر",
             dataBsTarget: "#sendMassegeModal"
         },
         blocked: {
@@ -80,7 +80,14 @@ $(document).ready(async function () {
             text: "گذاشتن درصد ویژه برای کاربر",
             classes: "col-12",
             dataBsTarget: "#percentageModal"
+        },
+        agencyInformation: {
+            text: "اطلاعات نمایندگی",
+            classes: "col-12",
+            isActive: false,
+            dataBsTarget: "#agencyInformationModal"
         }
+
     }
 
     //----------------------------------- user update -------------------------------------------
@@ -105,7 +112,6 @@ $(document).ready(async function () {
         await api.hiddenLoading();
     }
 
-
     $.changeCardToCardPaymentStatus = async () => {
         await api.showLoading();
 
@@ -127,7 +133,6 @@ $(document).ready(async function () {
 
         await api.hiddenLoading();
     }
-
 
     $.changeBlockStatus = async () => {
         await api.showLoading();
@@ -151,6 +156,21 @@ $(document).ready(async function () {
         await api.hiddenLoading();
     }
 
+    $.setAgencyInformation = async (agent) => {
+
+        $("#agent-id").html("ایدی نماینده : " + agent.id || "ثبت نشده");
+        $("#disabled-account-time").html("اکانت : " + (agent.disabledAccountTime ? "غیر فعال" : "فعال"));
+        $("#agent-code").html("ایدی عددی نماینده : " + agent.agentCode || "ثبت نشده");
+        $("#brand-name-agent").html("نام نماینده  : " + agent.brandName || "ثبت نشده");
+        $("#persian-brand-name").html("نام نماینده  : " + agent.persianBrandName || "ثبت نشده");
+        $("#agent-admin-id").html("ایدی نمایندگی : " + agent.agentAdminId || "ثبت نشده");
+        $("#brand-address").html("ادرس نماینده : " + (agent.brandAddress ? "null" : "ثبت نشده"));
+        $("#agent-percent").html("درصد نماینده ها : " + agent.agentPercent || "ثبت نشده");
+        $("#user-percent").html("درصد کاربران : " + agent.userPercent || "ثبت نشده");
+        $("#special-percent").html("درصد ویژه برای نماینده : " + agent.specialPercent || "ثبت نشده");
+        $("#amount-with-negative").html(("مقدار خرید منفی : " + agent.amountWithNegative.toLocaleString()).replace("-", "") + " تومان");
+        $("#negative-charge-ceiling").html(("مقدار شارژ منفی : " + agent.negativeChargeCeiling.toLocaleString()).replace("-", "") + " تومان");
+    }
 
     $.getUserInformation = async () => {
         await api.getDigitallApi(`/User/GetUser/${id}`).then(async ({ data, statusCode, isSuccess, message }) => {
@@ -170,64 +190,32 @@ $(document).ready(async function () {
                 api.notificationMessage(api.errorTitle, "کاربر وجود نداشت", api.errorTheme)
             }
 
-            $(`#user_information > div.card-body #user-id`).html(
-                "ایدی کاربر : " + data.id || "ثبت نشده"
-            );
-            $(`#user_information > div.card-body #email-id`).html(
-                "ایمیل : " + (data.email ? "null" : "ثبت نشده")
-            );
-            $(`#user_information > div.card-body #mobile`).html(
-                "مبایل : " + (data.mobile ? "null" : "ثبت نشده")
-            );
-            $(`#user_information > div.card-body #is-mobile-active`).html(
-                " نمایش شماره : " + (data.isMobileActive ? "فعال " : "غیر فعال")
-            );
-            $(`#user_information > div.card-body #telegram-user-name`).html(
-                " ایدی تلگرام : " + (data.telegramUsername || "ثبت نشده")
-            );
-            $(`#user_information > div.card-body #first-name`).html(
-                " نام کاربر  : " + (data.firstName || "ثبت نشده")
-            );
-            $(`#user_information > div.card-body #last-name`).html(
-                " نام خانوادگی کاربر  : " + (data.lastName || "ثبت نشده")
-            );
-            $(`#user_information > div.card-body #avatar`).html(
-                " پروفایل  : " + (data.avatar ? "null" : "ثبت نشده")
-            );
-            $(`#user_information > div.card-body #address`).html(
-                " ادرس  : " + (data.address ? "null" : "ثبت نشده")
-            );
-            $(`#user_information > div.card-body #agentId`).html(
-                "  ایدی عددی نماینده : " + (data.agentId || "ثبت نشده")
-            );
-            $(`#user_information > div.card-body #create-date`).html(
-                "   زمان شروع کاربر   : " + (api.gregorianToJalali(data.createDate ?? "-"))
-            );
-            $(`#user_information > div.card-body #modified-date`).html(
-                "    زمان ویرایش کاربر  : " + (api.gregorianToJalali(data.modifiedDate ?? "-"))
-            );
-            $(`#user_information > div.card-body #chatId`).html(
-                "  ایدی عددی کاربر  : " + data.chatId || "ثبت نشده"
-            );
-            $(`#user_information > div.card-body #cardToCardPayment`).html(
-                "   نمایش شماره کارت  : " + (data.cardToCardPayment ? "فعال" : "غیر فعال")
-            );
-            $(`#user_information > div.card-body #is-agent`).html(
-                "  عنوان : " + (data.isAgent ? "نماینده" : "کاربر عادی")
-            );
-            $(`#user_information > div.card-body #balance-user`).html(
-                " موجودی   : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "بدهکار ")
-            );
-            $(`#user_information > div.card-body #is-blocked`).html(
-                data.isBlocked
-                    ? `<span class="badge bg-danger">غیر فعال</span>`
-                    : `<span class="badge bg-success">فعال</span>`);
+            $("#user-id").html("ایدی کاربر : " + data.id || "ثبت نشده");
+            $("#email-id").html("ایمیل : " + (data.email ? "null" : "ثبت نشده"));
+            $("#mobile").html("مبایل : " + (data.mobile ? "null" : "ثبت نشده"));
+            $("#is-mobile-active").html("نمایش شماره : " + (data.isMobileActive ? "فعال " : "غیر فعال"));
+            $("#telegram-user-name").html("ایدی تلگرام : " + (data.telegramUsername || "ثبت نشده"));
+            $("#first-name").html("نام کاربر  : " + (data.firstName || "ثبت نشده"));
+            $("#last-name").html("نام خانوادگی کاربر  : " + (data.lastName || "ثبت نشده"));
+            $("#avatar").html("پروفایل  : " + (data.avatar ? "null" : "ثبت نشده"));
+            $("#address").html("ادرس  : " + (data.address ? "null" : "ثبت نشده"));
+            $("#agentId").html("ایدی عددی نماینده : " + (data.agentId || "ثبت نشده"));
+            $("#create-date").html("زمان شروع کاربر : " + (api.gregorianToJalali(data.createDate ?? "-")));
+            $("#modified-date").html("زمان ویرایش کاربر : " + (api.gregorianToJalali(data.modifiedDate ?? "-")));
+            $("#chatId").html("ایدی عددی کاربر  : " + data.chatId || "ثبت نشده");
+            $("#cardToCardPayment").html("نمایش شماره کارت  : " + (data.cardToCardPayment ? "فعال" : "غیر فعال"));
+            $("#is-agent").html("عنوان : " + (data.isAgent ? "نماینده" : "کاربر عادی"));
+            $("#balance-user").html("موجودی   : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "بدهکار "));
+            $("#is-blocked").html(data.isBlocked ? `<span class="badge bg-danger">غیر فعال</span>` : `<span class="badge bg-success">فعال</span>`);
 
+
+            data.isAgent ? await $.setAgencyInformation(data.agency) : "";
 
             btns.blocked.text = data.isBlocked ? "فعال کردن کاربر" : "غیر فعال کردن کاربر";
             btns.cardToCardPayment.text = data.cardToCardPayment ? "غیر فعال کردن کارت به کارت" : " فعال کردن کارت به کارت";
             btns.convertToAgent.isActive = !data.isAgent;
             btns.specialPercent.isActive = data.isAgent;
+            btns.agencyInformation.isActive = data.isAgent;
 
             const btns_container = $("#user-action-btns-container");
 
@@ -240,9 +228,11 @@ $(document).ready(async function () {
             let cardToCardPayment_btn = generateButton(btns.cardToCardPayment);
             let convertToAgent_btn = generateButton(btns.convertToAgent);
             let specialPercent_btn = generateButton(btns.specialPercent);
+            let agencyInformation_btn = generateButton(btns.agencyInformation);
 
             btns_container.append(increase_btn);
             btns_container.append(decrease_btn);
+            btns_container.append(agencyInformation_btn);
             btns_container.append(sendMessage_btn);
             btns_container.append(blocked_btn);
             btns_container.append(cardToCardPayment_btn);
@@ -255,7 +245,6 @@ $(document).ready(async function () {
     await $.getUserInformation();
 
     await api.hiddenLoading();
-
 
     await $("#increase-balance-form").validate({
         rules: {
@@ -319,8 +308,6 @@ $(document).ready(async function () {
             }
         }
     });
-
-
 
     await $("#send-message-for-user").validate({
         rules: {
@@ -393,7 +380,6 @@ $(document).ready(async function () {
         }
     })
 
-    // notification-----and--------validation-----decrease-------
     await $("#decrease-balance-form").validate({
         rules: {
             decrease_user_balance: {
@@ -456,5 +442,60 @@ $(document).ready(async function () {
         }
     });
 
+    // await $("#percent-age-form").validate({
+    //     rules: {
+    //         percent_age: {
+    //             number: true
+    //         }
+    //     },
+    //     message: {
+    //         number: "درصد ویژه نماینده باید عدد باشد ."
+    //     },
+    //     submitHandler: async function (form, event) {
+    //         event.preventDefault();
 
+    //         await api.showLoading();
+
+
+    //         let { statusCode, isSuccess, message } = await api.(`#`, obj);
+
+    //         if (statusCode == 0 && isSuccess == true) {
+    //             api.notificationMessage(api.successTitle, message, api.successTheme)
+    //         } else {
+    //             api.notificationMessage(api.errorTitle, message, api.errorTheme)
+    //         }
+
+    //         await $.getUserInformation();
+    //         await api.hiddenLoading();
+    //     },
+    //     errorPlacement: function (error, element) {
+    //         error.addClass("invalid-feedback");
+
+    //         if (element.parent('.input-group').length) {
+    //             error.insertAfter(element.parent());
+    //         }
+    //         else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+    //             error.insertAfter(element.parent().parent());
+    //         }
+    //         else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+    //             error.appendTo(element.parent().parent());
+    //         }
+    //         else {
+    //             error.insertAfter(element);
+    //         }
+    //     },
+    //     highlight: function (element, errorClass) {
+    //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+    //             $(element).addClass("is-invalid").removeClass("is-valid");
+    //         }
+    //     },
+    //     unhighlight: function (element, errorClass) {
+    //         if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+    //             $(element).addClass("is-valid").removeClass("is-invalid");
+    //         }
+    //     }
+
+
+
+    // });
 });

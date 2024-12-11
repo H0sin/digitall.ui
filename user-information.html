@@ -293,7 +293,7 @@
             </div>
         </div>
         <div id="modal_form_edit">
-            <div class="modal fade" id="IncreaseModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+            <div class="modal fade" id="increaseModal" tabindex="-1" aria-labelledby="varyingModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -364,6 +364,40 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="agencyInformationModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agencyInformationModalLable">اطلاعات نمایندگی</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="btn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <section class="row">
+                            <div class="col-12">
+                                <h5 class="card-text text-muted mb-2" id="agent-id"></h5>
+                                <p class="card-text" id="disabled-account-time"></p>
+                                <p class="card-text" id="agent-code"></p>
+                                <p class="card-text" id="brand-name-agent"></p>
+                                <p class="card-text" id="persian-brand-name"></p>
+                                <p class="card-text" id="agent-admin-id"></p>
+                                <p class="card-text" id="brand-address"></p>
+                                <p class="card-text" id="agent-percent"></p>
+                                <p class="card-text" id="user-percent"></p>
+                                <p class="card-text" id="special-percent"></p>
+                                <p class="card-text" id="amount-with-negative"></p>
+                                <p class="card-text" id="negative-charge-ceiling"></p>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
+                                data-feather="x"></i> بستن</button>
+                    </div>
+                </div>
+            </div>
+            </div>
             <div class="modal fade" id="sendMassegeModal" tabindex="-1" aria-labelledby="varyingModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
@@ -403,10 +437,10 @@
                                 aria-label="btn-close"></button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form id="percent-age-form">
                                 <div class="mb-3">
-                                    <label class="form-label">درصد</label>
-                                    <input type="text" placeholder="درصد سود خاص برای نماینده را وارد کنید"
+                                    <label for="percent-age" class="form-label">درصد</label>
+                                    <input type="text" name="percent_age" placeholder="درصد سود خاص برای نماینده را وارد کنید"
                                         class="form-control">
                                 </div>
                             </form>
@@ -422,7 +456,6 @@
                 </div>
             </div>
         </div>
-        <!-- <script src="./assets/vendors/apexcharts/apexcharts.min.js"></script> -->
         <script src="./assets/vendors/core/core.js"></script>
         <script src="./assets/vendors/feather-icons/feather.min.js"></script>
         <script src="./assets/vendors/jquery-validation/jquery.validate.min.js"></script>

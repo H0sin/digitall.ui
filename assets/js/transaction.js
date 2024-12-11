@@ -1,83 +1,82 @@
-// $(document).ready(async function () {
+// // import * as api from "./main.js"
 
-//     async function loadUsers(page) {
-//         await api.getDigitallApi(`null`)
-//             .then(({ data }) => {
+// // $(document).ready(function () {
+// //   let currentPage = 1;
+// //   let allUserCount = 0;
 
-//                 $.each(entities, function (index, user) {
-//                     let info_i = $(`<div class="card">
-//             <img
-//               src="./assets/images/MainAfter.jpg"
-//               class="card-img-top"
-//               alt="..."
-//             />
-//             <div class="card-body">
-//               <p class="card-text">
-//                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم لورم ایپسوم متن
-//                 ساختگی با تولید سادگی نامفهوم لورم ایپسوم
-//               </p>
-//             </div>
-//           </div>`);
+// //   async function loadUsers(page) {
+// //     await api.getDigitallApi(`/Transaction/GetTransaction`).then(({ data }) => {
 
-//                     $("#transaction-info").append(info_i);
-//                 });
-//             })
+// //       let info_i = $(`<a
+// //                   href="#"
+// //                   class="d-flex align-items-center border-bottom p"  >
+// //                  <div class="card" style="width: 18rem; margin: 10px;">
+// //                      <img
+// //                        src="./assets/images/images.jpg"
+// //                        class="card-img-top"
+// //                        alt="${user.name}"/>
+// //                      <div class="card-body">
+// //                       <h5 class="card-title">${user.name}</h5>
+// //                       <p class="card-text">${user.description}</p>
+// //                      </div>
+// //         </div>
+// //                  </a>`);
 
-//     }
+// //       $("#agentTransactions").append(info_i);
+// //     });
 
 
-// <a class=" btn btn-outline-primary" href="./edit-users.html" role="button">مدیریت کاربر</a>
 
-// await loadUsers(currentPage);
 
-// $("#user-container").on("scroll", async function () {
-//     const container = $(this);
-//     const scrollHeight = container[0].scrollHeight;
-//     const scrollTop = container.scrollTop();
-//     const containerHeight = container.height();
+// //   };
 
-//     if (scrollTop + containerHeight >= scrollHeight - 50) {
-//         if ($("#user-container a").length >= allUserCount) {
-//             return;
-//         }
-//         currentPage++;
-//         await api.showLoading();
-//         await loadUsers(currentPage);
-//         await api.hiddenLoading();
-//     }
+
+// // });
+
+
+
+
+
+
+
+
+
+
+
+// async function loadUsers(page) {
+//   const mockData = {
+//     data: [
+//       { id: 1, name: " نام کاربری", description: "توضیحات کاربر اول" },
+
+//     ],
+//   };
+
+//   const { data: entities } = mockData;
+
+// //   $.each(entities, function (index, user) {
+// //     let info_i = $(`
+// //       <div class="border-bottom py-3" >
+// //         <div class="list-unstyled">
+// //           <div class="my-4 d-flex flex-column-reverse align-items-start">
+// //             <button type="button ">type</button>
+// //               <img src="./assets/images/images.jpg" class="w-25 wd-sm-150 me-3" alt="${user.name}">
+      
+// //           </div>
+// //           <div>
+// //             <h5 class="mt-0 mb-1">${user.name}</h5>
+// //             <p>${user.description}</p>
+// //           </div>
+// //         </div>
+// //       </div>
+      
+// //         `);
+
+// //     $("#agentTransactions").append(info_i);
+// //   });
+// // }
+
+// $(document).ready(function () {
+//   loadUsers(1);
 // });
-// });
 
-async function loadUsers(page) {
-    const mockData = {
-        data: [
-            { id: 1, name: "کاربر اول", description: "توضیحات کاربر اول" },
-            { id: 2, name: "کاربر دوم", description: "توضیحات کاربر دوم" },
-            { id: 3, name: "کاربر سوم", description: "توضیحات کاربر سوم" },
-        ],
-    };
 
-    const { data: entities } = mockData;
-
-    $.each(entities, function (index, user) {
-        let info_i = $(`
-          <div class="card" style="width: 18rem; margin: 10px;">
-            <img
-              src="./assets/images/images.jpg"
-              class="card-img-top"
-              alt="${user.name}"
-            />
-            <div class="card-body">
-              <h5 class="card-title">${user.name}</h5>
-              <p class="card-text">${user.description}</p>
-            </div>
-          </div>
-        `);
-
-        $("#transaction-info").append(info_i);
-    });
-}
-
-$(document).ready(function () {
-    loadUsers(1);
-});
