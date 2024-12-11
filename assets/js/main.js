@@ -21,6 +21,10 @@ export const warningTheme = "warning";
 export const hiddenModal = () => {
     let show = $(".show");
     show.removeClass("show");
+    show.css("display", "none");
+    $(".modal-backdrop ").remove();
+    $("body").removeClass("modal-open");
+    $("body").removeAttr("style");
 }
 
 // ------------------------------------------------------- L O D I N G -------------------------------------------------------------

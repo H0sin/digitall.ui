@@ -267,7 +267,7 @@
                             </div>
                             <div class="card-footer">
                                 <section id="user-action-btns-container" class="row gx-3 gy-3">
-       
+
                                 </section>
                             </div>
                         </div>
@@ -306,7 +306,8 @@
                             <form id="increase-balance-form">
                                 <div class="mb-3">
                                     <label for="increase-user-balance" class="form-label"> مبلغ :</label>
-                                    <input type="text"  name="increase_user_balance" class="form-control" id="increase-user-balance">
+                                    <input type="text" name="increase_user_balance" class="form-control"
+                                        id="increase-user-balance">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label"> توضیحات تراکنش :</label>
@@ -317,7 +318,8 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                             data-feather="x"></i> بستن</button>
-                                    <button type="submit"  class="btn btn-outline-primary"><i data-feather="check"></i> ثبت
+                                    <button type="submit" class="btn btn-outline-primary"><i data-feather="check"></i>
+                                        ثبت
                                         تراکنش
                                     </button>
                                 </div>
@@ -344,15 +346,16 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label"> توضیحات تراکنش :</label>
-                                    <textarea id="decrease-user-balance-description"  rows="15" class="form-control">
+                                    <textarea id="decrease-user-balance-description" rows="15" class="form-control">
 
                                     </textarea>
                                 </div>
-                                
+
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                             data-feather="x"></i> بستن</button>
-                                    <button type="submit" class="btn btn-outline-primary"><i data-feather="check"></i> ثبت
+                                    <button type="submit" class="btn btn-outline-primary"><i data-feather="check"></i>
+                                        ثبت
                                         تراکنش
                                     </button>
                                 </div>
@@ -366,54 +369,53 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="sendMassegeModalLabel">تغییر دستی موجودی کاربر </h5>
+                            <h5 class="modal-title" id="sendMassegeModalLabel">ارسال پیام به کاربر</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="btn-close"></button>
                         </div>
                         <div class="modal-body">
-                            <form>
-                                
+                            <form id="send-message-for-user">
                                 <div class="mb-3">
-                                    <label class="form-label"> متن خود را بنویسید  </label>
-                                    <textarea rows="15" class="form-control">
+                                    <label class="form-label"> متن خود را بنویسید</label>
+                                    <textarea name="message_text" id="message-text" rows="15" class="form-control">
 
                                     </textarea>
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
+                                            data-feather="x"></i> بستن</button>
+                                    <button type="submit" class="btn btn-outline-primary"><i data-feather="check"></i>
+                                        ارسال متن
+                                    </button>
+                                </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
-                                    data-feather="x"></i> بستن</button>
-                            <button type="submit"  class="btn btn-outline-primary"><i data-feather="check"></i> 
-                                ارسال متن
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        <div class="modal fade" id="PercentageModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+            <div class="modal fade" id="percentageModal" tabindex="-1" aria-labelledby="varyingModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="PercentageModalLabel">تغییر دستی درصد ویژه کاربر </h5>
+                            <h5 class="modal-title" id="percentageModalLabel">تغییر دستی درصد ویژه نماینده</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="btn-close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
-                                
                                 <div class="mb-3">
-                                    <label class="form-label"> درصد را وارد کنبد </label>
-                                    <input type="text" class="form-control">
+                                    <label class="form-label">درصد</label>
+                                    <input type="text" placeholder="درصد سود خاص برای نماینده را وارد کنید"
+                                        class="form-control">
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                     data-feather="x"></i> بستن</button>
-                            <button type="submit"  class="btn btn-outline-primary"><i data-feather="check"></i> 
-                                 ثبت درصد
+                            <button type="submit" class="btn btn-outline-primary"><i data-feather="check"></i>
+                                ثبت درصد
                             </button>
                         </div>
                     </div>

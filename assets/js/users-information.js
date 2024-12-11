@@ -14,6 +14,7 @@ $(document).ready(async function () {
     const decrease_user_balance_description = $("#decrease-user-balance-description");
     const decrease_user_balance = $("#decrease-user-balance");
     const card_to_card_payment = $("#cardToCardPayment");
+    const message_text = $("#message-text");
 
     let user = {};
 
@@ -71,11 +72,13 @@ $(document).ready(async function () {
             btnEvent: async () => await $.changeCardToCardPaymentStatus()
         },
         convertToAgent: {
-
+            text: "نماینده کردن کاربر",
+            classes: "col-12"
         },
         specialPercent: {
             text: "گذاشتن درصد ویژه برای کاربر",
-            classes: "col-12"
+            classes: "col-12",
+            dataBsTarget: "#percentageModal"
         }
     }
 
@@ -138,6 +141,7 @@ $(document).ready(async function () {
             increase_user_balance.val('');
             decrease_user_balance_description.val('');
             decrease_user_balance.val('');
+            message_text.val('');
 
 
             if (statusCode != 0 || isSuccess != true) {
@@ -296,6 +300,78 @@ $(document).ready(async function () {
     });
 
 
+
+    await $("#send-message-for-user").validate({
+        rules: {
+            message_text: {
+                required: true,
+                maxlength: 2000
+            },
+        },
+        messages: {
+            message_text: {
+                required: "نمیتواند خالی باشد",
+                maxlength: "پیام ارسالی نمیتواند بیشتر از 2000 کاراکتر باشد"
+            }
+        },
+        submitHandler: async function (form, event) {
+            event.preventDefault();
+
+            await api.showLoading();
+
+            let text = `✉️ کاربر عزیز یک پیام از سمت نماینده برای شما ارسال گردید
+                       زمان ارسال:${new Date().toLocaleString("fa-IR")}
+                       متن پیغام : ${message_text.val()}`;
+
+            let obj = {
+                message: text,
+                notificationType: 0,
+                forAllMember: false,
+                userId: user.id,
+                buttons: [],
+                forward: false,
+            }
+
+            let { statusCode, isSuccess, message } = await api.postDigitallApi(`/Notification/AddNotification`, obj);
+
+            if (statusCode == 0 && isSuccess == true) {
+                api.notificationMessage(api.successTitle, message, api.successTheme)
+            } else {
+                api.notificationMessage(api.errorTitle, message, api.errorTheme)
+            }
+
+            await $.getUserInformation();
+            await api.hiddenLoading();
+        },
+        errorPlacement: function (error, element) {
+            error.addClass("invalid-feedback");
+
+            if (element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            }
+            else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                error.insertAfter(element.parent().parent());
+            }
+            else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                error.appendTo(element.parent().parent());
+            }
+            else {
+                error.insertAfter(element);
+            }
+        },
+        highlight: function (element, errorClass) {
+            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            }
+        },
+        unhighlight: function (element, errorClass) {
+
+            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        }
+    })
+
     // notification-----and--------validation-----decrease-------
     await $("#decrease-balance-form").validate({
         rules: {
@@ -353,7 +429,6 @@ $(document).ready(async function () {
             }
         },
         unhighlight: function (element, errorClass) {
-
             if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
                 $(element).addClass("is-valid").removeClass("is-invalid");
             }
