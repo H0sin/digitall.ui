@@ -34,6 +34,8 @@ $(document).ready(async function () {
       })
 
   }
+
+
   // <a class=" btn btn-outline-primary" href="./edit-users.html" role="button">مدیریت کاربر</a>
 
   await loadUsers(currentPage);

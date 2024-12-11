@@ -372,58 +372,9 @@
                   class="col-12 d-flex justify-content-between align-items-baseline mb-2"
                 >
                   <h6 class="card-title mb-0">صندوق دریافت</h6>
-                  <div class="dropdown mb-2">
-                    <a
-                      type="button"
-                      id="dropdownMenuButton6"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i
-                        class="icon-lg text-muted pb-3px"
-                        data-feather="more-horizontal"
-                      ></i>
-                    </a>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton6"
-                    >
-                      <a
-                        class="dropdown-item d-flex align-items-center"
-                        href="javascript:;"
-                        ><i data-feather="eye" class="icon-sm me-2"></i>
-                        <span class="">مشاهده</span></a
-                      >
-                      <a
-                        class="dropdown-item d-flex align-items-center"
-                        href="javascript:;"
-                        ><i data-feather="edit-2" class="icon-sm me-2"></i>
-                        <span class="">ویرایش</span></a
-                      >
-                      <a
-                        class="dropdown-item d-flex align-items-center"
-                        href="javascript:;"
-                        ><i data-feather="trash" class="icon-sm me-2"></i>
-                        <span class="">حذف</span></a
-                      >
-                      <a
-                        class="dropdown-item d-flex align-items-center"
-                        href="javascript:;"
-                        ><i data-feather="printer" class="icon-sm me-2"></i>
-                        <span class="">چاپ</span></a
-                      >
-                      <a
-                        class="dropdown-item d-flex align-items-center"
-                        href="javascript:;"
-                        ><i data-feather="download" class="icon-sm me-2"></i>
-                        <span class="">دانلود</span></a
-                      >
-                    </div>
-                  </div>
                 </div>
                 <div
-                  id="user-container"
+                  id="transaction-info"
                   style="max-height: 65vh; overflow-x: hidden; overflow-y: auto"
                   class="col-12 d-flex flex-column"
                 ></div>
@@ -434,24 +385,20 @@
       </div>
     </div>
 
-    <div
-      id="loading-container"
-      class="d-none"
-      style="
-        height: 100vh;
-        width: 100%;
-        top: 0;
-        position: fixed;
-        z-index: 99999;
-        background-color: rgba(0, 0, 0, 0.5);
-      "
-    >
-      <div class="d-flex h-100 align-items-center justify-content-center">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">بارگزاری...</span>
+    <!-- <div id="loading-container" class="d-none" style="
+      height: 100vh;
+      width: 100%;
+      top: 0;
+      position: fixed;
+      z-index: 99999;
+      background-color: rgba(0, 0, 0, 0.5);
+    ">
+        <div class="d-flex h-100 align-items-center justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">بارگزاری...</span>
+            </div>
         </div>
-      </div>
-    </div>
+    </div> -->
 
     <script src="./assets/vendors/apexcharts/apexcharts.min.js"></script>
     <script src="./assets/vendors/core/core.js"></script>
@@ -460,6 +407,6 @@
     <script src="./assets/js/dashboard-dark.js"></script>
     <script src="./assets/js/notifications.js"></script>
 
-    <script type="module" src="./assets/js/user-count.js"></script>
+    <script type="module" src="./assets/js/transaction.js"></script>
   </body>
 </html>

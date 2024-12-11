@@ -17,7 +17,12 @@ export const warningTheme = "warning";
 
 // ------------------------------------------------------ U T I L I T I E S -------------------------------------------------------
 
-// export const formattedNumber = (number) => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+export const hiddenModal = () => {
+    let show = $(".show");
+    show.removeClass("show");
+}
+
 // ------------------------------------------------------- L O D I N G -------------------------------------------------------------
 
 export const loadingContainer = $("#loading-container");
@@ -113,10 +118,10 @@ export const postDigitallApi = async (url, credentials) => {
 
     await $.ajax({
         type: "POST",
-        url,
+        url: baseApiRequest + url,
         data: JSON.stringify(credentials),
         headers: {
-            Authorization: token,
+            Authorization: localStorage.getItem("token"),
             "Content-Type": "application/json",
         },
         success: async function (data) {
