@@ -144,22 +144,25 @@ export const postDigitallApi = async (url, credentials) => {
 // start get token from header ---------------------------------------------------------------------------
 
 export const getDigitallApi = async (url) => {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            type: "GET",
-            url: baseApiRequest + url,
+    try {
+        const response = await fetch(baseApiRequest + url, {
+            method: "GET",
             headers: {
-                Authorization: localStorage.getItem("token"),
+                "Authorization": localStorage.getItem("token"),
                 "Content-Type": "application/json",
             },
-            success: function (result) {
-                resolve(result);
-            },
-            error: function (ex) {
-                reject(ex);
-            },
         });
-    });
+
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+        return null;
+    }
 };
 
 // end get token from header -----------------------------------------------------------------------------
