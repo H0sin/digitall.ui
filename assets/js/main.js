@@ -144,21 +144,22 @@ export const postDigitallApi = async (url, credentials) => {
 // start get token from header ---------------------------------------------------------------------------
 
 export const getDigitallApi = async (url) => {
-    let response;
-    await $.ajax({
-        type: "GET",
-        url: baseApiRequest + url,
-        headers: {
-            Authorization: localStorage.getItem("token"),
-            "Content-Type": "application/json",
-        },
-        success: async function (result) {
-            response = result;
-        },
-        error: async function (ex) { },
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "GET",
+            url: baseApiRequest + url,
+            headers: {
+                Authorization: localStorage.getItem("token"),
+                "Content-Type": "application/json",
+            },
+            success: function (result) {
+                resolve(result);
+            },
+            error: function (ex) {
+                reject(ex);
+            },
+        });
     });
-
-    return response;
 };
 
 // end get token from header -----------------------------------------------------------------------------
