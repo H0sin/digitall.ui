@@ -1,6 +1,6 @@
 // ''
 
-export const baseUrl = "https://test.samamnii.com";
+export const baseUrl = "https://test.samanii.com";
 export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
 
