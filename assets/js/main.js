@@ -148,7 +148,6 @@ export const getDigitallApi = async (url) => {
     await $.ajax({
         type: "GET",
         url: baseApiRequest + url,
-        crossDomain: true,
         headers: {
             Authorization: localStorage.getItem("token"),
             "Content-Type": "application/json",
