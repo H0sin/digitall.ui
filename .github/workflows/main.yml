@@ -1,18 +1,51 @@
-name: Deploy to Server mini-app
+name: Auto Cache Busting for Changed Files
 
 on:
   push:
     branches:
-      - main
+      - main  # اجرا روی شاخه اصلی
 
 jobs:
-  deploy:
+  cache-busting:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # مرحله 1: کلون کردن ریپازیتوری
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
+      # مرحله 2: شناسایی فایل‌های تغییر کرده (CSS و JS)
+      - name: Identify Changed Files
+        id: changed_files
+        run: |
+          git fetch --depth=2
+          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep -E '\.(css|js)$' || true)
+          echo "Changed Files: $CHANGED_FILES"
+          echo "changed_files=$CHANGED_FILES" >> $GITHUB_ENV
+
+      # مرحله 3: تغییر نام فایل‌های تغییر یافته و آپدیت رفرنس‌ها در HTML
+      - name: Rename Changed Files and Update References
+        run: |
+          for file in ${{ env.changed_files }}; do
+            if [ -f "$file" ]; then
+              
+              VERSION=$(date +%Y%m%d%H%M%S)
+              EXT="${file##*.}"
+              BASENAME="${file%.*}"
+              NEW_NAME="${BASENAME}.${VERSION}.${EXT}"
+
+              
+              mv "$file" "$NEW_NAME"
+              echo "Renamed $file to $NEW_NAME"
+
+              
+              find . -type f -name "*.html" -exec sed -i "s|$file|$NEW_NAME|g" {} \;
+            fi
+          done
+
+      # مرحله 4: نمایش تغییرات
+      - name: Show Changes
+        run: git diff
       - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
