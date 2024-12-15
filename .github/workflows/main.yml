@@ -21,6 +21,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           debug: true
           script: |
-            cd /var/www/digitall.ui
-            git pull
-            sudo systemctl reload nginx
+           cd /var/www/digitall.ui
+           git pull https://hosseinfaraji8079:${{ secrets.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 }}@github.com/hosseinfaraji8079/digitall.ui.git
+           sudo systemctl reload nginx
+
