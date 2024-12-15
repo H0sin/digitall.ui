@@ -22,6 +22,6 @@ jobs:
           debug: true
           script: |
            cd /var/www/digitall.ui
-           git pull
+           git pull origin main
            sudo systemctl reload nginx
 
