@@ -86,8 +86,12 @@ $(document).ready(async function () {
             classes: "col-12",
             isActive: false,
             dataBsTarget: "#agencyInformationModal"
+        },
+        transaction:{
+            text: "تراکنش ها",
+            classes: "col-12",
+            isActive: true
         }
-
     }
 
     //----------------------------------- user update -------------------------------------------
@@ -229,6 +233,7 @@ $(document).ready(async function () {
             let convertToAgent_btn = generateButton(btns.convertToAgent);
             let specialPercent_btn = generateButton(btns.specialPercent);
             let agencyInformation_btn = generateButton(btns.agencyInformation);
+            let transaction_btn = generateButton(btns.transaction);
 
             btns_container.append(increase_btn);
             btns_container.append(decrease_btn);
@@ -238,6 +243,7 @@ $(document).ready(async function () {
             btns_container.append(cardToCardPayment_btn);
             btns_container.append(convertToAgent_btn);
             btns_container.append(specialPercent_btn);
+            btns_container.append(transaction_btn);
         });
     }
 
