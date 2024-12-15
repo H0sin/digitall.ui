@@ -10,6 +10,7 @@ $(document).ready(async function () {
     $("#type-user").on("change", async function (event) {
         type_user = event.target.value;
         await api.showLoading();
+        currentPage = 1;
         $("#user-container").html("");
         await loadUsers(currentPage);
         await api.hiddenLoading();
@@ -31,12 +32,13 @@ $(document).ready(async function () {
 
 
     async function loadUsers(page) {
-        await api.getDigitallApi(`/User/GetAgentUsersFilter?takeEntity=8&page=${page}&isAgent=${type_user}`)
+        await api.getDigitallApi(`/User/GetAgentUsersFilter?takeEntity=8&page=${page}&isAgent=${type_user}&userName=${username_filter}`)
             .then(({data}) => {
                 const {entities} = data;
                 allUserCount = data.allEntitiesCount;
-                $.each(entities, function (index, user) {
-                    let user_info = $(`<a
+                if(allUserCount > 0){
+                    $.each(entities, function (index, user) {
+                        let user_info = $(`<a
                     href="./user-information.html?id=${user.id}"
                     class="d-flex align-items-center border-bottom py-3">
                     <div class="me-3">
@@ -55,8 +57,9 @@ $(document).ready(async function () {
                       <p class="text-muted tx-13">${user.isAgent ? "نماینده" : "کاربر عادی"}</p>
                     </div>
                 </a>`);
-                    $("#user-container").append(user_info);
-                });
+                        $("#user-container").append(user_info);
+                    });
+                }else $("#user-container").append("<h4 class='text-center'>کاربری یافت نشد</h4>");
             })
 
     }

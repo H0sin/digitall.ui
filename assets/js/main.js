@@ -207,8 +207,7 @@ $(document).ready(async function () {
     $("#balance").html(" موجودی : " + data.balance.toLocaleString() + " تومان ");
 
 
-    bot_name.html(data.botName.replace("bot",""));
-    bot_name.append(`<span> Bot</span>`);
+    bot_name.html(data.botName.replace("bot","<span class='px-1'> Bot</span>"));
 
     bot_name.attr("href", data.botLink);
 
