@@ -1,22 +1,42 @@
 import * as api from "./main.js";
 
 $(document).ready(async function () {
-  let currentPage = 1;
-  let allUserCount = 0;
-  let type_user = 0;
+    let currentPage = 1;
+    let allUserCount = 0;
+    let type_user = 0;
+    let debounceTimeout;
+    let username_filter = "";
 
-  $("#type-user").on("change",async function (event) {
-      type_user = event.target.value;
-      await loadUsers(currentPage);
-  });
+    $("#type-user").on("change", async function (event) {
+        type_user = event.target.value;
+        await api.showLoading();
+        $("#user-container").html("");
+        await loadUsers(currentPage);
+        await api.hiddenLoading();
+    });
 
-  async function loadUsers(page) {
-    await api.getDigitallApi(`/User/GetAgentUsersFilter?takeEntity=8&page=${page}&isAgent=${type_user}`)
-      .then(({ data }) => {
-        const { entities } = data;
-        allUserCount = data.allEntitiesCount;
-        $.each(entities, function (index, user) {
-          let user_info = $(`<a
+
+    $("#username-filter").on("input", function (event) {
+        username_filter = event.target.value.trim();
+        clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            currentPage = 1;
+            $("#user-container").html("");
+            await api.showLoading();
+            await loadUsers(currentPage);
+            await api.hiddenLoading();
+        }, 300);
+    });
+
+
+    async function loadUsers(page) {
+        await api.getDigitallApi(`/User/GetAgentUsersFilter?takeEntity=8&page=${page}&isAgent=${type_user}`)
+            .then(({data}) => {
+                const {entities} = data;
+                allUserCount = data.allEntitiesCount;
+                $.each(entities, function (index, user) {
+                    let user_info = $(`<a
                     href="./user-information.html?id=${user.id}"
                     class="d-flex align-items-center border-bottom py-3">
                     <div class="me-3">
@@ -35,31 +55,31 @@ $(document).ready(async function () {
                       <p class="text-muted tx-13">${user.isAgent ? "نماینده" : "کاربر عادی"}</p>
                     </div>
                 </a>`);
-          $("#user-container").append(user_info);
-        });
-      })
+                    $("#user-container").append(user_info);
+                });
+            })
 
-  }
-
-
-  // <a class=" btn btn-outline-primary" href="./edit-users.html" role="button">مدیریت کاربر</a>
-
-  await loadUsers(currentPage);
-
-  $("#user-container").on("scroll", async function () {
-    const container = $(this);
-    const scrollHeight = container[0].scrollHeight;
-    const scrollTop = container.scrollTop();
-    const containerHeight = container.height();
-
-    if (scrollTop + containerHeight >= scrollHeight - 50) {
-      if ($("#user-container a").length >= allUserCount) {
-        return;
-      }
-      currentPage++;
-      await api.showLoading();
-      await loadUsers(currentPage);
-      await api.hiddenLoading();
     }
-  });
+
+
+    // <a class=" btn btn-outline-primary" href="./edit-users.html" role="button">مدیریت کاربر</a>
+
+    await loadUsers(currentPage);
+
+    $("#user-container").on("scroll", async function () {
+        const container = $(this);
+        const scrollHeight = container[0].scrollHeight;
+        const scrollTop = container.scrollTop();
+        const containerHeight = container.height();
+
+        if (scrollTop + containerHeight >= scrollHeight - 50) {
+            if ($("#user-container a").length >= allUserCount) {
+                return;
+            }
+            currentPage++;
+            await api.showLoading();
+            await loadUsers(currentPage);
+            await api.hiddenLoading();
+        }
+    });
 });
