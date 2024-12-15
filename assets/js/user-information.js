@@ -4,7 +4,6 @@ import * as api from "./main.js";
 
 $(document).ready(async function () {
     await api.showLoading();
-    alert("");
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
     const params = new URLSearchParams(url.search);
