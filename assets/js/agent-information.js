@@ -15,7 +15,7 @@ $(document).ready(async function () {
 
 
     //get agent information data
-    await api.getDigitallApi("/Agent/GetAdminAgentInformation").then(({ data }) => {
+    await api.getDigitallApi("/Agent/GetAdminAgentInformation").then(({data}) => {
         $(`#agent_information > div.card-body #agent-brand-name`).html(
             "نمایندگی : " + data.brandName || "ثبت نشده"
         );
@@ -31,7 +31,7 @@ $(document).ready(async function () {
     });
 
     //get agent information payment
-    await api.getDigitallApi("/Transaction/GetTransactionDetail").then(({ data }) => {
+    await api.getDigitallApi("/Transaction/GetTransactionDetail").then(({data}) => {
         $(`#Transaction-Detail > div.card-body #card-holder-name`).html(
             " نام صاحب کارت : " + data.cardHolderName || "ثبت نشده"
         );
@@ -73,7 +73,7 @@ $(document).ready(async function () {
     }
 
     if ($('#agentProfit').length) {
-        await api.getDigitallApi("/Agent/ProfitReport?TakeEntity=0").then(({ data }) => {
+        await api.getDigitallApi("/Agent/ProfitReport?TakeEntity=0").then(({data}) => {
             const dailyProfits = {};
 
             data.entities.forEach(item => {
