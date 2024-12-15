@@ -5,8 +5,9 @@ $(document).ready(async function () {
   let allUserCount = 0;
   let type_user = 0;
 
-  $("#type-user").on("change", function (event) {
+  $("#type-user").on("change",async function (event) {
       type_user = event.target.value;
+      await loadUsers(currentPage);
   });
 
   async function loadUsers(page) {
