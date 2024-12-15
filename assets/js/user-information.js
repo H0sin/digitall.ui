@@ -4,7 +4,7 @@ import * as api from "./main.js";
 
 $(document).ready(async function () {
     await api.showLoading();
-
+    alert("");
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
     const params = new URLSearchParams(url.search);
@@ -77,7 +77,7 @@ $(document).ready(async function () {
             btnEvent: async () => await $.representTheUser(),
         },
         specialPercent: {
-            text: "گذاشتن درصد ویژه برای کاربر",
+            text: "گذاشتن درصد ویژه برای نماینده",
             classes: "col-12",
             dataBsTarget: "#percentageModal"
         },
