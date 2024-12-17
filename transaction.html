@@ -18,7 +18,10 @@
     <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css"/>
     <link rel="stylesheet" href="./assets/css/notifications.css"/>
     <style>
-        .datepicker-plot-area{
+        .distance p {
+            margin-bottom: 10px;
+        }
+        .datepicker-plot-area {
             z-index: 2;
         }
 
@@ -31,7 +34,7 @@
             align-items: center;
         }
 
-        .container-transaction>.bg-container-transaction {
+        .container-transaction > .bg-container-transaction {
             position: absolute;
             height: 100%;
             width: 100%;
@@ -39,7 +42,7 @@
             z-index: 0;
         }
 
-        .container-transaction>button {
+        .container-transaction > button {
             position: absolute;
             z-index: 1;
         }
@@ -243,29 +246,26 @@
                     <button class="nav-link active">گزارش تراکنش ها</button>
                 </li>
             </ul>
-<!--            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">-->
-<!--                جزعیات-->
-<!--            </button>-->
         </div>
         <div class="page-content" style="position: relative; max-height: 250px">
             <div class="row">
-                <div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
+                <div class="col-xl-12 grid-margin grid-margin-xl-0 stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <div class="row mb-2">
                                 <div class="d-flex">
-                                <select id="type-transaction" class="form-select form-select-sm w-50 me-1">
-                                    <option value="1">کارت به کارت</option>
-                                    <option value="2">افزایش دستی</option>
-                                    <option value="3">کاهش دستی</option>
-                                    <option selected value="null">همه تراکنش ها</option>
-                                </select>
-                                <select id="status-transaction" class="form-select form-select-sm w-50 ms-1">
-                                    <option value="1">موفق</option>
-                                    <option value="3">منتظر تایید</option>
-                                    <option value="2">رد شده</option>
-                                    <option selected value="null">همه وضعیت ها</option>
-                                </select>
+                                    <select id="type-transaction" class="form-select form-select-sm w-50 me-1">
+                                        <option value="1">کارت به کارت</option>
+                                        <option value="2">افزایش دستی</option>
+                                        <option value="3">کاهش دستی</option>
+                                        <option selected value="null">همه تراکنش ها</option>
+                                    </select>
+                                    <select id="status-transaction" class="form-select form-select-sm w-50 ms-1">
+                                        <option value="1">موفق</option>
+                                        <option value="3">منتظر تایید</option>
+                                        <option value="2">رد شده</option>
+                                        <option selected value="null">همه وضعیت ها</option>
+                                    </select>
                                 </div>
                                 <div class="input-group flatpickr mt-3" id="start-date">
                                     <input type="text" class="form-control tarikh">
@@ -278,12 +278,13 @@
                                             data-feather="calendar"></i></span>
                                 </div>
                                 <div class="input-group mt-3">
-                                    <input id="details-filter" type="text" class="form-control form-control-sm" placeholder="جستجو ...">
+                                    <input id="details-filter" type="text" class="form-control form-control-sm"
+                                           placeholder="جستجو ...">
                                     <div class="input-group-text">
                                         <i data-feather="search"></i>
                                     </div>
                                 </div>
-                                </div>
+                            </div>
                             <div id="transaction-container"
                                  style="max-height: 65vh; overflow-x: hidden; overflow-y: auto"
                                  class="col-12 d-flex flex-column">
@@ -325,25 +326,24 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="detailsModalLabel">جزعیات تراکنش</h5>
-<!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>-->
+                    <h5 class="modal-title" id="detailsModalLabel">جزئیات تراکنش</h5>
                 </div>
                 <div class="modal-body">
-                    <p class="card-text  d-inline" id="title"></p>
-<!--                            <img src="./assets/images/images.jpg" class="card-img-top">-->
-                            <div class="card-body" >
-                                <div class="mb-3">
-                                    <label for="transaction-change" class="form-label">مبلغ تراکنش</label>
-                                    <input type="text" class="form-control" id="transaction_change">
-                                    <div class="mt-3" id="detailsUser">
-                                    </div>
-                                </div>
-                            </div>
+                    <img class="w-100 p-2 mb-2" id="avatar-transaction">
+                    <div class="text-center distance">
+                        <p class="card-text text-muted" id="user-id"></p>
+                        <p class="card-text" id="title"></p>
+                        <p class="card-text" id="transaction-change"></p>
+                        <p class="card-text" id="transaction-time"></p>
+                        <p class="card-text" id="transaction-confirmation"></p>
+                        <p class="card-text" id="user-name"></p>
+                        <p class="card-text" id="last-name"></p>
+                        <p class="card-text" id="description"></p>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
-<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>-->
-<!--                    <button type="button" class="btn btn-primary">ثبت تراکنش</button>-->
+
                 </div>
             </div>
         </div>

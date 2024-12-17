@@ -4,6 +4,10 @@ export const baseUrl = "https://test.samanii.com";
 export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
 
+// path variable -----------------------------------------------------------------------------------------------
+
+export const transactionImagePath = (name) => `${baseUrl}/images/TransactionAvatar/origin/${name}`;
+
 // start variable meessage information -------------------------------------------------------------------------
 
 export const successTitle = "پیغام موفقیت";
@@ -205,7 +209,7 @@ $(document).ready(async function () {
 
     $("#fullName").html(fullName(data));
     $("#balance").html(" موجودی : " + data.balance.toLocaleString() + " تومان ");
-
+    // $("#transactionIndex").append("<a href='/transaction.html' class='btn-info'> </a>")
 
     bot_name.html(data.botName.replace("bot","<span class='px-1'> Bot</span>"));
 

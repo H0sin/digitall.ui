@@ -1,5 +1,5 @@
 import * as api from "./main.js";
-import {updateDigitallApi} from "./main.js";
+import {transactionImagePath, updateDigitallApi} from "./main.js";
 
 'use strict'
 
@@ -91,7 +91,8 @@ $(document).ready(async function () {
         transaction: {
             text: "تراکنش ها",
             classes: "col-12",
-            isActive: true
+            isActive: true,
+            btnEvent: async () => window.location.href="http://localhost:63342/project/transaction.html",
         },
         description: {
             text: "افزودن توضیحات",
@@ -228,7 +229,7 @@ $(document).ready(async function () {
             btns.convertToAgent.isActive = !data.isAgent;
             btns.specialPercent.isActive = data.isAgent;
             btns.agencyInformation.isActive = data.isAgent;
-
+            btns.transaction.btnEvent = () => window.location.href = `http://localhost:63342/project/transaction.html?id=${data.id}`;
             const btns_container = $("#user-action-btns-container");
 
             btns_container.html('');
@@ -243,6 +244,7 @@ $(document).ready(async function () {
             let agencyInformation_btn = generateButton(btns.agencyInformation);
             let transaction_btn = generateButton(btns.transaction);
             let description_btn = generateButton(btns.description);
+
 
             btns_container.append(increase_btn);
             btns_container.append(decrease_btn);
