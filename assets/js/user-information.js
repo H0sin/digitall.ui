@@ -1,4 +1,5 @@
 import * as api from "./main.js";
+import {updateDigitallApi} from "./main.js";
 
 'use strict'
 
@@ -14,17 +15,18 @@ $(document).ready(async function () {
     const decrease_user_balance = $("#decrease-user-balance");
     const card_to_card_payment = $("#cardToCardPayment");
     const message_text = $("#message-text");
+    const special_percent = $("#specialPercent");
 
     let user = {};
 
 
     function generateButton({
-        text = 'ارسال پیام به کاربر',
-        classes = 'col-6',
-        btnEvent = null,
-        dataBsTarget = null,
-        isActive = true
-    }) {
+                                text = 'ارسال پیام به کاربر',
+                                classes = 'col-6',
+                                btnEvent = null,
+                                dataBsTarget = null,
+                                isActive = true
+                            }) {
 
         if (isActive) {
             const parent = $(`<div class="${classes}"></div>`);
@@ -86,7 +88,7 @@ $(document).ready(async function () {
             isActive: false,
             dataBsTarget: "#agencyInformationModal"
         },
-        transaction:{
+        transaction: {
             text: "تراکنش ها",
             classes: "col-12",
             isActive: true
@@ -102,7 +104,7 @@ $(document).ready(async function () {
             agentAdminId: user.id
         }
 
-        let { statusCode, isSuccess, message } = await api.postDigitallApi("/Agent/AddAgent", data);
+        let {statusCode, isSuccess, message} = await api.postDigitallApi("/Agent/AddAgent", data);
 
         if (statusCode == 0 && isSuccess == true) {
             api.notificationMessage(api.successTitle, message, api.successTheme)
@@ -124,7 +126,7 @@ $(document).ready(async function () {
             cardToCardPayment: !user.cardToCardPayment
         }
 
-        let { statusCode, isSuccess, message } = await api.updateDigitallApi("/User/UpdateUser", data);
+        let {statusCode, isSuccess, message} = await api.updateDigitallApi("/User/UpdateUser", data);
 
         if (statusCode == 0 && isSuccess == true) {
             api.notificationMessage(api.successTitle, message, api.successTheme)
@@ -146,7 +148,7 @@ $(document).ready(async function () {
             cardToCardPayment: user.cardToCardPayment
         };
 
-        let { statusCode, isSuccess, message } = await api.updateDigitallApi("/User/UpdateUser", data);
+        let {statusCode, isSuccess, message} = await api.updateDigitallApi("/User/UpdateUser", data);
 
         if (statusCode == 0 && isSuccess == true) {
             api.notificationMessage(api.successTitle, message, api.successTheme)
@@ -176,7 +178,7 @@ $(document).ready(async function () {
     }
 
     $.getUserInformation = async () => {
-        await api.getDigitallApi(`/User/GetUser/${id}`).then(async ({ data, statusCode, isSuccess, message }) => {
+        await api.getDigitallApi(`/User/GetUser/${id}`).then(async ({data, statusCode, isSuccess, message}) => {
             api.hiddenModal();
 
             user = data;
@@ -272,9 +274,9 @@ $(document).ready(async function () {
             let description = increase_user_balance_description.val().trim();
             let price = increase_user_balance.val();
 
-            var obj = { description, price: +price, transactionType: 0 };
+            var obj = {description, price: +price, transactionType: 0};
 
-            let { statusCode, isSuccess, message } = await api.postDigitallApi(`/Transaction/IncreaseBalance/${id}`, obj);
+            let {statusCode, isSuccess, message} = await api.postDigitallApi(`/Transaction/IncreaseBalance/${id}`, obj);
 
             if (statusCode == 0 && isSuccess == true) {
                 api.notificationMessage(api.successTitle, message, api.successTheme)
@@ -290,14 +292,11 @@ $(document).ready(async function () {
 
             if (element.parent('.input-group').length) {
                 error.insertAfter(element.parent());
-            }
-            else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
                 error.insertAfter(element.parent().parent());
-            }
-            else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
                 error.appendTo(element.parent().parent());
-            }
-            else {
+            } else {
                 error.insertAfter(element);
             }
         },
@@ -345,7 +344,7 @@ $(document).ready(async function () {
                 forward: false,
             }
 
-            let { statusCode, isSuccess, message } = await api.postDigitallApi(`/Notification/AddNotification`, obj);
+            let {statusCode, isSuccess, message} = await api.postDigitallApi(`/Notification/AddNotification`, obj);
 
             if (statusCode == 0 && isSuccess == true) {
                 api.notificationMessage(api.successTitle, message, api.successTheme)
@@ -361,14 +360,11 @@ $(document).ready(async function () {
 
             if (element.parent('.input-group').length) {
                 error.insertAfter(element.parent());
-            }
-            else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
                 error.insertAfter(element.parent().parent());
-            }
-            else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
                 error.appendTo(element.parent().parent());
-            }
-            else {
+            } else {
                 error.insertAfter(element);
             }
         },
@@ -406,9 +402,9 @@ $(document).ready(async function () {
             let description = decrease_user_balance_description.val().trim();
             let price = decrease_user_balance.val();
 
-            var obj = { description, price: +price, transactionType: 0 };
+            var obj = {description, price: +price, transactionType: 0};
 
-            let { statusCode, isSuccess, message } = await api.postDigitallApi(`/Transaction/DecreaseBalance/${id}`, obj);
+            let {statusCode, isSuccess, message} = await api.postDigitallApi(`/Transaction/DecreaseBalance/${id}`, obj);
 
             if (statusCode == 0 && isSuccess == true) {
                 api.notificationMessage(api.successTitle, message, api.successTheme)
@@ -424,14 +420,11 @@ $(document).ready(async function () {
 
             if (element.parent('.input-group').length) {
                 error.insertAfter(element.parent());
-            }
-            else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
                 error.insertAfter(element.parent().parent());
-            }
-            else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
                 error.appendTo(element.parent().parent());
-            }
-            else {
+            } else {
                 error.insertAfter(element);
             }
         },
@@ -447,4 +440,69 @@ $(document).ready(async function () {
         }
     });
 
+    await $("#percent-age-form").validate({
+        rules: {
+            specialPercent: {
+                required: true,
+                number: true,
+                range: [0, 75],
+            },
+        },
+        messages: {
+            specialPercent: {
+                required: "درصد نمایندگی نمیتواند خالی باشد",
+                range: "درصد نمایندگی باید بین 0 و 75 باشد",
+                number : "باید حتما عدد باشد"
+            }
+        },
+        submitHandler: async function (form, event) {
+            event.preventDefault();
+
+            await api.showLoading();
+
+            let data = {
+                id: user.id,
+                isBlocked: user.isBlocked,
+                cardToCardPayment: user.cardToCardPayment,
+                specialPercent: special_percent.val()
+            }
+
+            let {statusCode, isSuccess, message} = await api.updateDigitallApi(`/User/UpdateUser`, data);
+
+            if (statusCode == 0 && isSuccess == true) {
+                special_percent.val("");
+                special_percent.removeClass("is-invalid").removeClass("is-valid");
+                api.notificationMessage(api.successTitle, message, api.successTheme)
+            } else {
+                api.notificationMessage(api.errorTitle, message, api.errorTheme)
+            }
+
+            await $.getUserInformation();
+            await api.hiddenLoading();
+        },
+        errorPlacement: function (error, element) {
+            error.addClass("invalid-feedback");
+
+            if (element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                error.insertAfter(element.parent().parent());
+            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                error.appendTo(element.parent().parent());
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        highlight: function (element, errorClass) {
+            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            }
+        },
+        unhighlight: function (element, errorClass) {
+            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        }
+    });
 });
+
