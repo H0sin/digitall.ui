@@ -16,9 +16,9 @@ $(document).ready(async function () {
     const card_to_card_payment = $("#cardToCardPayment");
     const message_text = $("#message-text");
     const special_percent = $("#specialPercent");
+    const description_text = $("#description-text");
 
     let user = {};
-
 
     function generateButton({
                                 text = 'ارسال پیام به کاربر',
@@ -92,6 +92,12 @@ $(document).ready(async function () {
             text: "تراکنش ها",
             classes: "col-12",
             isActive: true
+        },
+        description: {
+            text: "افزودن توضیحات",
+            classes:"col-12",
+            isActive: true,
+            dataBsTarget: "#descriptionModal"
         }
     }
 
@@ -123,7 +129,8 @@ $(document).ready(async function () {
         let data = {
             id: user.id,
             isBlocked: user.isBlocked,
-            cardToCardPayment: !user.cardToCardPayment
+            cardToCardPayment: !user.cardToCardPayment,
+            description:description_text.val(),
         }
 
         let {statusCode, isSuccess, message} = await api.updateDigitallApi("/User/UpdateUser", data);
@@ -145,7 +152,8 @@ $(document).ready(async function () {
         let data = {
             id: user.id,
             isBlocked: !user.isBlocked,
-            cardToCardPayment: user.cardToCardPayment
+            cardToCardPayment: user.cardToCardPayment,
+            description:description_text.val()
         };
 
         let {statusCode, isSuccess, message} = await api.updateDigitallApi("/User/UpdateUser", data);
@@ -162,7 +170,6 @@ $(document).ready(async function () {
     }
 
     $.setAgencyInformation = async (agent) => {
-
         $("#agent-id").html("ایدی نماینده : " + agent.id || "ثبت نشده");
         $("#disabled-account-time").html("اکانت : " + (agent.disabledAccountTime ? "غیر فعال" : "فعال"));
         $("#agent-code").html("ایدی عددی نماینده : " + agent.agentCode || "ثبت نشده");
@@ -188,7 +195,7 @@ $(document).ready(async function () {
             decrease_user_balance_description.val('');
             decrease_user_balance.val('');
             message_text.val('');
-
+            description_text.val(data.description);
 
             if (statusCode != 0 || isSuccess != true) {
                 await api.hiddenLoading();
@@ -210,9 +217,9 @@ $(document).ready(async function () {
             $("#chatId").html("ایدی عددی کاربر  : " + data.chatId || "ثبت نشده");
             $("#cardToCardPayment").html("نمایش شماره کارت  : " + (data.cardToCardPayment ? "فعال" : "غیر فعال"));
             $("#is-agent").html("عنوان : " + (data.isAgent ? "نماینده" : "کاربر عادی"));
-            $("#balance-user").html("موجودی   : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "بدهکار "));
+            $("#balance-user").html("موجودی : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "بدهکار "));
             $("#is-blocked").html(data.isBlocked ? `<span class="badge bg-danger">غیر فعال</span>` : `<span class="badge bg-success">فعال</span>`);
-
+            $("#user-description").html("توضیحات : " + (data.description ? data.description.trim() : "ثبت نشده"));
 
             data.isAgent ? await $.setAgencyInformation(data.agency) : "";
 
@@ -235,9 +242,11 @@ $(document).ready(async function () {
             let specialPercent_btn = generateButton(btns.specialPercent);
             let agencyInformation_btn = generateButton(btns.agencyInformation);
             let transaction_btn = generateButton(btns.transaction);
+            let description_btn = generateButton(btns.description);
 
             btns_container.append(increase_btn);
             btns_container.append(decrease_btn);
+            btns_container.append(description_btn);
             btns_container.append(agencyInformation_btn);
             btns_container.append(sendMessage_btn);
             btns_container.append(blocked_btn);
@@ -440,6 +449,67 @@ $(document).ready(async function () {
         }
     });
 
+    await $("#description-for-user").validate({
+        rules: {
+            description_text: {
+                maxlength : 3000
+            },
+        },
+        messages: {
+            description_text: {
+                maxlength : "نمیتواند بیشتر از 3000 کاراکتر باشد"
+            }
+        },
+        submitHandler: async function (form, event) {
+            event.preventDefault();
+
+            await api.showLoading();
+
+            let data = {
+                id: user.id,
+                isBlocked: user.isBlocked,
+                cardToCardPayment: user.cardToCardPayment,
+                description:description_text.val(),
+            }
+
+            let {statusCode, isSuccess, message} = await api.updateDigitallApi(`/User/UpdateUser`, data);
+
+            if (statusCode == 0 && isSuccess == true) {
+                special_percent.val("");
+                special_percent.removeClass("is-invalid").removeClass("is-valid");
+                api.notificationMessage(api.successTitle, message, api.successTheme)
+            } else {
+                api.notificationMessage(api.errorTitle, message, api.errorTheme)
+            }
+
+            await $.getUserInformation();
+            await api.hiddenLoading();
+        },
+        errorPlacement: function (error, element) {
+            error.addClass("invalid-feedback");
+
+            if (element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                error.insertAfter(element.parent().parent());
+            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                error.appendTo(element.parent().parent());
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        highlight: function (element, errorClass) {
+            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            }
+        },
+        unhighlight: function (element, errorClass) {
+            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        }
+    });
+
     await $("#percent-age-form").validate({
         rules: {
             specialPercent: {
@@ -464,7 +534,8 @@ $(document).ready(async function () {
                 id: user.id,
                 isBlocked: user.isBlocked,
                 cardToCardPayment: user.cardToCardPayment,
-                specialPercent: special_percent.val()
+                specialPercent: special_percent.val(),
+                description:description_text.val(),
             }
 
             let {statusCode, isSuccess, message} = await api.updateDigitallApi(`/User/UpdateUser`, data);

@@ -242,6 +242,7 @@
                                     <p class="card-text" id="is-agent"></p>
                                     <p class="card-text" id="balance-user"></p>
                                     <p class="card-text" id="is-blocked"></p>
+                                    <p class="card-text" id="user-description"></p>
                                 </div>
                             </section>
                         </div>
@@ -378,6 +379,36 @@
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                 data-feather="x"></i> بستن
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="descriptionModalLabel">توضیحات کاربر</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="btn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="description-for-user">
+                            <div class="mb-3">
+                                <label class="form-label">توضیحات کاربر</label>
+                                <textarea name="description_text" id="description-text" rows="15" class="form-control">
+
+                                </textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
+                                        data-feather="x"></i> بستن
+                                </button>
+                                <button type="submit" class="btn btn-outline-primary"><i data-feather="check"></i>
+                                    ثبت
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
