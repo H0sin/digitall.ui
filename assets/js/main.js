@@ -1,6 +1,7 @@
 // ''
 
-export const baseUrl = "https://test.samanii.com";
+// export const baseUrl = "https://test.samanii.com";
+export const baseUrl = "http://localhost:5176";
 export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
 
@@ -18,6 +19,27 @@ export const infoTitle = "پیغام اطلاع";
 export const infoTheme = "info";
 export const warningTitle = "پیغام هشدار";
 export const warningTheme = "warning";
+
+export function notificationMessage(title, text, theme) {
+    window.createNotification({
+        closeOnClick: true,
+        displayCloseButton: false,
+        positionClass: "nfc-bottom-right",
+        showDuration: 4000,
+        theme: theme !== "" ? theme : "success",
+    })({
+        title: title !== "" ? title : "اعلان",
+        message: decodeURI(text),
+    });
+}
+
+export function autoNotification(statusCode, isSuccess, message) {
+    if (statusCode == 0 && isSuccess) {
+        notificationMessage(successTitle, message, successTheme);
+    } else {
+        notificationMessage(errorTitle, message, errorTheme);
+    }
+}
 
 // ------------------------------------------------------ U T I L I T I E S -------------------------------------------------------
 
@@ -43,23 +65,6 @@ export async function showLoading() {
 export async function hiddenLoading() {
     await $(loadingContainer).toggleClass("d-none");
 }
-
-//start variable meessage information---------------------------------------------------------------------------------------------------
-
-export function notificationMessage(title, text, theme) {
-    window.createNotification({
-        closeOnClick: true,
-        displayCloseButton: false,
-        positionClass: "nfc-bottom-right",
-        showDuration: 4000,
-        theme: theme !== "" ? theme : "success",
-    })({
-        title: title !== "" ? title : "اعلان",
-        message: decodeURI(text),
-    });
-}
-
-// end variable meessage information -------------------------------------------------------------------------
 
 // start convert date ---------------------------------------------------------------------------------------
 
@@ -150,19 +155,30 @@ export const postDigitallApi = async (url, credentials) => {
 
 export const getDigitallApi = async (url) => {
     let response;
-    await $.ajax({
-        type: "GET",
-        url: baseApiRequest + url,
-        headers: {
-            Authorization: localStorage.getItem("token"),
-            "Content-Type": "application/json",
-        },
-        success: async function (result) {
-            response = result;
-        },
-        error: async function (ex) {
-        },
-    });
+    try {
+        await $.ajax({
+            type: "GET",
+            url: baseApiRequest + url,
+            headers: {
+                Authorization: localStorage.getItem("token"),
+                "Content-Type": "application/json",
+            },
+            success: async function (result) {
+                response = result;
+            },
+            error: async function (jqXHR) {
+                debugger;
+                response = {
+                    statusCode: jqXHR.status,
+                    error: jqXHR.responseText || jqXHR.statusText,
+                };
+            },
+        });
+    } catch (ex) {
+        // In case of unexpected errors
+        return response;
+    }
+
     return response;
 };
 
@@ -209,7 +225,6 @@ $(document).ready(async function () {
     $("#fullName").html(" نام کاربری :" + " " + fullName(data));
     $("#balance").html("موجودی : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "))
     // $("#transactionIndex").append("<a href='/transaction.html' class='btn-info'> </a>")
-
     bot_name.html(data.botName.replace("bot", "<span class='px-1'> Bot</span>"));
 
     bot_name.attr("href", data.botLink);
