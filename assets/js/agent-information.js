@@ -33,10 +33,10 @@ $(document).ready(async function () {
     //get agent information payment
     await api.getDigitallApi("/Transaction/GetTransactionDetail").then(({data}) => {
         $(`#Transaction-Detail > div.card-body #card-holder-name`).html(
-            " نام صاحب کارت : " + data.cardHolderName || "ثبت نشده"
+            " نام صاحب کارت : " + (data.cardHolderName || "ثبت نشده")
         );
         $(`#Transaction-Detail > div.card-body #card-number`).html(
-            "شماره کارت : " + data.cardNumber || "ثبت نشده"
+            "شماره کارت : " + (data.cardNumber || "ثبت نشده")
         );
         $(`#Transaction-Detail > div.card-body #maximum-payment`).html(
             " سقف تراکنش نماینده : " + data.maximumAmountForAgent
@@ -47,7 +47,6 @@ $(document).ready(async function () {
     });
 
     await api.hiddenLoading();
-
 
     function gregorian_to_jalali(gy, gm, gd) {
         var g_d_m, jy, jm, jd, gy2, days;

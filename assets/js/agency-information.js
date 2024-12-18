@@ -119,12 +119,12 @@ $(async function () {
 
                 if (statusCode == 0 && isSuccess == true) {
                     api.notificationMessage(api.successTitle, message, api.successTheme)
-                    window.location.href = "/index.html"
+                    window.location.href = "index.html"
                 } else {
                     api.notificationMessage(api.errorTitle, message, api.errorTheme)
                 }
 
-                console.log(response);
+                // console.log(response);
 
                 await api.hiddenLoading();
             },

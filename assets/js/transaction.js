@@ -33,7 +33,7 @@ function fixedTransactionStatus(status) {
 function generateTransactionItem(item) {
     const backgroundImage = item.avatarTransaction.includes('jpg')
         ? `${api.baseUrl + "/" + item.avatarTransaction.replace('origin', 'thumb')}`
-        : ' ';
+        : '';
 
     return `<div class="d-flex align-items-start border-bottom py-3">
                     <div class="me-3 d-flex">
@@ -163,6 +163,9 @@ $(document).ready(async function () {
                 transaction_container.append(transaction);
             });
         }
+        // if ( details_filter != number ){
+        //     transaction_container.append("<h4 class='text-center p-4'>تراکنشی یافت نشد</h4>");
+        // }
     }
 
     await loadTransaction(1);
@@ -211,10 +214,10 @@ $(document).ready(async function () {
         $("#title").html("نوع درخواست : " + fixedTransactionType((data.transactionType)));
         $("#transaction-time").html("زمان تراکنش : " + (new Date(data.transactionTime).toLocaleString("fa-IR")));
         // $("#transaction-confirmation").html("زمان تایید : " + (new Date(data.).toLocaleString("fa-IR")));
-        $("#user-name").html("نام کاربری : " + (data.username));
+        $("#user-name").html("نام کاربری : " + (data.username || "ثبت نشده"));
         $("#first-name").html("نام : " + (data.firstName || "ثبت نشده"));
         $("#last-name").html("نام خانوادگی : " + (data.lastName || "ثبت نشده"));
-        $("#description").html("توضیحات : " + (data.description ?? " - "));
+        $("#description").html("توضیحات : " + (data.description ? data.description.trim() : "-"));
 
         const details_modal = $("#detailsModal");
         const details_user = $("#detailsUser");
@@ -274,4 +277,5 @@ $(document).ready(async function () {
 
         await api.hiddenLoading();
     });
+
 });

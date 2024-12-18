@@ -36,7 +36,7 @@ $(document).ready(async function () {
             .then(({data}) => {
                 const {entities} = data;
                 allUserCount = data.allEntitiesCount;
-                if(allUserCount > 0){
+                if (allUserCount > 0) {
                     $.each(entities, function (index, user) {
                         let user_info = $(`<a
                     href="./user-information.html?id=${user.id}"
@@ -59,7 +59,7 @@ $(document).ready(async function () {
                 </a>`);
                         $("#user-container").append(user_info);
                     });
-                }else $("#user-container").append("<h4 class='text-center'>کاربری یافت نشد</h4>");
+                } else $("#user-container").append("<h4 class='text-center'>کاربری یافت نشد</h4>");
             })
 
     }

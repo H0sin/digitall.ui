@@ -92,7 +92,7 @@ export const DigitallLogin = async (action, credentials) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const { data, isSuccess } = await response.json();
+        const {data, isSuccess} = await response.json();
 
         if (isSuccess) {
             if (data) {
@@ -137,7 +137,8 @@ export const postDigitallApi = async (url, credentials) => {
             //todo : notification error for mserver message = data.message
             response = data;
         },
-        error: async function (ex) { },
+        error: async function (ex) {
+        },
     });
 
     return response;
@@ -159,14 +160,13 @@ export const getDigitallApi = async (url) => {
         success: async function (result) {
             response = result;
         },
-        error: async function (ex) { },
+        error: async function (ex) {
+        },
     });
     return response;
 };
 
 // end get token from header -----------------------------------------------------------------------------
-
-
 
 
 // update method  token from header  -----------------------------------------------------------------------------
@@ -184,34 +184,33 @@ export const updateDigitallApi = async (url, credentials, id = 0) => {
         success: async function (result) {
             response = result;
         },
-        error: async function (ex) { },
+        error: async function (ex) {
+        },
     });
 
     return response;
 }
 
 
-
 // --------------------------------------------------------------------------------------------------------
-
 
 
 // start information --------------------------------------------------------------------------------------
 
-function fullName(data){
+function fullName(data) {
     return data.firstName ? ((data.firstName || "") + " " + (data.lastName || "")) : data.telegramUsername;
 }
 
 $(document).ready(async function () {
     let bot_name = $("#bot_name");
 
-    let { statusCode, isSuccess, message,data } = await getDigitallApi("/User/GetInformation");
+    let {statusCode, isSuccess, message, data} = await getDigitallApi("/User/GetInformation");
 
-    $("#fullName").html(fullName(data));
-    $("#balance").html(" موجودی : " + data.balance.toLocaleString() + " تومان ");
+    $("#fullName").html(" نام کاربری :" + " " + fullName(data));
+    $("#balance").html("موجودی : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "))
     // $("#transactionIndex").append("<a href='/transaction.html' class='btn-info'> </a>")
 
-    bot_name.html(data.botName.replace("bot","<span class='px-1'> Bot</span>"));
+    bot_name.html(data.botName.replace("bot", "<span class='px-1'> Bot</span>"));
 
     bot_name.attr("href", data.botLink);
 
