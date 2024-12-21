@@ -41,18 +41,18 @@ let ready = $(document).ready(async function () {
         },
         messages: {
             imei_1: {
-                required: "فیلد اجباری است",
-                maxlength: "imei دستگاه حتما 16 رقم است",
-                minlength: "imei دستگاه حتما 16 رقم است",
+                required: "IMEI دستگاه نمیتواند خالی باشد",
+                maxlength: "IMEI دستگاه حتما 16 رقم است",
+                minlength: "IMEI دستگاه حتما 16 رقم است",
                 number: "نمیتوانید از کاراکتر استفاده کنید",
             },
             imei_2: {
-                maxlength: "imei دستگاه حتما 16 رقم است",
-                minlength: "imei دستگاه حتما 16 رقم است",
+                maxlength: "IMEI دستگاه حتما 16 رقم است",
+                minlength: "IMEI دستگاه حتما 16 رقم است",
                 number: "نمیتوانید از کاراکتر استفاده کنید",
             },
             accept_the_rules: {
-                required:"فیلد اجباری است"
+                required:"لطفا قوانین و مقررات را بپذیرید"
             },
             summery: {
                 maxlength: "بیشتر از 500 کاراکتر نمیتواند باشد",
@@ -61,10 +61,10 @@ let ready = $(document).ready(async function () {
                 maxlength : "بیشتر از 50 کاراکتر نمیتواند باشد"
             },
             phone:{
-                required: "فیلد اجباری است",
-                maxlength: "فرمت اشتباه است",
-                minlength: "فرمت اشبتباه است",
-                number: "فرمت اشبتباه است",
+                required: "شماره تماس نمیتواند خالی باشد",
+                maxlength: "فرمت شماره زیاد است",
+                minlength: "فرمت شماره کم است",
+                number: "فرمت اشتباه است",
             }
         },
         submitHandler: async function (form, event) {
