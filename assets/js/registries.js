@@ -1,3 +1,4 @@
+import * as registry from "./main-registry.js";
 import * as main from "./main.js";
 
 // -------------------------------------------------------------------------------------
@@ -115,7 +116,7 @@ $(document).ready(async function (e) {
     let registries_container = $("#registries-container");
 
     async function loadRegistries(page) {
-        let {statusCode, data} = await main.getDigitallApi("/Registry/FilterAll");
+        let {statusCode, data} = await registry.getRegistryApi("/Registry");
 
         if (statusCode != 403) {
             await $.each(data.entities, async function (index, registry) {
@@ -139,7 +140,7 @@ $(document).ready(async function (e) {
             });
 
         } else if (statusCode == 403) {
-            let {statusCode, data} = await main.getDigitallApi("/Registry/Filter");
+            let {statusCode, data} = await registry.getRegistryApi("/Registry");
             await $.each(data.entities, async function (index, registry) {
 
                 registries_container.append(generateRegistryItem(registry));
@@ -187,7 +188,7 @@ async function submit_price_modal(){
                 id
             }
 
-            let {isSuccess,message,statusCode} = await main.updateDigitallApi("/Registry/Update",data);
+            let {isSuccess,message,statusCode} = await registry.updateRegistryApi("/Registry",data);
 
             main.autoNotification(statusCode,isSuccess,message);
         },
@@ -230,7 +231,6 @@ async function submit_image_modal(){
             },
         },
         submitHandler: function (form) {
-            debugger;
             },
         errorPlacement: function (error, element) {
             error.addClass("invalid-feedback");

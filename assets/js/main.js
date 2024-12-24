@@ -4,10 +4,29 @@
 export const baseUrl = "http://localhost:5176";
 export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
+export let user_information = {};
 
 // path variable -----------------------------------------------------------------------------------------------
 
 export const transactionImagePath = (name) => `${baseUrl}/images/TransactionAvatar/origin/${name}`;
+
+export let colors = {
+    primary        : "#6571ff",
+    secondary      : "#7987a1",
+    success        : "#05a34a",
+    info           : "#66d1d1",
+    warning        : "#fbbc06",
+    danger         : "#ff3366",
+    light          : "#e9ecef",
+    dark           : "#060c17",
+    muted          : "#7987a1",
+    gridBorder     : "rgba(77, 138, 240, .15)",
+    bodyColor      : "#b8c3d9",
+    cardBg         : "#0c1427"
+}
+
+
+export let fontFamily = "'iransans', Helvetica, sans-serif";
 
 // start variable meessage information -------------------------------------------------------------------------
 
@@ -200,7 +219,6 @@ export const getDigitallApi = async (url) => {
                 response = result;
             },
             error: async function (jqXHR) {
-                debugger;
                 response = {
                     statusCode: jqXHR.status,
                     error: jqXHR.responseText || jqXHR.statusText,
@@ -274,9 +292,10 @@ async function loadNotificaciones() {
 
     let {data} = await getDigitallApi("/Notification/GetNotifications");
 
-    for (let i = 0; i < 6; i++) {
-        notifications.append(await generateNotificationItem(data[i]));
-    }
+    if(data.length)
+        for (let i = 0; i < 6; i++) {
+            notifications.append(await generateNotificationItem(data[i]));
+        }
 
     notifications.append(`<div class="px-3 py-2 d-flex align-items-center justify-content-center border-top"><a href="/notification.html">مشاهده همه</a></div>`);
 
@@ -287,6 +306,12 @@ $(document).ready(async function () {
     let bot_name = $("#bot_name");
 
     let {statusCode, isSuccess, message, data} = await getDigitallApi("/User/GetInformation");
+    if (statusCode == 0 && isSuccess == true) {
+        notificationMessage(successTitle, message,successTheme)
+    } else {
+        notificationMessage(errorTitle, message,errorTheme)
+    }
+    user_information = data;
 
     $("#fullName").html(" نام کاربری :" + " " + fullName(data));
     $("#balance").html("موجودی : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "))

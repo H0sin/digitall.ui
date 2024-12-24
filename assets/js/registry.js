@@ -1,8 +1,8 @@
+import * as registry from "./main-registry.js";
 import * as main from "./main.js";
-import {autoNotification} from "./main.js";
 
-let ready = $(document).ready(async function () {
 
+$(document).ready(async function () {
     let imei_1 = $("#imei_1");
     let imei_2 = $("#imei_2");
     let accept_the_rules = $("#accept_the_rules");
@@ -73,15 +73,15 @@ let ready = $(document).ready(async function () {
             await main.showLoading();
 
             var data = {
-                imei_1 : imei_1.val(),
-                imei_2 : imei_2.val(),
-                accept_the_rules : accept_the_rules.val(),
+                imeI_1 : imei_1.val(),
+                imeI_2 : imei_2.val(),
+                acceptTheRules : accept_the_rules.val(),
                 summery : summery.val().trim(),
-                for_who : for_who.val().trim(),
+                forWho : for_who.val().trim(),
                 phone : phone.val(),
             }
 
-            let {isSuccess,message,statusCode} = await main.postDigitallApi("/Registry/Add",data);
+            let {isSuccess,message,statusCode} = await registry.postRegistryApi("/Registry",data);
 
             main.autoNotification(statusCode,isSuccess,message);
 

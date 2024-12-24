@@ -66,13 +66,13 @@
         <div class="page-content py-1" style="min-height:0">
             <ul class="nav nav-pills nav-fill pt-4">
                 <li class="nav-item">
-                    <a class="nav-link active" href="./index.html">نمایندگی</a>
+                    <a class="nav-link active" href="index.html">نمایندگی</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="users.html">کاربران</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">گزارشات</a>
+                    <a class="nav-link" href="report.html">گزارشات</a>
                 </li>
             </ul>
         </div>
@@ -82,14 +82,40 @@
                 <div class="col grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h6 class="card-title mb-0">رشد فروش</h6>
+                            <h6 class="card-title mb-0">لحظه قطع شدن سرویس</h6>
+                            <div id="total_inventory"></div>
+                            <div class="row">
+                                <div class="col-6 d-flex justify-content-end">
+                                    <div>
+                                        <label class="d-flex align-items-center justify-content-end tx-10 text-uppercase fw-bolder">کل موجودی<span class="p-1 me-1 rounded-circle bg-primary"></span></label>
+                                        <h5 class="fw-bolder mb-0 text-end" id="total_storage_display"></h5>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div>
+                                        <label class="d-flex align-items-center tx-10 text-uppercase fw-bolder">مقدار خرید منفی<span class="p-1 ms-1 rounded-circle bg-secondary"></span></label>
+                                        <h5 class="fw-bolder mb-0" id="negative_storage_display"></h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title mb-2">رشد فروش</h6>
                             <div class="row">
                                 <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">89.87%</h3>
+                                    <h5 class="mb-2" id="sales_profit"></h5>
                                     <div class="d-flex align-items-baseline">
-                                        <p class="text-success">
-                                            <span>+2.8%</span>
-                                            <i data-feather="arrow-up" class="icon-sm mb-1"></i>
+                                        <p>
+                                            <span id="growth_profit"></span>
                                         </p>
                                     </div>
                                 </div>
