@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" xmlns="http://www.w3.org/1999/html">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
@@ -10,12 +10,11 @@
     <meta name="keywords"
           content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
     <title></title>
-    <link rel="stylesheet" href="./assets/vendors/core/core.css">
-    <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css">
-    <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css">
-    <link rel="stylesheet" href="./assets/css/notifications.css">
-
+    <link rel="stylesheet" href="../assets/vendors/core/core.css">
+    <link rel="stylesheet" href="../assets/fonts/feather-font/css/iconfont.css">
+    <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../assets/css/demo4/style-rtl.min.css">
+    <link rel="stylesheet" href="../assets/css/notifications.css">
 </head>
 
 <body>
@@ -43,7 +42,7 @@
                                     <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
                                         <div class="me-3">
                                             <img class="wd-30 ht-30 rounded-circle"
-                                                 src="./assets/images/faces/face2.jpg" alt="userr">
+                                                 src="../assets/images/faces/face2.jpg" alt="userr">
                                         </div>
                                         <div class="d-flex justify-content-between flex-grow-1">
                                             <div class="me-4">
@@ -56,7 +55,7 @@
                                     <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
                                         <div class="me-3">
                                             <img class="wd-30 ht-30 rounded-circle"
-                                                 src="./assets/images/faces/face3.jpg" alt="userr">
+                                                 src="../assets/images/faces/face3.jpg" alt="userr">
                                         </div>
                                         <div class="d-flex justify-content-between flex-grow-1">
                                             <div class="me-4">
@@ -69,7 +68,7 @@
                                     <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
                                         <div class="me-3">
                                             <img class="wd-30 ht-30 rounded-circle"
-                                                 src="./assets/images/faces/face4.jpg" alt="userr">
+                                                 src="../assets/images/faces/face4.jpg" alt="userr">
                                         </div>
                                         <div class="d-flex justify-content-between flex-grow-1">
                                             <div class="me-4">
@@ -82,7 +81,7 @@
                                     <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
                                         <div class="me-3">
                                             <img class="wd-30 ht-30 rounded-circle"
-                                                 src="./assets/images/faces/face5.jpg" alt="userr">
+                                                 src="../assets/images/faces/face5.jpg" alt="userr">
                                         </div>
                                         <div class="d-flex justify-content-between flex-grow-1">
                                             <div class="me-4">
@@ -95,7 +94,7 @@
                                     <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
                                         <div class="me-3">
                                             <img class="wd-30 ht-30 rounded-circle"
-                                                 src="./assets/images/faces/face6.jpg" alt="userr">
+                                                 src="../assets/images/faces/face6.jpg" alt="userr">
                                         </div>
                                         <div class="d-flex justify-content-between flex-grow-1">
                                             <div class="me-4">
@@ -150,7 +149,7 @@
                                         <div
                                                 class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
                                             <img class="wd-30 ht-30 rounded-circle"
-                                                 src="./assets/images/faces/face6.jpg" alt="userr">
+                                                 src="../assets/images/faces/face6.jpg" alt="userr">
                                         </div>
                                         <div class="flex-grow-1 me-2">
                                             <p>کاربر جدید ثبت نام کرد</p>
@@ -186,14 +185,14 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="wd-30 ht-30 rounded-circle" src="./assets/images/faces/face7.jpg"
+                                <img class="wd-30 ht-30 rounded-circle" src="../assets/images/faces/face7.jpg"
                                      alt="profile">
                             </a>
                             <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                                     <div class="mb-3">
                                         <img class="wd-80 ht-80 rounded-circle"
-                                             src="./assets/images/faces/face7.jpg" alt="">
+                                             src="../assets/images/faces/face7.jpg" alt="">
                                     </div>
                                     <div class="text-center">
                                         <p id="fullName" class="tx-16 fw-bolder"></p>
@@ -208,52 +207,87 @@
         </nav>
     </div>
     <div class="page-wrapper">
-    <div class="page-content py-1" style="min-height:0">
-        <ul class="nav nav-pills nav-fill pt-4">
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">نمایندگی</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="users.html">کاربران</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="report.html">گزارشات</a>
-            </li>
-        </ul>
-    </div>
-
+        <div class="page-content py-1" style="min-height:0">
+            <ul class="nav nav-pills nav-fill pt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" href="./registry.html">ثبت گوشی جدید</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./registries.html">لیست ثبتی ها</a>
+                </li>
+            </ul>
+        </div>
         <div class="page-content">
             <div class="row">
-                <div class="col-lg-7 col-xl-8 grid-margin stretch-card">
+                <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                                <h5 class="card-title mb-2">عضویت در ربات</h5>
-                            <p class="text-muted"> زمان هفتگی عضویت</p>
-                            <div id="weeklySalesChartRTL"></div>
+                            <h4 class="display-2 card-title mb-1"> رجیستری | ثبت </h4>
+                            <p class="mb-3">
+                                برای رجیستر کردن دستگاه خود، نیاز به کد IMEI دارید. برای به‌دست آوردن این کد، می‌توانید
+                                شماره
+                                <strong style="direction: ltr; unicode-bidi: bidi-override;">*#06#</strong>
+                                را در دستگاه خود شماره‌گیری کنید. همچنین این کد در پشت جعبه دستگاه شما نیز موجود است.
+                            </p>
+                            <form id="accept-registry-form">
+                                <div class="form-group mb-3">
+                                    <label for="for_who">مالک دستگاه</label>
+                                    <input type="text" name="for_who" class="form-control" id="for_who"
+                                           placeholder="مالک دستگاه را مشخص کنید">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="phone">شماره تماس</label>
+                                    <input type="text" name="phone" class="form-control" id="phone"
+                                           placeholder="شماره تماس را برای ثبت گوشی">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="imei_1">کد IMEI اول دستگاه</label>
+                                    <input type="text" name="imei_1" class="form-control" id="imei_1"
+                                           placeholder="IMEI اول را وارد کنید">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="imei_2">کد IMEI دوم دستگاه ( درصورت داشتن IMEI دوم )</label>
+                                    <input type="text" name="imei_2" class="form-control" id="imei_2"
+                                           placeholder="IMEI دوم را وارد کنید">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="summery">توضیحات کوتاه</label>
+                                    <textarea rows="8" name="summery" class="form-control" id="summery"></textarea>
+                                </div>
+                                <div>
+                                    <div class="form-check mb-2">
+                                        <input type="checkbox" class="form-check-input" id="accept_the_rules"
+                                               name="accept_the_rules">
+                                        <label class="form-check-label" for="accept_the_rules">
+                                            قوانین و مقررات سایت را میپذیرم.
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 mt-3">ثبت</button>
+                            </form>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div id="loading-container" class="d-none"
-                 style="height: 100vh;width: 100%;top: 0;position: fixed;z-index: 99999;background-color: rgba(0, 0, 0, .5);">
-                <div class="d-flex h-100 align-items-center justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">بارگزاری...</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div id="loading-container" class="d-none"
+         style="height: 100vh;width: 100%;top: 0;position: fixed;z-index: 99999;background-color: rgba(0, 0, 0, .5);">
+        <div class="d-flex h-100 align-items-center justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">بارگزاری...</span>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-<script src="./assets/vendors/core/core.js"></script>
-<script src="./assets/vendors/feather-icons/feather.min.js"></script>
-<script src="./assets/vendors/apexcharts/apexcharts.min.js"></script>
-<script src="./assets/vendors/jquery-validation/jquery.validate.min.js"></script>
-<script src="./assets/js/template.js"></script>
-<script src="./assets/js/dashboard-dark.js"></script>
-<script src="./assets/js/notifications.js"></script>
-<script type="module" src="./assets/js/report.js"></script>
+
+<script src="../assets/vendors/core/core.js"></script>
+<script src="../assets/vendors/feather-icons/feather.min.js"></script>
+<script src="../assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+<script src="../assets/js/template.js"></script>
+<script src="../assets/js/dashboard-dark.js"></script>
+<script src="../assets/js/notifications.js"></script>
+<script type='module' src="../assets/js/registry.js"></script>
 </body>
 
 </html>

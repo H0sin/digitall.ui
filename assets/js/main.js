@@ -1,12 +1,32 @@
 // ''
 
-export const baseUrl = "https://test.samanii.com";
+// export const baseUrl = "https://test.samanii.com";
+export const baseUrl = "http://localhost:5176";
 export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
+export let user_information = {};
 
 // path variable -----------------------------------------------------------------------------------------------
 
 export const transactionImagePath = (name) => `${baseUrl}/images/TransactionAvatar/origin/${name}`;
+
+export let colors = {
+    primary        : "#6571ff",
+    secondary      : "#7987a1",
+    success        : "#05a34a",
+    info           : "#66d1d1",
+    warning        : "#fbbc06",
+    danger         : "#ff3366",
+    light          : "#e9ecef",
+    dark           : "#060c17",
+    muted          : "#7987a1",
+    gridBorder     : "rgba(77, 138, 240, .15)",
+    bodyColor      : "#b8c3d9",
+    cardBg         : "#0c1427"
+}
+
+
+export let fontFamily = "'iransans', Helvetica, sans-serif";
 
 // start variable meessage information -------------------------------------------------------------------------
 
@@ -18,33 +38,6 @@ export const infoTitle = "پیغام اطلاع";
 export const infoTheme = "info";
 export const warningTitle = "پیغام هشدار";
 export const warningTheme = "warning";
-
-// ------------------------------------------------------ U T I L I T I E S -------------------------------------------------------
-
-
-export const hiddenModal = () => {
-    let show = $(".show");
-    show.removeClass("show");
-    show.css("display", "none");
-    $(".modal-backdrop ").remove();
-    $("body").removeClass("modal-open");
-    $("body").removeAttr("style");
-}
-
-// ------------------------------------------------------- L O D I N G -------------------------------------------------------------
-
-export const loadingContainer = $("#loading-container");
-export const loading = $();
-
-export async function showLoading() {
-    await $(loadingContainer).toggleClass("d-none");
-}
-
-export async function hiddenLoading() {
-    await $(loadingContainer).toggleClass("d-none");
-}
-
-//start variable meessage information---------------------------------------------------------------------------------------------------
 
 export function notificationMessage(title, text, theme) {
     window.createNotification({
@@ -59,7 +52,71 @@ export function notificationMessage(title, text, theme) {
     });
 }
 
-// end variable meessage information -------------------------------------------------------------------------
+export function autoNotification(statusCode, isSuccess, message) {
+    if (statusCode == 0 && isSuccess) {
+        notificationMessage(successTitle, message, successTheme);
+    } else {
+        notificationMessage(errorTitle, message, errorTheme);
+    }
+}
+
+// ------------------------------------------------------ U T I L I T I E S -------------------------------------------------------
+
+export function fullName(data) {
+    return data.firstName ? ((data.firstName || "") + " " + (data.lastName || "")) : data.telegramUsername;
+}
+
+export const hiddenModal = () => {
+    let show = $(".show");
+    show.removeClass("show");
+    show.css("display", "none");
+    $(".modal-backdrop ").remove();
+    $("body").removeClass("modal-open");
+    $("body").removeAttr("style");
+}
+
+export function generateModal(name, title = "" , body = "" ){
+    let modal = $(`<div class="modal fade show" id="${name}-modal" tabindex="-1" aria-labelledby="varyingModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">${title}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="btn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                       ${body}
+                    </div>
+                </div>
+            </div>
+        </div>`);
+
+    $(".main-wrapper").append(modal);
+
+    $("[aria-label='btn-close']").on("click", function() {
+        destroidModal(name);
+    });
+
+    $(modal).show();
+}
+
+export function destroidModal(name) {
+    $(`#${name}-modal`).remove();
+}
+
+// ------------------------------------------------------- L O D I N G -------------------------------------------------------------
+
+export const loadingContainer = $("#loading-container");
+export const loading = $();
+
+export async function showLoading() {
+    await $(loadingContainer).toggleClass("d-none");
+}
+
+export async function hiddenLoading() {
+    await $(loadingContainer).toggleClass("d-none");
+}
 
 // start convert date ---------------------------------------------------------------------------------------
 
@@ -92,7 +149,7 @@ export const DigitallLogin = async (action, credentials) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const { data, isSuccess } = await response.json();
+        const {data, isSuccess} = await response.json();
 
         if (isSuccess) {
             if (data) {
@@ -137,7 +194,8 @@ export const postDigitallApi = async (url, credentials) => {
             //todo : notification error for mserver message = data.message
             response = data;
         },
-        error: async function (ex) { },
+        error: async function (ex) {
+        },
     });
 
     return response;
@@ -149,24 +207,33 @@ export const postDigitallApi = async (url, credentials) => {
 
 export const getDigitallApi = async (url) => {
     let response;
-    await $.ajax({
-        type: "GET",
-        url: baseApiRequest + url,
-        headers: {
-            Authorization: localStorage.getItem("token"),
-            "Content-Type": "application/json",
-        },
-        success: async function (result) {
-            response = result;
-        },
-        error: async function (ex) { },
-    });
+    try {
+        await $.ajax({
+            type: "GET",
+            url: baseApiRequest + url,
+            headers: {
+                Authorization: localStorage.getItem("token"),
+                "Content-Type": "application/json",
+            },
+            success: async function (result) {
+                response = result;
+            },
+            error: async function (jqXHR) {
+                response = {
+                    statusCode: jqXHR.status,
+                    error: jqXHR.responseText || jqXHR.statusText,
+                };
+            },
+        });
+    } catch (ex) {
+        // In case of unexpected errors
+        return response;
+    }
+
     return response;
 };
 
 // end get token from header -----------------------------------------------------------------------------
-
-
 
 
 // update method  token from header  -----------------------------------------------------------------------------
@@ -184,35 +251,76 @@ export const updateDigitallApi = async (url, credentials, id = 0) => {
         success: async function (result) {
             response = result;
         },
-        error: async function (ex) { },
+        error: async function (ex) {
+        },
     });
 
     return response;
 }
 
 
-
 // --------------------------------------------------------------------------------------------------------
-
 
 
 // start information --------------------------------------------------------------------------------------
 
-function fullName(data){
-    return data.firstName ? ((data.firstName || "") + " " + (data.lastName || "")) : data.telegramUsername;
+const icons = {
+    buy: "shopping-cart",
+    rebuy: "refresh-cw",
+};
+
+async function generateNotificationItem(notification) {
+    return `
+				<div class="p-1 border-bottom">
+					<a href="#" class="dropdown-item d-flex align-items-center py-2">
+						<div class=" d-flex align-items-center justify-content-center me-3">
+						<i data-feather="shopping-cart" class="text-white" style="width: 20px; height: 20px; " ></i>
+						</div>
+						<div class="flex-grow-1 me-2" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">
+							<p>خرید جدید</p>
+							<p class="tx-12 text-muted">${notification.message}</p>
+						</div>
+					</a>
+			    </div>`;
+
+}
+
+async function loadNotificaciones() {
+    const notification_container = await $("#notification-container");
+
+    const notifications = $(`<div class="dropdown-menu p-2" id="notifications" aria-labelledby="notificationDropdown"><div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom"><p>6 تراکنش جدید</p></div>`);
+
+    let {data} = await getDigitallApi("/Notification/GetNotifications");
+
+    if(data.length)
+        for (let i = 0; i < 6; i++) {
+            notifications.append(await generateNotificationItem(data[i]));
+        }
+
+    notifications.append(`<div class="px-3 py-2 d-flex align-items-center justify-content-center border-top"><a href="/notification.html">مشاهده همه</a></div>`);
+
+    notification_container.append(notifications);
 }
 
 $(document).ready(async function () {
     let bot_name = $("#bot_name");
 
-    let { statusCode, isSuccess, message,data } = await getDigitallApi("/User/GetInformation");
+    let {statusCode, isSuccess, message, data} = await getDigitallApi("/User/GetInformation");
+    if (statusCode == 0 && isSuccess == true) {
+        notificationMessage(successTitle, message,successTheme)
+    } else {
+        notificationMessage(errorTitle, message,errorTheme)
+    }
+    user_information = data;
 
-    $("#fullName").html(fullName(data));
-    $("#balance").html(" موجودی : " + data.balance.toLocaleString() + " تومان ");
+    $("#fullName").html(" نام کاربری :" + " " + fullName(data));
+    $("#balance").html("موجودی : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "))
     // $("#transactionIndex").append("<a href='/transaction.html' class='btn-info'> </a>")
 
-    bot_name.html(data.botName.replace("bot","<span class='px-1'> Bot</span>"));
+    bot_name.html(data.botName.replace("bot", "<span class='px-1'> Bot</span>"));
 
     bot_name.attr("href", data.botLink);
 
+    await loadNotificaciones();
+    feather.replace();
 });

@@ -229,7 +229,7 @@ $(document).ready(async function () {
             btns.convertToAgent.isActive = !data.isAgent;
             btns.specialPercent.isActive = data.isAgent;
             btns.agencyInformation.isActive = data.isAgent;
-            btns.transaction.btnEvent = () => window.location.href = `http://localhost:63342/project/transaction.html?id=${data.id}`;
+            btns.transaction.btnEvent = () => window.location.href = `/project/transaction.html?id=${data.id}`;
             const btns_container = $("#user-action-btns-container");
 
             btns_container.html('');

@@ -1,4 +1,5 @@
 import * as api from "./main.js";
+import {user_information} from "./main.js";
 
 'use stric'
 
@@ -33,10 +34,10 @@ $(document).ready(async function () {
     //get agent information payment
     await api.getDigitallApi("/Transaction/GetTransactionDetail").then(({data}) => {
         $(`#Transaction-Detail > div.card-body #card-holder-name`).html(
-            " نام صاحب کارت : " + data.cardHolderName || "ثبت نشده"
+            " نام صاحب کارت : " + (data.cardHolderName || "ثبت نشده")
         );
         $(`#Transaction-Detail > div.card-body #card-number`).html(
-            "شماره کارت : " + data.cardNumber || "ثبت نشده"
+            "شماره کارت : " + (data.cardNumber || "ثبت نشده")
         );
         $(`#Transaction-Detail > div.card-body #maximum-payment`).html(
             " سقف تراکنش نماینده : " + data.maximumAmountForAgent
@@ -47,7 +48,6 @@ $(document).ready(async function () {
     });
 
     await api.hiddenLoading();
-
 
     function gregorian_to_jalali(gy, gm, gd) {
         var g_d_m, jy, jm, jd, gy2, days;
@@ -75,6 +75,8 @@ $(document).ready(async function () {
     if ($('#agentProfit').length) {
         await api.getDigitallApi("/Agent/ProfitReport?TakeEntity=0").then(({data}) => {
             const dailyProfits = {};
+            let totalProfits = 0;
+            let growPercent = 0;
 
             data.entities.forEach(item => {
                 const gregorianDate = item.createDate;
@@ -82,8 +84,6 @@ $(document).ready(async function () {
                 const [gy, gm, gd] = dateParts.split('-').map(Number); // Convert Gregorian date to components
                 const [j_y, j_m, j_d] = gregorian_to_jalali(gy, gm, gd); // Convert to Jalali date
                 const jalaliDate = `${j_y}/${(j_m).toString().padStart(2, "0")}/${j_d.toString().padStart(2, "0")}`; // Format the Jalali date
-                // debugger;
-                // If the Jalali date doesn't exist yet, add it
                 if (!dailyProfits[jalaliDate]) dailyProfits[jalaliDate] = 0;
                 dailyProfits[jalaliDate] += item.profit; // Add profit to the specific date
             });
@@ -92,8 +92,34 @@ $(document).ready(async function () {
             const categories = Object.keys(dailyProfits).reverse();
             const seriesData = Object.values(dailyProfits).reverse();
 
+            totalProfits = seriesData.reduce((sum, value) => sum + value, 0);
+
+            if (seriesData.length > 1) {
+                const firstValue = seriesData[0]
+                const lastValue = seriesData[seriesData.length - 1];
+                growPercent = ((lastValue - firstValue) / firstValue) * 100;
+            } else if (seriesData.length < 1) {
+                growPercent = 0;
+            }
+            const growth_profit = $("#growth_profit");
+
+            if (growPercent >= 0) {
+                growth_profit.parent().addClass("text-success");
+                growth_profit.html(`${growPercent.toFixed(3)} %`);
+                growth_profit.parent().append(`<i data-feather="arrow-up" class="icon-sm"></i>`);
+            } else {
+                growth_profit.parent().addClass("text-danger");
+                growth_profit.html(`${growPercent.toFixed(3)} %`);
+                growth_profit.parent().append(`<i data-feather="arrow-down" class="icon-sm"></i>`);
+            }
+
+            feather.replace();
+
+
+            $("#sales_profit").text(`${totalProfits.toLocaleString()} تومان `)
+            growth_profit.text(`${growPercent.toFixed(3)} %`);
             // Chart options
-            const options3 = {
+            const options = {
                 chart: {
                     type: "line",
                     height: 60,
@@ -110,18 +136,77 @@ $(document).ready(async function () {
                     categories: categories, // Use dates as categories
                 },
                 stroke: {
-                    width: 2,
+                    width: 1,
                     curve: "smooth"
                 },
                 markers: {
-                    size: 0
+                    size: .05
                 },
+
                 colors: ['#0d6efd'], // Custom color
             };
 
             // // Render the chart
-            new ApexCharts(document.querySelector("#agentProfit"), options3).render();
+            new ApexCharts(document.querySelector("#agentProfit"), options).render();
         });
     }
 
+    if ($('#total_inventory').length) {
+
+        let data = api.user_information;
+
+        const totalMax = data.agency.amountWithNegative;
+
+        let usedPercentage = 0;
+        if(data.balance < 0){
+            usedPercentage = (data.balance * 100) / data.agency.amountWithNegative;
+        }
+
+        const options = {
+            chart: {
+                type: "radialBar",
+                height: 200,
+            },
+            series: [usedPercentage],
+            labels: ['استفاده‌شده'],
+            plotOptions: {
+                radialBar: {
+                    dataLabels: {
+                        name: {
+                            fontSize: '18px',
+                            fontWeight: 'bold',
+                        },
+                        value: {
+                            fontSize: '20px',
+                            fontWeight: 'bold',
+                            formatter: function (val) {
+                                return `${Math.round(val)}%`;
+                            }
+                        },
+                    },
+                    hollow: {
+                        size: '80%',
+                    },
+                    track: {
+                        background: '#dad3d3',
+                        strokeWidth: '100%',
+                    },
+                },
+            },
+            colors: ['#0067ff'],
+            stroke: {
+                lineCap: 'round',
+            },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#total_inventory"), options);
+        chart.render();
+
+        const totalStorageText = `${data.balance.toLocaleString()} تومان`;
+        const purchasedStorageText = `${totalMax.toLocaleString()} تومان`;
+
+        $("#total_storage_display").text(totalStorageText);
+        $("#negative_storage_display").text(purchasedStorageText);
+
+    }
 });
