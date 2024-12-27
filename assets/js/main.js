@@ -1,7 +1,7 @@
 // ''
 
-export const baseUrl = "https://test.samanii.com";
-// export const baseUrl = "http://localhost:5176";
+// export const baseUrl = "https://test.samanii.com";
+export const baseUrl = "http://localhost:5176";
 export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
 export let user_information = {};
@@ -297,30 +297,24 @@ async function loadNotificaciones() {
             notifications.append(await generateNotificationItem(data[i]));
         }
 
-    notifications.append(`<div class="px-3 py-2 d-flex align-items-center justify-content-center border-top"><a href="/notification.html">مشاهده همه</a></div>`);
+    notifications.append(`<div class="px-3 py-2 d-flex align-items-center justify-content-center border-top"><a href="/project/transaction.html">مشاهده همه</a></div>`);
 
     notification_container.append(notifications);
 }
 
-$(document).ready(async function () {
-    let bot_name = $("#bot_name");
+export async function getUserInformation() {
+    await getDigitallApi("/User/GetInformation").then(({data}) => {
+        user_information = data;
+    });
 
-    let {statusCode, isSuccess, message, data} = await getDigitallApi("/User/GetInformation");
-    if (statusCode == 0 && isSuccess == true) {
-        notificationMessage(successTitle, message,successTheme)
-    } else {
-        notificationMessage(errorTitle, message,errorTheme)
-    }
-    user_information = data;
-
-    $("#fullName").html(" نام کاربری :" + " " + fullName(data));
-    $("#balance").html("موجودی : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "))
-    // $("#transactionIndex").append("<a href='/transaction.html' class='btn-info'> </a>")
-
-    bot_name.html(data.botName.replace("bot", "<span class='px-1'> Bot</span>"));
-
-    bot_name.attr("href", data.botLink);
-
-    await loadNotificaciones();
+    $("#fullName").html(" نام کاربری :" + " " + fullName(user_information));
+    $("#balance").html("موجودی : " + (user_information.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "));
+    $("#bot_name").html(user_information.botName.replace("bot", "<span class='px-1'> Bot</span>"));
+    $("#bot_name").attr("href", user_information.botLink);
     feather.replace();
+}
+
+$(document).ready(async function () {
+    await getUserInformation();
+    await loadNotificaciones();
 });

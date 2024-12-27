@@ -1,20 +1,48 @@
-// import * as main from "./main.js";
+import * as main from "./main.js";
+//import {baseApiRequest} from "./main.js";
 
-// import {baseApiRequest} from "./main";
+export const baseUrl = "http://localhost:8080/api";
 
+//-------------------------------------------- token --------------------------------------------
+await main.getUserInformation();
 
-export const baseUrl = "http://188.245.230.0:8080"
-export const baseApiRequest = `${baseUrl}/api`;
+let user = main.user_information;
 
+let obj = {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    userName: user.telegramUsername,
+    chatId: user.chatId,
+}
+
+export const postRegistryUserApi = async () => {
+    await $.ajax({
+        type: "POST",
+        url: baseUrl + "/User",
+        data: JSON.stringify(obj),
+        headers: {
+            "Content-Type": "application/json",
+        },
+        success: async function ({data,isSuccess}) {
+            localStorage.setItem("registry-token", "bearer " + data);
+            console.log("Registry Token: ", localStorage.getItem("registry-token"));
+            console.log(localStorage.getItem("token"));
+        },
+        error: async function (ex) {
+        },
+    });
+};
+//--------------------------------------------------------------------------------------------
+//------------------------------------------ post ---------------------------------------------
 export const postRegistryApi = async (url, credentials) => {
     let response;
 
     await $.ajax({
         type: "POST",
-        url:  baseApiRequest + url,
+        url:baseUrl + "/Registry",
         data: JSON.stringify(credentials),
         headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: localStorage.getItem("registry-token"),
             "Content-Type": "application/json",
         },
         success: async function (data) {
@@ -27,15 +55,16 @@ export const postRegistryApi = async (url, credentials) => {
 
     return response;
 };
-
+//------------------------------------------------------------------------------------------
+//--------------------------------------------- get ----------------------------------------
 export const getRegistryApi = async (url) => {
     let response;
     try {
         await $.ajax({
             type: "GET",
-            url:  baseApiRequest + url,
+            url: baseUrl + "/Registry",
             headers: {
-                Authorization: localStorage.getItem("token"),
+                Authorization: localStorage.getItem("registry-token"),
                 "Content-Type": "application/json",
             },
             success: async function (result) {
@@ -54,15 +83,16 @@ export const getRegistryApi = async (url) => {
 
     return response;
 };
-
+//-------------------------------------------------------------------------------------------
+//---------------------------------------- update -------------------------------------------
 export const updateRegistryApi = async (url, credentials, id = 0) => {
     let response;
     await $.ajax({
         type: "PUT",
-        url:  baseApiRequest + url,
+        url:  baseUrl + "/Registry",
         data: JSON.stringify(credentials),
         headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: localStorage.getItem("registry-token"),
             "Content-Type": "application/json",
         },
         success: async function (result) {
@@ -74,3 +104,9 @@ export const updateRegistryApi = async (url, credentials, id = 0) => {
 
     return response;
 }
+//-------------------------------------------------------------------------------------------
+
+
+
+
+

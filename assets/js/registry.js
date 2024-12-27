@@ -3,12 +3,18 @@ import * as main from "./main.js";
 
 
 $(document).ready(async function () {
+
+    let registry_token = localStorage.getItem("registry-token");
+
+    if (!registry_token) await registry.postRegistryUserApi();
+
     let imei_1 = $("#imei_1");
     let imei_2 = $("#imei_2");
     let accept_the_rules = $("#accept_the_rules");
     let summery = $("#summery");
     let for_who = $("#for_who");
     let phone = $("#phone");
+
 
     await $("#accept-registry-form").validate({
         rules: {
@@ -62,8 +68,8 @@ $(document).ready(async function () {
             },
             phone:{
                 required: "شماره تماس نمیتواند خالی باشد",
-                maxlength: "فرمت شماره زیاد است",
-                minlength: "فرمت شماره کم است",
+                maxlength: "فرمت اشتباه است",
+                minlength: "فرمت اشتباه است",
                 number: "فرمت اشتباه است",
             }
         },
@@ -72,10 +78,10 @@ $(document).ready(async function () {
 
             await main.showLoading();
 
-            var data = {
+            const data = {
                 imeI_1 : imei_1.val(),
-                imeI_2 : imei_2.val(),
-                acceptTheRules : accept_the_rules.val(),
+                imeI_2 : imei_2.val() || null,
+                acceptTheRules : true,
                 summery : summery.val().trim(),
                 forWho : for_who.val().trim(),
                 phone : phone.val(),
@@ -112,3 +118,4 @@ $(document).ready(async function () {
         }
     });
 });
+

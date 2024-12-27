@@ -2,7 +2,7 @@ import * as main from "./main.js";
 
 
 $(document).ready(async function () {
-   // await main.showLoading();
+   await main.showLoading();
 
     if ($('#weeklySalesChartRTL').length) {
 
@@ -21,13 +21,12 @@ $(document).ready(async function () {
                     categories.push(entity.date.split("T")[0].replaceAll("-", "/"));
                     count.push(entity.count);
                 });
-
-                console.log(categories);
+                // console.log(categories);
 
                 var options = {
                     chart: {
                         type: 'bar',
-                        height: '318',
+                        height: '400',
                         parentHeightOffset: 0,
                         foreColor: main.colors.bodyColor,
                         background: main.colors.cardBg,
@@ -82,7 +81,7 @@ $(document).ready(async function () {
                         },
                         labels: {
                             align: 'left',
-                            offsetX: 0,
+                            offsetX: 10,
                         }
                     },
                     legend: {
@@ -103,12 +102,14 @@ $(document).ready(async function () {
                         style: {
                             fontSize: '10px',
                             fontFamily: main.fontFamily,
+
                         },
-                        offsetY: -27
+                        offsetY: -18,
+                        offsetX: -2,
                     },
                     plotOptions: {
                         bar: {
-                            columnWidth: "50%",
+                            columnWidth: "10%",
                             borderRadius: 4,
                             dataLabels: {
                                 position: 'top',
@@ -117,11 +118,10 @@ $(document).ready(async function () {
                         },
                     },
                 }
-
                 var chart = new ApexCharts(document.querySelector("#weeklySalesChartRTL"), options);
                 chart.render();
             })
     }
-   // await main.hiddenLoading();
+   await main.hiddenLoading();
 
 });
