@@ -1,7 +1,7 @@
 import * as main from "./main.js";
 //import {baseApiRequest} from "./main.js";
 
-export const baseUrl = "http://localhost:8080/api";
+export const baseUrl = "http://188.245.230.0:8080/api";
 
 //-------------------------------------------- token --------------------------------------------
 await main.getUserInformation();
