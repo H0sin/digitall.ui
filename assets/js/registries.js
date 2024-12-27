@@ -7,15 +7,11 @@ import * as main from "./main.js";
 const awaiting_support_review_form = `
         <form id="price_modal">
           <div class="mb-3">
-            <label for="price" class="form-label">قیمت دستگاه :</label>
-            <input name="price" type="text" class="form-control" id="price">
-          </div>
-          <div class="mb-3">
             <label for="model-phone" class="form-label">مدل دستگاه : </label>
             <input type="text" class="form-control" id="model-phone">
           </div>
           <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">ارسال</button>
+          <button type="submit" class="btn btn-primary">ثبت</button>
         </div>       
         </form>
     `;
@@ -174,14 +170,9 @@ async function submit_price_modal() {
 
             let hiddenInput = $(form).find('input.d-none');
             let model = $(form).find('input#model-phone').val();
-            let price = $(form).find('input#price').val();
             let id = hiddenInput.val();
 
-            let data = {
-                model,
-                price,
-                id
-            }
+            let data = {model, id}
 
             let {isSuccess, message, statusCode} = await registry.updateRegistryApi("/Registry", data);
 

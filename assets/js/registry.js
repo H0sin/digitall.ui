@@ -5,13 +5,8 @@ import * as main from "./main.js";
 $(document).ready(async function () {
 
     let registry_token = localStorage.getItem("registry-token");
-    if (!registry_token) {
-        const currentUrl = window.location.href;
-        const url = new URL(currentUrl);
-        const params = new URLSearchParams(url.search);
-        localStorage.setItem("registry-token", "bearer " + params.get("registry-token"));
-    }
 
+    if (!registry_token) await registry.postRegistryUserApi();
 
     let imei_1 = $("#imei_1");
     let imei_2 = $("#imei_2");
@@ -19,8 +14,6 @@ $(document).ready(async function () {
     let summery = $("#summery");
     let for_who = $("#for_who");
     let phone = $("#phone");
-
-
 
 
     await $("#accept-registry-form").validate({
@@ -85,16 +78,16 @@ $(document).ready(async function () {
 
             await main.showLoading();
 
-            var data = {
+            const data = {
                 imeI_1 : imei_1.val(),
-                imeI_2 : imei_2.val(),
+                imeI_2 : imei_2.val() || null,
                 acceptTheRules : true,
                 summery : summery.val().trim(),
                 forWho : for_who.val().trim(),
                 phone : phone.val(),
             }
 
-            let {isSuccess,message,statusCode} = await registry.postRegistryApi("/Registry");
+            let {isSuccess,message,statusCode} = await registry.postRegistryApi("/Registry",data);
 
             main.autoNotification(statusCode,isSuccess,message);
 

@@ -1,10 +1,7 @@
 import * as main from "./main.js";
 //import {baseApiRequest} from "./main.js";
 
-export const baseUrl = "http://188.245.230.0:8080/api";
-
-
-// $(document).ready(async function () {
+export const baseUrl = "http://localhost:8080/api";
 
 //-------------------------------------------- token --------------------------------------------
 await main.getUserInformation();
@@ -19,16 +16,14 @@ let obj = {
 }
 
 export const postRegistryUserApi = async () => {
-    let response;
     await $.ajax({
         type: "POST",
         url: baseUrl + "/User",
         data: JSON.stringify(obj),
         headers: {
-            Authorization: localStorage.getItem("token"),
             "Content-Type": "application/json",
         },
-        success: async function ({data}) {
+        success: async function ({data,isSuccess}) {
             localStorage.setItem("registry-token", "bearer " + data);
             console.log("Registry Token: ", localStorage.getItem("registry-token"));
             console.log(localStorage.getItem("token"));
@@ -36,7 +31,6 @@ export const postRegistryUserApi = async () => {
         error: async function (ex) {
         },
     });
-    return response;
 };
 //--------------------------------------------------------------------------------------------
 //------------------------------------------ post ---------------------------------------------
@@ -48,7 +42,7 @@ export const postRegistryApi = async (url, credentials) => {
         url:baseUrl + "/Registry",
         data: JSON.stringify(credentials),
         headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: localStorage.getItem("registry-token"),
             "Content-Type": "application/json",
         },
         success: async function (data) {
@@ -70,7 +64,7 @@ export const getRegistryApi = async (url) => {
             type: "GET",
             url: baseUrl + "/Registry",
             headers: {
-                Authorization: localStorage.getItem("token"),
+                Authorization: localStorage.getItem("registry-token"),
                 "Content-Type": "application/json",
             },
             success: async function (result) {
@@ -98,7 +92,7 @@ export const updateRegistryApi = async (url, credentials, id = 0) => {
         url:  baseUrl + "/Registry",
         data: JSON.stringify(credentials),
         headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: localStorage.getItem("registry-token"),
             "Content-Type": "application/json",
         },
         success: async function (result) {
