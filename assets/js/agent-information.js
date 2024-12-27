@@ -207,6 +207,5 @@ $(document).ready(async function () {
 
         $("#total_storage_display").text(totalStorageText);
         $("#negative_storage_display").text(purchasedStorageText);
-
     }
 });

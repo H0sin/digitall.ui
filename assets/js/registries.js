@@ -1,6 +1,7 @@
 import * as registry from "./main-registry.js";
 import * as main from "./main.js";
 
+
 // -------------------------------------------------------------------------------------
 
 const awaiting_support_review_form = `
@@ -22,7 +23,7 @@ const awaiting_support_review_form = `
 // -------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------
 
-const awaiting_send_image_form =`
+const awaiting_send_image_form = `
     <form id="image_modal">
           <div class="mb-3">
                 <label class="form-label" for="form-image">بارگزاری فایل</label>
@@ -35,32 +36,24 @@ const awaiting_send_image_form =`
 `;
 
 
-
 // -------------------------------------------------------------------------------------
-
 
 const fixedRegistryStatus = (status) => {
     switch (status) {
-        case 0:
+        case 1:
             return `<span class="badge bg-primary">در انتظار برسی پشتیبان</span>`;
 
-            case 1:
-                return `<span class="badge bg-info">در انتظار ارسال فایل</span>`;
+        case 2:
+            return `<span class="badge bg-info">در انتظار ارسال فایل</span>`;
     }
 }
 
 const fixedRegistryButton = (status, id) => {
     switch (status) {
-        case 0:
-            return `<button id="price-${id}" class="btn btn-outline-primary">اعلام قیمت و مدل</button>
-                    
-            `;
         case 1:
-            return `
-                    <button id="image-${id}" class="btn btn-outline-primary">بارگزاری عکس</button>
-            `;
-
-
+            return `<button id="price-${id}" class="btn btn-outline-primary">اعلام قیمت و مدل</button>`;
+        case 2:
+            return `<button id="image-${id}" class="btn btn-outline-info">بارگزاری عکس</button>`;
     }
 }
 
@@ -96,8 +89,10 @@ function generateRegistryItem(item) {
                 </a>`;
 }
 
+
 $(document).ready(async function (e) {
     await main.showLoading();
+    // await main.getUserInformation();
 
     const modals = {
         awaiting_support_review: {
@@ -105,7 +100,7 @@ $(document).ready(async function (e) {
             title: "اعلام قیمت و مدل",
             body: awaiting_support_review_form
         },
-        awaiting_send_image:{
+        awaiting_send_image: {
             name: "awaiting_send_image",
             title: "بارگزاری عکس",
             body: awaiting_send_image_form
@@ -122,19 +117,19 @@ $(document).ready(async function (e) {
             await $.each(data.entities, async function (index, registry) {
                 registries_container.append(generateRegistryAdminItem(registry));
 
-                $(`#price-${registry.id}`).on("click",async function (e) {
+                $(`#price-${registry.id}`).on("click", async function (e) {
                     main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
 
                     let form = $("#price_modal");
-                    let input = $(`<input class="d-none" type="text" value="${e.target.id.replace("price-","")}" />`);
+                    let input = $(`<input class="d-none" type="text" value="${e.target.id.replace("price-", "")}" />`);
                     $(form).append(input);
 
                     await submit_price_modal();
                 });
 
-                $(`#image-${registry.id}`).on("click",async function (e) {
-                   main.generateModal(modals.awaiting_send_image.name, modals.awaiting_send_image.title, modals.awaiting_send_image.body);
-                   await submit_image_modal();
+                $(`#image-${registry.id}`).on("click", async function (e) {
+                    main.generateModal(modals.awaiting_send_image.name, modals.awaiting_send_image.title, modals.awaiting_send_image.body);
+                    await submit_image_modal();
                 });
 
             });
@@ -160,7 +155,7 @@ $(document).ready(async function (e) {
 
 // ----------------------------------------------- forms
 
-async function submit_price_modal(){
+async function submit_price_modal() {
     await $("#price_modal").validate({
         rules: {
             price: {
@@ -174,7 +169,7 @@ async function submit_price_modal(){
                 number: " مبلغ باید عدد باشد ."
             },
         },
-        submitHandler:async function (form,event) {
+        submitHandler: async function (form, event) {
             event.preventDefault();
 
             let hiddenInput = $(form).find('input.d-none');
@@ -188,9 +183,9 @@ async function submit_price_modal(){
                 id
             }
 
-            let {isSuccess,message,statusCode} = await registry.updateRegistryApi("/Registry",data);
+            let {isSuccess, message, statusCode} = await registry.updateRegistryApi("/Registry", data);
 
-            main.autoNotification(statusCode,isSuccess,message);
+            main.autoNotification(statusCode, isSuccess, message);
         },
         errorPlacement: function (error, element) {
             error.addClass("invalid-feedback");
@@ -218,7 +213,7 @@ async function submit_price_modal(){
     });
 }
 
-async function submit_image_modal(){
+async function submit_image_modal() {
     await $("#image_modal").validate({
         rules: {
             image: {
@@ -231,7 +226,7 @@ async function submit_image_modal(){
             },
         },
         submitHandler: function (form) {
-            },
+        },
         errorPlacement: function (error, element) {
             error.addClass("invalid-feedback");
 

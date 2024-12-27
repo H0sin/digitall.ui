@@ -2,163 +2,163 @@
 <html lang="ar" dir="rtl">
 
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-  <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5"/>
-  <meta name="author" content="NobleUI"/>
-  <meta name="keywords"
-        content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"/>
-  <title>لیست تراکنش ها</title>
-  <link rel="stylesheet" href="./assets/vendors/core/core.css"/>
-  <link rel="stylesheet" href="./assets/css/persian-datepicker-0.4.5-dark.min.css">
-  <link rel="stylesheet" href="./assets/vendors/flatpickr/flatpickr.min.css">
-  <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css"/>
-  <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css"/>
-  <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css"/>
-  <link rel="stylesheet" href="./assets/css/notifications.css"/>
-  <style>
-    .distance p {
-      margin-bottom: 10px;
-    }
-    .datepicker-plot-area {
-      z-index: 2;
-    }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5"/>
+    <meta name="author" content="NobleUI"/>
+    <meta name="keywords"
+          content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"/>
+    <title></title>
+    <link rel="stylesheet" href="./assets/vendors/core/core.css"/>
+    <link rel="stylesheet" href="./assets/css/persian-datepicker-0.4.5-dark.min.css">
+    <link rel="stylesheet" href="./assets/vendors/flatpickr/flatpickr.min.css">
+    <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css"/>
+    <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css"/>
+    <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css"/>
+    <link rel="stylesheet" href="./assets/css/notifications.css"/>
+    <style>
+        .distance p {
+            margin-bottom: 10px;
+        }
 
-    .container-transaction {
-      /*background-image: url(../assets/images/faces/face3.jpg);*/
-      height: 100px;
-      width: 100px;
-      justify-content: center;
-      position: relative;
-      align-items: center;
-    }
+        .datepicker-plot-area {
+            z-index: 2;
+        }
 
-    .container-transaction > .bg-container-transaction {
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.78);
-      z-index: 0;
-    }
+        .container-transaction {
+            /*background-image: url(../assets/images/faces/face3.jpg);*/
+            height: 100px;
+            width: 100px;
+            justify-content: center;
+            position: relative;
+            align-items: center;
+        }
 
-    .container-transaction > button {
-      position: absolute;
-      z-index: 1;
-    }
-  </style>
+        .container-transaction > .bg-container-transaction {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.78);
+            z-index: 0;
+        }
+
+        .container-transaction > button {
+            position: absolute;
+            z-index: 1;
+        }
+    </style>
 </head>
 
 <body>
 <div class="main-wrapper">
-  <nav class="navbar top-navbar">
-    <div class="container">
-      <div class="navbar-content">
-        <a id="bot_name" class="navbar-brand">
-          <span>Bot</span>
-        </a>
-        <ul class="navbar-nav">
-          <li id="notification-container" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" role="button"
-               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i data-feather="bell"></i>
-              <div class="indicator">
-                <div class="circle">
-                </div>
-              </div>
-            </a>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
-               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img class="wd-30 ht-30 rounded-circle" src="./assets/images/faces/face7.jpg"
-                   alt="profile">
-            </a>
-            <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
-              <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
-                <div class="mb-3">
-                  <img class="wd-80 ht-80 rounded-circle"
-                       src="./assets/images/faces/face7.jpg" alt="">
-                </div>
-                <div class="text-center">
-                  <p id="fullName" class="tx-16 fw-bolder"></p>
-                  <p id="balance" class="tx-12 text-muted"></p>
-                </div>
-              </div>
+    <nav class="navbar top-navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <a id="bot_name" class="navbar-brand">
+                    <span>Bot</span>
+                </a>
+                <ul class="navbar-nav">
+                    <li id="notification-container" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i data-feather="bell"></i>
+                            <div class="indicator">
+                                <div class="circle">
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="wd-30 ht-30 rounded-circle" src="./assets/images/faces/face7.jpg"
+                                 alt="profile">
+                        </a>
+                        <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
+                            <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
+                                <div class="mb-3">
+                                    <img class="wd-80 ht-80 rounded-circle"
+                                         src="./assets/images/faces/face7.jpg" alt="">
+                                </div>
+                                <div class="text-center">
+                                    <p id="fullName" class="tx-16 fw-bolder"></p>
+                                    <p id="balance" class="tx-12 text-muted"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <div class="page-wrapper">
-    <div class="page-content py-1" style="min-height: 0">
-      <ul class="nav nav-pills nav-fill pt-4">
-        <li class="nav-item">
-          <button class="nav-link active">گزارش تراکنش ها</button>
-        </li>
-      </ul>
-    </div>
-    <div class="page-content" style="position: relative; max-height: 250px">
-      <div class="row">
-        <div class="col-xl-12 grid-margin grid-margin-xl-0 stretch-card">
-          <div class="card">
-            <div class="card-body">
-              <div class="row mb-2">
-                <div class="d-flex">
-                  <select id="type-transaction" class="form-select form-select-sm w-50 me-1">
-                    <option value="1">کارت به کارت</option>
-                    <option value="2">افزایش دستی</option>
-                    <option value="3">کاهش دستی</option>
-                    <option selected value="null">همه تراکنش ها</option>
-                  </select>
-                  <select id="status-transaction" class="form-select form-select-sm w-50 ms-1">
-                    <option value="1">موفق</option>
-                    <option value="3">منتظر تایید</option>
-                    <option value="2">رد شده</option>
-                    <option selected value="null">همه وضعیت ها</option>
-                  </select>
-                </div>
-                <div class="input-group flatpickr mt-3" id="start-date">
-                  <input type="text" class="form-control tarikh">
-                  <span class="input-group-text input-group-addon" data-toggle><i
-                          data-feather="calendar"></i></span>
-                </div>
-                <div class="input-group flatpickr mt-3" id="end-date">
-                  <input type="text" class="form-control tarikh">
-                  <span class="input-group-text input-group-addon" data-toggle><i
-                          data-feather="calendar"></i></span>
-                </div>
-                <div class="input-group mt-3">
-                  <input id="details-filter" type="text" class="form-control form-control-sm"
-                         placeholder="جستجو ...">
-                  <div class="input-group-text">
-                    <i data-feather="search"></i>
-                  </div>
-                </div>
-              </div>
-              <div id="transaction-container"
-                   style="max-height: 65vh; overflow-x: hidden; overflow-y: auto"
-                   class="col-12 d-flex flex-column">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col stretch-card">
-                <div class="col btn-group">
-                  <a class="w-100 btn btn-primary" href="./index.html"
-                     role="button">
-                    <i data-feather="x"></i>
-                    برگشت</a>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="page-content py-1" style="min-height: 0">
+            <ul class="nav nav-pills nav-fill pt-4">
+                <li class="nav-item">
+                    <button class="nav-link active">گزارش تراکنش ها</button>
+                </li>
+            </ul>
+        </div>
+        <div class="page-content" style="position: relative; max-height: 250px">
+            <div class="row">
+                <div class="col-xl-12 grid-margin grid-margin-xl-0 stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="d-flex">
+                                    <select id="type-transaction" class="form-select form-select-sm w-50 me-1">
+                                        <option value="1">کارت به کارت</option>
+                                        <option value="2">افزایش دستی</option>
+                                        <option value="3">کاهش دستی</option>
+                                        <option selected value="null">همه تراکنش ها</option>
+                                    </select>
+                                    <select id="status-transaction" class="form-select form-select-sm w-50 ms-1">
+                                        <option value="1">موفق</option>
+                                        <option value="3">منتظر تایید</option>
+                                        <option value="2">رد شده</option>
+                                        <option selected value="null">همه وضعیت ها</option>
+                                    </select>
+                                </div>
+                                <div class="input-group flatpickr mt-3" id="start-date">
+                                    <input type="text" class="form-control tarikh">
+                                    <span class="input-group-text input-group-addon" data-toggle><i
+                                            data-feather="calendar"></i></span>
+                                </div>
+                                <div class="input-group flatpickr mt-3" id="end-date">
+                                    <input type="text" class="form-control tarikh">
+                                    <span class="input-group-text input-group-addon" data-toggle><i
+                                            data-feather="calendar"></i></span>
+                                </div>
+                                <div class="input-group mt-3">
+                                    <input id="details-filter" type="text" class="form-control form-control-sm"
+                                           placeholder="جستجو ...">
+                                    <div class="input-group-text">
+                                        <i data-feather="search"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="transaction-container"
+                                 style="max-height: 65vh; overflow-x: hidden; overflow-y: auto"
+                                 class="col-12 d-flex flex-column">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col stretch-card">
+                                <div class="col btn-group">
+                                    <a class="w-100 btn btn-primary" href="./index.html"
+                                       role="button">
+                                        <i data-feather="x"></i>
+                                        برگشت</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div id="loading-container" class="d-none" style="
@@ -169,42 +169,39 @@
       z-index: 99999;
       background-color: rgba(0, 0, 0, 0.5);
     ">
-  <div class="d-flex h-100 align-items-center justify-content-center">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">بارگزاری...</span>
+    <div class="d-flex h-100 align-items-center justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">بارگزاری...</span>
+        </div>
     </div>
-  </div>
 </div>
 <div id="modal_form_details">
-  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="detailsModalLabel">جزئیات تراکنش</h5>
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">جزئیات تراکنش</h5>
+                </div>
+                <div class="modal-body">
+                    <img class="w-100 p-2 mb-2" id="avatar-transaction">
+                    <div class="text-center distance">
+                        <p class="card-text text-muted" id="user-id"></p>
+                        <p class="card-text" id="title"></p>
+                        <p class="card-text" id="transaction-change"></p>
+                        <p class="card-text" id="transaction-time"></p>
+                        <p class="card-text" id="transaction-confirmation"></p>
+                        <p class="card-text" id="user-name"></p>
+                        <p class="card-text" id="first-name"></p>
+                        <p class="card-text" id="last-name"></p>
+                        <p class="card-text" id="description"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          <img class="w-100 p-2 mb-2" id="avatar-transaction">
-          <div class="text-center distance">
-            <p class="card-text text-muted" id="user-id"></p>
-            <p class="card-text" id="title"></p>
-            <p class="card-text" id="transaction-change"></p>
-            <p class="card-text" id="transaction-time"></p>
-            <p class="card-text" id="transaction-confirmation"></p>
-            <p class="card-text" id="user-name"></p>
-            <p class="card-text" id="first-name"></p>
-            <p class="card-text" id="last-name"></p>
-            <p class="card-text" id="description"></p>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-
-        </div>
-      </div>
     </div>
-  </div>
 </div>
-
 <script src="./assets/vendors/core/core.js"></script>
 <script src="./assets/vendors/feather-icons/feather.min.js"></script>
 <script src="./assets/vendors/flatpickr/flatpickr.min.js"></script>

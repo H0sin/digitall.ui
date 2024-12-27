@@ -40,7 +40,6 @@ $(async function () {
         "⚠️ لطفاً ورودی معتبر وارد کنید."
     );
 
-
     $(async function () {
         await edit_form.validate({
             rules: {
