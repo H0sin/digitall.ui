@@ -107,11 +107,9 @@ $(document).ready(async function (e) {
     let registries_container = $("#registries-container");
 
     async function loadRegistries(page) {
-        let {statusCode, data} = await registry.getRegistryApi("/Registry");
+        let {entities} = await registry.getRegistryApi("/Registry");
 
-        if (statusCode != 403) {
-            await $.each(data.entities, async function (index, registry) {
-                registries_container.append(generateRegistryAdminItem(registry));
+            await $.each(entities, async function (index, registry) {registries_container.append(generateRegistryAdminItem(registry));
 
                 $(`#price-${registry.id}`).on("click", async function (e) {
                     main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
@@ -130,17 +128,15 @@ $(document).ready(async function (e) {
 
             });
 
-        } else if (statusCode == 403) {
-            let {statusCode, data} = await registry.getRegistryApi("/Registry");
-            await $.each(data.entities, async function (index, registry) {
-
-                registries_container.append(generateRegistryItem(registry));
-
-                $(".btn-outline-primary").on("click", function (e) {
-                    main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
-                });
-            });
-        }
+        // } else if (statusCode == 403) {
+        //     let {statusCode, data} = await registry.getRegistryApi("/Registry");
+        //     await $.each(data.entities, async function (index, registry) {registries_container.append(generateRegistryItem(registry));
+        //
+        //         $(".btn-outline-primary").on("click", function (e) {
+        //             main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
+        //         });
+        //     });
+        // }
     }
 
     await loadRegistries(current_page);

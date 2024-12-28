@@ -1,7 +1,7 @@
 // ''
 
-export const baseUrl = "https://test.samanii.com";
-// export const baseUrl = "http://localhost:5176";
+// export const baseUrl = "https://test.samanii.com";
+export const baseUrl = "http://localhost:5176";
 export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
 export let user_information = {};
@@ -11,18 +11,18 @@ export let user_information = {};
 export const transactionImagePath = (name) => `${baseUrl}/images/TransactionAvatar/origin/${name}`;
 
 export let colors = {
-    primary        : "#6571ff",
-    secondary      : "#7987a1",
-    success        : "#05a34a",
-    info           : "#66d1d1",
-    warning        : "#fbbc06",
-    danger         : "#ff3366",
-    light          : "#e9ecef",
-    dark           : "#060c17",
-    muted          : "#7987a1",
-    gridBorder     : "rgba(77, 138, 240, .15)",
-    bodyColor      : "#b8c3d9",
-    cardBg         : "#0c1427"
+    primary: "#6571ff",
+    secondary: "#7987a1",
+    success: "#05a34a",
+    info: "#66d1d1",
+    warning: "#fbbc06",
+    danger: "#ff3366",
+    light: "#e9ecef",
+    dark: "#060c17",
+    muted: "#7987a1",
+    gridBorder: "rgba(77, 138, 240, .15)",
+    bodyColor: "#b8c3d9",
+    cardBg: "#0c1427"
 }
 
 
@@ -63,7 +63,8 @@ export function autoNotification(statusCode, isSuccess, message) {
 // ------------------------------------------------------ U T I L I T I E S -------------------------------------------------------
 
 export function fullName(data) {
-    return data.firstName ? ((data.firstName || "") + " " + (data.lastName || "")) : data.telegramUsername;
+    if (data) return data.firstName ? ((data.firstName || "") + " " + (data.lastName || "")) : data.telegramUsername;
+    return "";
 }
 
 export const hiddenModal = () => {
@@ -75,7 +76,7 @@ export const hiddenModal = () => {
     $("body").removeAttr("style");
 }
 
-export function generateModal(name, title = "" , body = "" ){
+export function generateModal(name, title = "", body = "") {
     let modal = $(`<div class="modal fade show" id="${name}-modal" tabindex="-1" aria-labelledby="varyingModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
@@ -94,7 +95,7 @@ export function generateModal(name, title = "" , body = "" ){
 
     $(".main-wrapper").append(modal);
 
-    $("[aria-label='btn-close']").on("click", function() {
+    $("[aria-label='btn-close']").on("click", function () {
         destroidModal(name);
     });
 
@@ -153,7 +154,7 @@ export const DigitallLogin = async (action, credentials) => {
 
         if (isSuccess) {
             if (data) {
-                localStorage.setItem("token", "bearer " + data.data);
+                localStorage.setItem("token", data.data);
                 await notificationMessage(successTitle, "خوش آمدید", successTheme);
                 console.log("Token stored in localStorage:", data.data);
             } else {
@@ -166,7 +167,6 @@ export const DigitallLogin = async (action, credentials) => {
                 errorTheme
             );
         }
-
         return data;
     } catch (error) {
         console.error("Login failed:", error);
@@ -178,7 +178,7 @@ export const DigitallLogin = async (action, credentials) => {
 
 // start post token from header ---------------------------------------------------------------------------
 
-export const postDigitallApi = async (url, credentials) => {
+export const postDigitallApi = async (url, credentials, fire = true, authType = 'bearer ') => {
     let response;
 
     await $.ajax({
@@ -186,15 +186,15 @@ export const postDigitallApi = async (url, credentials) => {
         url: baseApiRequest + url,
         data: JSON.stringify(credentials),
         headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: authType + localStorage.getItem("token"),
             "Content-Type": "application/json",
         },
-        success: async function (data) {
-            //check if (data.statusCode != 0 | data.isSuccess == false) {}
-            //todo : notification error for mserver message = data.message
+        success: async function ({data, isSuccess, message, statusCode}) {
+            if (fire) autoNotification(statusCode, isSuccess, message);
             response = data;
         },
         error: async function (ex) {
+            notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
         },
     });
 
@@ -205,24 +205,22 @@ export const postDigitallApi = async (url, credentials) => {
 
 // start get token from header ---------------------------------------------------------------------------
 
-export const getDigitallApi = async (url) => {
+export const getDigitallApi = async (url, fire = true, authType = 'bearer ') => {
     let response;
     try {
         await $.ajax({
             type: "GET",
             url: baseApiRequest + url,
             headers: {
-                Authorization: localStorage.getItem("token"),
+                Authorization: authType + localStorage.getItem("token"),
                 "Content-Type": "application/json",
             },
-            success: async function (result) {
-                response = result;
+            success: async function ({data, isSuccess, message, statusCode}) {
+                if (fire) autoNotification(statusCode, isSuccess, message);
+                response = data;
             },
-            error: async function (jqXHR) {
-                response = {
-                    statusCode: jqXHR.status,
-                    error: jqXHR.responseText || jqXHR.statusText,
-                };
+            error: async function (ex) {
+                notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
             },
         });
     } catch (ex) {
@@ -238,20 +236,22 @@ export const getDigitallApi = async (url) => {
 
 // update method  token from header  -----------------------------------------------------------------------------
 
-export const updateDigitallApi = async (url, credentials, id = 0) => {
+export const updateDigitallApi = async (url, credentials, id = 0, fire = true, authType = 'bearer ') => {
     let response;
     await $.ajax({
         type: "PUT",
         url: baseApiRequest + url,
         data: JSON.stringify(credentials),
         headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: authType + localStorage.getItem("token"),
             "Content-Type": "application/json",
         },
-        success: async function (result) {
-            response = result;
+        success: async function ({data, isSuccess, message, statusCode}) {
+            if (fire) autoNotification(statusCode, isSuccess, message);
+            response = data;
         },
         error: async function (ex) {
+            notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
         },
     });
 
@@ -290,21 +290,21 @@ async function loadNotificaciones() {
 
     const notifications = $(`<div class="dropdown-menu p-2" id="notifications" aria-labelledby="notificationDropdown"><div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom"><p>6 تراکنش جدید</p></div>`);
 
-    let {data} = await getDigitallApi("/Notification/GetNotifications");
+    let data = await getDigitallApi("/Notification/GetNotifications", false);
 
-    if(data.length)
+    if (data.length)
         for (let i = 0; i < 6; i++) {
             notifications.append(await generateNotificationItem(data[i]));
         }
 
-    notifications.append(`<div class="px-3 py-2 d-flex align-items-center justify-content-center border-top"><a href="/project/transaction.html">مشاهده همه</a></div>`);
+    notifications.append(`<div class="px-3 py-2 d-flex align-items-center justify-content-center border-top"><a href="/digitall.ui/transaction.html">مشاهده همه</a></div>`);
 
     notification_container.append(notifications);
 }
 
 export async function getUserInformation() {
-    await getDigitallApi("/User/GetInformation").then(({data}) => {
-        user_information = data;
+    await getDigitallApi("/User/GetInformation", false).then((data) => {
+        user_information = data
     });
 
     $("#fullName").html(" نام کاربری :" + " " + fullName(user_information));

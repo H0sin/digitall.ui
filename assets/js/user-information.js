@@ -92,11 +92,11 @@ $(document).ready(async function () {
             text: "تراکنش ها",
             classes: "col-12",
             isActive: true,
-            btnEvent: async () => window.location.href="http://localhost:63342/project/transaction.html",
+            btnEvent: async () => window.location.href = "transaction.html",
         },
         description: {
             text: "افزودن توضیحات",
-            classes:"col-12",
+            classes: "col-12",
             isActive: true,
             dataBsTarget: "#descriptionModal"
         }
@@ -111,13 +111,7 @@ $(document).ready(async function () {
             agentAdminId: user.id
         }
 
-        let {statusCode, isSuccess, message} = await api.postDigitallApi("/Agent/AddAgent", data);
-
-        if (statusCode == 0 && isSuccess == true) {
-            api.notificationMessage(api.successTitle, message, api.successTheme)
-        } else {
-            api.notificationMessage(api.errorTitle, message, api.errorTheme)
-        }
+        await api.postDigitallApi("/Agent/AddAgent", data);
 
         await $.getUserInformation();
 
@@ -131,16 +125,10 @@ $(document).ready(async function () {
             id: user.id,
             isBlocked: user.isBlocked,
             cardToCardPayment: !user.cardToCardPayment,
-            description:description_text.val(),
+            description: description_text.val(),
         }
 
-        let {statusCode, isSuccess, message} = await api.updateDigitallApi("/User/UpdateUser", data);
-
-        if (statusCode == 0 && isSuccess == true) {
-            api.notificationMessage(api.successTitle, message, api.successTheme)
-        } else {
-            api.notificationMessage(api.errorTitle, message, api.errorTheme)
-        }
+        await api.updateDigitallApi("/User/UpdateUser", data);
 
         await $.getUserInformation();
 
@@ -154,16 +142,10 @@ $(document).ready(async function () {
             id: user.id,
             isBlocked: !user.isBlocked,
             cardToCardPayment: user.cardToCardPayment,
-            description:description_text.val()
+            description: description_text.val()
         };
 
-        let {statusCode, isSuccess, message} = await api.updateDigitallApi("/User/UpdateUser", data);
-
-        if (statusCode == 0 && isSuccess == true) {
-            api.notificationMessage(api.successTitle, message, api.successTheme)
-        } else {
-            api.notificationMessage(api.errorTitle, message, api.errorTheme)
-        }
+        await api.updateDigitallApi("/User/UpdateUser", data);
 
         await $.getUserInformation();
 
@@ -186,7 +168,7 @@ $(document).ready(async function () {
     }
 
     $.getUserInformation = async () => {
-        await api.getDigitallApi(`/User/GetUser/${id}`).then(async ({data, statusCode, isSuccess, message}) => {
+        await api.getDigitallApi(`/User/GetUser/${id}`, false).then(async (data) => {
             api.hiddenModal();
 
             user = data;
@@ -197,11 +179,6 @@ $(document).ready(async function () {
             decrease_user_balance.val('');
             message_text.val('');
             description_text.val(data.description);
-
-            if (statusCode != 0 || isSuccess != true) {
-                await api.hiddenLoading();
-                api.notificationMessage(api.errorTitle, "کاربر وجود نداشت", api.errorTheme)
-            }
 
             $("#user-id").html("ایدی کاربر : " + data.id || "ثبت نشده");
             $("#email-id").html("ایمیل : " + (data.email ? "null" : "ثبت نشده"));
@@ -229,7 +206,7 @@ $(document).ready(async function () {
             btns.convertToAgent.isActive = !data.isAgent;
             btns.specialPercent.isActive = data.isAgent;
             btns.agencyInformation.isActive = data.isAgent;
-            btns.transaction.btnEvent = () => window.location.href = `/project/transaction.html?id=${data.id}`;
+            btns.transaction.btnEvent = () => window.location.href = `./transaction.html?id=${data.id}`;
             const btns_container = $("#user-action-btns-container");
 
             btns_container.html('');
@@ -287,13 +264,7 @@ $(document).ready(async function () {
 
             var obj = {description, price: +price, transactionType: 0};
 
-            let {statusCode, isSuccess, message} = await api.postDigitallApi(`/Transaction/IncreaseBalance/${id}`, obj);
-
-            if (statusCode == 0 && isSuccess == true) {
-                api.notificationMessage(api.successTitle, message, api.successTheme)
-            } else {
-                api.notificationMessage(api.errorTitle, message, api.errorTheme)
-            }
+            await api.postDigitallApi(`/Transaction/IncreaseBalance/${id}`, obj);
 
             await $.getUserInformation();
             await api.hiddenLoading();
@@ -355,13 +326,7 @@ $(document).ready(async function () {
                 forward: false,
             }
 
-            let {statusCode, isSuccess, message} = await api.postDigitallApi(`/Notification/AddNotification`, obj);
-
-            if (statusCode == 0 && isSuccess == true) {
-                api.notificationMessage(api.successTitle, message, api.successTheme)
-            } else {
-                api.notificationMessage(api.errorTitle, message, api.errorTheme)
-            }
+            await api.postDigitallApi(`/Notification/AddNotification`, obj);
 
             await $.getUserInformation();
             await api.hiddenLoading();
@@ -415,13 +380,7 @@ $(document).ready(async function () {
 
             var obj = {description, price: +price, transactionType: 0};
 
-            let {statusCode, isSuccess, message} = await api.postDigitallApi(`/Transaction/DecreaseBalance/${id}`, obj);
-
-            if (statusCode == 0 && isSuccess == true) {
-                api.notificationMessage(api.successTitle, message, api.successTheme)
-            } else {
-                api.notificationMessage(api.errorTitle, message, api.errorTheme)
-            }
+            await api.postDigitallApi(`/Transaction/DecreaseBalance/${id}`, obj);
 
             await $.getUserInformation();
             await api.hiddenLoading();
@@ -454,12 +413,12 @@ $(document).ready(async function () {
     await $("#description-for-user").validate({
         rules: {
             description_text: {
-                maxlength : 3000
+                maxlength: 3000
             },
         },
         messages: {
             description_text: {
-                maxlength : "نمیتواند بیشتر از 3000 کاراکتر باشد"
+                maxlength: "نمیتواند بیشتر از 3000 کاراکتر باشد"
             }
         },
         submitHandler: async function (form, event) {
@@ -471,18 +430,14 @@ $(document).ready(async function () {
                 id: user.id,
                 isBlocked: user.isBlocked,
                 cardToCardPayment: user.cardToCardPayment,
-                description:description_text.val(),
+                description: description_text.val(),
             }
 
-            let {statusCode, isSuccess, message} = await api.updateDigitallApi(`/User/UpdateUser`, data);
+            await api.updateDigitallApi(`/User/UpdateUser`, data)
 
-            if (statusCode == 0 && isSuccess == true) {
-                special_percent.val("");
-                special_percent.removeClass("is-invalid").removeClass("is-valid");
-                api.notificationMessage(api.successTitle, message, api.successTheme)
-            } else {
-                api.notificationMessage(api.errorTitle, message, api.errorTheme)
-            }
+            special_percent.val("");
+            special_percent.removeClass("is-invalid").removeClass("is-valid");
+
 
             await $.getUserInformation();
             await api.hiddenLoading();
@@ -524,7 +479,7 @@ $(document).ready(async function () {
             specialPercent: {
                 required: "درصد نمایندگی نمیتواند خالی باشد",
                 range: "درصد نمایندگی باید بین 0 و 75 باشد",
-                number : "باید حتما عدد باشد"
+                number: "باید حتما عدد باشد"
             }
         },
         submitHandler: async function (form, event) {
@@ -537,18 +492,13 @@ $(document).ready(async function () {
                 isBlocked: user.isBlocked,
                 cardToCardPayment: user.cardToCardPayment,
                 specialPercent: special_percent.val(),
-                description:description_text.val(),
+                description: description_text.val(),
             }
 
-            let {statusCode, isSuccess, message} = await api.updateDigitallApi(`/User/UpdateUser`, data);
+            await api.updateDigitallApi(`/User/UpdateUser`, data)
 
-            if (statusCode == 0 && isSuccess == true) {
-                special_percent.val("");
-                special_percent.removeClass("is-invalid").removeClass("is-valid");
-                api.notificationMessage(api.successTitle, message, api.successTheme)
-            } else {
-                api.notificationMessage(api.errorTitle, message, api.errorTheme)
-            }
+            special_percent.val("");
+            special_percent.removeClass("is-invalid").removeClass("is-valid");
 
             await $.getUserInformation();
             await api.hiddenLoading();
