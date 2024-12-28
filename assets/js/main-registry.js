@@ -2,8 +2,38 @@ import * as main from "./main.js";
 
 export const baseUrl = "https://dev.samanii.com/api";
 
-//-------------------------------------------- token --------------------------------------------
+//-------------------------------------------  S I G N A L R  -----------------------------------------
 
+$(document).ready(async function () {
+    const hubUrl = "https://dev.samanii.com/supporterOnlineHub";
+
+    $.getScript( "https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js", function( data, textStatus, jqxhr ) {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl(hubUrl, {
+                accessTokenFactory: () => localStorage.getItem("registry-token")
+            })
+            .build();
+
+        connection.on("UpdateSupporterOnline", (supporters) => {
+            console.log("Online supporters updated:", supporters);
+            if(supporters.length > 0) {
+                $("#image-${id}").removeAttr("disabled");
+            }
+        });
+
+        connection.start()
+            .then(async () => {
+                console.log("signalR connected.");
+                const supporters = await connection.invoke("GetOnlineSupporterAsync");
+            })
+            .catch(err => {
+                console.error("Error in connecting SignalR:", err);
+            });
+    });
+})
+
+
+//-------------------------------------------- token --------------------------------------------
 export const postRegistryUserApi = async () => {
     await main.getUserInformation();
 

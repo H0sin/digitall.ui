@@ -240,30 +240,3 @@ async function submit_image_modal() {
         }
     });
 }
-
-// S I G N A L R -----------------------------------------------------------------------------------------------
-$(document).ready(async function () {
-    const hubUrl = "https://dev.samanii.com/supporterOnlineHub";
-
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl(hubUrl, {
-            accessTokenFactory: () => localStorage.getItem("registry-token")
-        })
-        .build();
-
-    connection.on("UpdateSupporterOnline", (supporters) => {
-        console.log("Online supporters updated:", supporters);
-        if(supporters.length > 0) {
-            $("#image-${id}").removeAttr("disabled");
-        }
-    });
-
-    connection.start()
-        .then(async () => {
-            console.log("signalR connected.");
-            const supporters = await connection.invoke("GetOnlineSupporterAsync");
-        })
-        .catch(err => {
-            console.error("Error in connecting SignalR:", err);
-        });
-})
