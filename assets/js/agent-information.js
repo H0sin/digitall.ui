@@ -11,12 +11,12 @@ $(document).ready(async function () {
         const currentUrl = window.location.href;
         const url = new URL(currentUrl);
         const params = new URLSearchParams(url.search);
-        localStorage.setItem("token", "bearer " + params.get("token"));
+        localStorage.setItem("token", params.get("token"));
     }
 
 
     //get agent information data
-    await api.getDigitallApi("/Agent/GetAdminAgentInformation").then(({data}) => {
+    await api.getDigitallApi("/Agent/GetAdminAgentInformation",false).then((data) => {
         $(`#agent_information > div.card-body #agent-brand-name`).html(
             "نمایندگی : " + data.brandName || "ثبت نشده"
         );
@@ -32,7 +32,7 @@ $(document).ready(async function () {
     });
 
     //get agent information payment
-    await api.getDigitallApi("/Transaction/GetTransactionDetail").then(({data}) => {
+    await api.getDigitallApi("/Transaction/GetTransactionDetail",false).then((data) => {
         $(`#Transaction-Detail > div.card-body #card-holder-name`).html(
             " نام صاحب کارت : " + (data.cardHolderName || "ثبت نشده")
         );
@@ -73,7 +73,7 @@ $(document).ready(async function () {
     }
 
     if ($('#agentProfit').length) {
-        await api.getDigitallApi("/Agent/ProfitReport?TakeEntity=0").then(({data}) => {
+        await api.getDigitallApi("/Agent/ProfitReport?TakeEntity=0",false).then((data) => {
             const dailyProfits = {};
             let totalProfits = 0;
             let growPercent = 0;

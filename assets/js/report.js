@@ -2,7 +2,7 @@ import * as main from "./main.js";
 
 
 $(document).ready(async function () {
-   await main.showLoading();
+    await main.showLoading();
 
     if ($('#weeklySalesChartRTL').length) {
 
@@ -12,8 +12,8 @@ $(document).ready(async function () {
         endDate = endDate.toLocaleDateString("de-DE").split(".").reverse().join("/");
         startDate = startDate.toLocaleDateString("de-DE").split(".").reverse().join("/");
 
-        await main.getDigitallApi(`/Agent/InputUserReport?takeEntity=0&startDate=${startDate}&endDate=${endDate}`)
-            .then(({data}) => {
+        await main.getDigitallApi(`/Agent/InputUserReport?takeEntity=0&startDate=${startDate}&endDate=${endDate}`, false)
+            .then((data) => {
 
                 let categories = [];
                 let count = [];
@@ -122,6 +122,6 @@ $(document).ready(async function () {
                 chart.render();
             })
     }
-   await main.hiddenLoading();
+    await main.hiddenLoading();
 
 });

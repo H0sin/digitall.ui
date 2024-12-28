@@ -12,7 +12,7 @@ let maximum_amount_for_user = $("#maximum-amount-for-user");
 let minimal_amount_for_user = $("#minimal-amount-for-user");
 
 $(document).ready(async function () {
-    await api.getDigitallApi("/Agent/AgencyInformation").then(({ data }) => {
+    await api.getDigitallApi("/Agent/AgencyInformation" , false).then(( data ) => {
         $(brand_name).val(data.brandName);
         $(agent_code).val(data.agentCode);
         $(agent_percent).val(data.agentPercent);
@@ -114,16 +114,9 @@ $(async function () {
                     minimalAmountForUser: minimal_amount_for_user.val(),
                 }
 
-                let { statusCode, isSuccess, message } = await api.updateDigitallApi("/Agent/Update", obj)
+                await api.updateDigitallApi("/Agent/Update", obj)
 
-                if (statusCode == 0 && isSuccess == true) {
-                    api.notificationMessage(api.successTitle, message, api.successTheme)
-                    window.location.href = "index.html"
-                } else {
-                    api.notificationMessage(api.errorTitle, message, api.errorTheme)
-                }
-
-                // console.log(response);
+                window.location.href = "index.html"
 
                 await api.hiddenLoading();
             },

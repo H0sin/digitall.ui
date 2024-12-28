@@ -85,11 +85,9 @@ $(document).ready(async function () {
                 summery : summery.val().trim(),
                 forWho : for_who.val().trim(),
                 phone : phone.val(),
-            }
+            };
 
-            let {isSuccess,message,statusCode} = await registry.postRegistryApi("/Registry",data);
-
-            main.autoNotification(statusCode,isSuccess,message);
+            await registry.postRegistryApi("/Registry",data);
 
             await main.hiddenLoading();
         },

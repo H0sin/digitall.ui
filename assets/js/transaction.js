@@ -144,28 +144,18 @@ $(document).ready(async function () {
     transaction_container.html('');
 
     const loadTransaction = async (page) => {
-        let {
-            data,
-            isSuccess,
-            statusCode,
-            message
-        } = await api.getDigitallApi(`/Transaction/FilterTransaction?takeEntity=6&page=${page}${type_transaction != "null" ? `&type=${type_transaction}` : ""}${status_transaction != "null" ? `&status=${status_transaction}` : ""}${start_date != "null" ? `&startDate=${start_date}` : ""}${end_date != "null" ? `&endDate=${end_date}` : ""}${details_filter != "null" ? `&details=${details_filter}` : ""}${id ? `&userId=${id}` : ""}`);
+        let {allEntitiesCount,entities} = await api.getDigitallApi(`/Transaction/FilterTransaction?takeEntity=6&page=${page}${type_transaction != "null" ? `&type=${type_transaction}` : ""}${status_transaction != "null" ? `&status=${status_transaction}` : ""}${start_date != "null" ? `&startDate=${start_date}` : ""}${end_date != "null" ? `&endDate=${end_date}` : ""}${details_filter != "null" ? `&details=${details_filter}` : ""}${id ? `&userId=${id}` : ""}`,false);
 
-        if (!isSuccess || statusCode != 0) api.notificationMessage(api.errorTitle, message, api.errorTheme);
-
-        allEntitiesCount = data.allEntitiesCount;
+        allEntitiesCount = allEntitiesCount;
 
         if (allEntitiesCount === 0) {
             transaction_container.append("<h4 class='text-center p-4'>تراکنشی یافت نشد</h4>");
         } else {
-            await $.each(data.entities, function (index, entity) {
+            await $.each(entities, function (index, entity) {
                 let transaction = generateTransactionItem(entity);
                 transaction_container.append(transaction);
             });
         }
-        // if ( details_filter != number ){
-        //     transaction_container.append("<h4 class='text-center p-4'>تراکنشی یافت نشد</h4>");
-        // }
     }
 
     await loadTransaction(1);
@@ -193,12 +183,7 @@ $(document).ready(async function () {
         await api.showLoading();
 
         const id = $(this).attr("id").replace("details-id-", " ");
-        let {data, isSuccess, statusCode,message} = await api.getDigitallApi(`/Transaction/GetTransaction/${id}`);
-
-        if(!isSuccess || statusCode != 0){
-            await api.notificationMessage(api.errorTitle, message, api.errorTheme);
-            await api.hiddenLoading();
-        }
+        let data = await api.getDigitallApi(`/Transaction/GetTransaction/${id}`,false);
 
         if (data.avatarTransaction) {
             $("#avatar-transaction").attr("src", api.transactionImagePath(data.avatarTransaction));
@@ -254,15 +239,13 @@ $(document).ready(async function () {
 
             await api.showLoading();
 
-            let {message} = await api.updateDigitallApi("/Transaction/UpdateTransactionStatus", {
+            await api.updateDigitallApi("/Transaction/UpdateTransactionStatus", {
                 transactionId,
                 transactionStatus: 2
             });
 
-            await api.notificationMessage(api.successTitle, message, api.successTheme);
             transaction_container.html('');
             await loadTransaction(1);
-
 
             api.hiddenModal();
             await api.hiddenLoading();

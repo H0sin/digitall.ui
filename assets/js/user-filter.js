@@ -32,10 +32,9 @@ $(document).ready(async function () {
 
 
     async function loadUsers(page) {
-        await api.getDigitallApi(`/User/GetAgentUsersFilter?takeEntity=8&page=${page}&isAgent=${type_user}&userName=${username_filter}`)
-            .then(({data}) => {
-                const {entities} = data;
-                allUserCount = data.allEntitiesCount;
+        await api.getDigitallApi(`/User/GetAgentUsersFilter?takeEntity=8&page=${page}&isAgent=${type_user}&userName=${username_filter}`,false)
+            .then(({entities,allEntitiesCount}) => {
+                allUserCount = allEntitiesCount;
                 if (allUserCount > 0) {
                     $.each(entities, function (index, user) {
                         let user_info = $(`<a

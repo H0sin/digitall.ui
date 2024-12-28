@@ -49,7 +49,7 @@ const fixedRegistryButton = (status, id) => {
         case 1:
             return `<button id="price-${id}" class="btn btn-outline-primary">اعلام قیمت و مدل</button>`;
         case 2:
-            return `<button id="image-${id}" class="btn btn-outline-info">بارگزاری عکس</button>`;
+            return `<button id="image-${id}" class="btn btn-outline-info" disabled="disabled">بارگزاری عکس</button>`;
     }
 }
 
@@ -107,40 +107,37 @@ $(document).ready(async function (e) {
     let registries_container = $("#registries-container");
 
     async function loadRegistries(page) {
-        let {statusCode, data} = await registry.getRegistryApi("/Registry");
+        let {entities} = await registry.getRegistryApi("/Registry");
 
-        if (statusCode != 403) {
-            await $.each(data.entities, async function (index, registry) {
-                registries_container.append(generateRegistryAdminItem(registry));
+        await $.each(entities, async function (index, registry) {
+            registries_container.append(generateRegistryAdminItem(registry));
 
-                $(`#price-${registry.id}`).on("click", async function (e) {
-                    main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
+            $(`#price-${registry.id}`).on("click", async function (e) {
+                main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
 
-                    let form = $("#price_modal");
-                    let input = $(`<input class="d-none" type="text" value="${e.target.id.replace("price-", "")}" />`);
-                    $(form).append(input);
+                let form = $("#price_modal");
+                let input = $(`<input class="d-none" type="text" value="${e.target.id.replace("price-", "")}" />`);
+                $(form).append(input);
 
-                    await submit_price_modal();
-                });
-
-                $(`#image-${registry.id}`).on("click", async function (e) {
-                    main.generateModal(modals.awaiting_send_image.name, modals.awaiting_send_image.title, modals.awaiting_send_image.body);
-                    await submit_image_modal();
-                });
-
+                await submit_price_modal();
             });
 
-        } else if (statusCode == 403) {
-            let {statusCode, data} = await registry.getRegistryApi("/Registry");
-            await $.each(data.entities, async function (index, registry) {
-
-                registries_container.append(generateRegistryItem(registry));
-
-                $(".btn-outline-primary").on("click", function (e) {
-                    main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
-                });
+            $(`#image-${registry.id}`).on("click", async function (e) {
+                main.generateModal(modals.awaiting_send_image.name, modals.awaiting_send_image.title, modals.awaiting_send_image.body);
+                await submit_image_modal();
             });
-        }
+
+        });
+
+        // } else if (statusCode == 403) {
+        //     let {statusCode, data} = await registry.getRegistryApi("/Registry");
+        //     await $.each(data.entities, async function (index, registry) {registries_container.append(generateRegistryItem(registry));
+        //
+        //         $(".btn-outline-primary").on("click", function (e) {
+        //             main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
+        //         });
+        //     });
+        // }
     }
 
     await loadRegistries(current_page);
@@ -243,3 +240,30 @@ async function submit_image_modal() {
         }
     });
 }
+
+// S I G N A L R -----------------------------------------------------------------------------------------------
+$(document).ready(async function () {
+    const hubUrl = "https://dev.samanii.com/supporterOnlineHub";
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl(hubUrl, {
+            accessTokenFactory: () => localStorage.getItem("registry-token")
+        })
+        .build();
+
+    connection.on("UpdateSupporterOnline", (supporters) => {
+        console.log("Online supporters updated:", supporters);
+        if(supporters.length > 0) {
+            $("#image-${id}").removeAttr("disabled");
+        }
+    });
+
+    connection.start()
+        .then(async () => {
+            console.log("signalR connected.");
+            const supporters = await connection.invoke("GetOnlineSupporterAsync");
+        })
+        .catch(err => {
+            console.error("Error in connecting SignalR:", err);
+        });
+})
