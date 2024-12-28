@@ -49,7 +49,7 @@ const fixedRegistryButton = (status, id) => {
         case 1:
             return `<button id="price-${id}" class="btn btn-outline-primary">اعلام قیمت و مدل</button>`;
         case 2:
-            return `<button id="image-${id}" class="btn btn-outline-info">بارگزاری عکس</button>`;
+            return `<button id="image-${id}" class="btn btn-outline-info" disabled="disabled">بارگزاری عکس</button>`;
     }
 }
 
@@ -251,18 +251,17 @@ $(document).ready(async function () {
         })
         .build();
 
-    connection.on("UpdateSupporterOnline", (count) => {
-        debugger;
-        console.log("Online count updated:", count);
+    connection.on("UpdateSupporterOnline", (supporters) => {
+        console.log("Online supporters updated:", supporters);
+        if(supporters.length > 0) {
+            $("#image-${id}").removeAttr("disabled");
+        }
     });
 
     connection.start()
         .then(async () => {
-            debugger;
-            console.log("SignalR connected.");
+            console.log("signalR connected.");
             const supporters = await connection.invoke("GetOnlineSupporterAsync");
-            debugger;
-            console.log("Initial online count:", supporters);
         })
         .catch(err => {
             console.error("Error in connecting SignalR:", err);
