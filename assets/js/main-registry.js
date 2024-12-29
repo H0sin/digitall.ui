@@ -16,8 +16,10 @@ $(document).ready(async function () {
 
         connection.on("UpdateSupporterOnline", (supporters) => {
             console.log("Online supporters updated:", supporters);
-            if(supporters.length > 0) {
-                $("#image-${id}").removeAttr("disabled");
+            if (supporters.length > 0) {
+                $(`.paymentPrice`).removeAttr("disabled");
+            } else {
+                $(`.paymentPrice`). prop('disabled', true);
             }
         });
 
@@ -25,6 +27,7 @@ $(document).ready(async function () {
             .then(async () => {
                 console.log("signalR connected.");
                 const supporters = await connection.invoke("GetOnlineSupporterAsync");
+
             })
             .catch(err => {
                 console.error("Error in connecting SignalR:", err);

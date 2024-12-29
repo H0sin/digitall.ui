@@ -89,6 +89,8 @@ $(document).ready(async function () {
 
             await registry.postRegistryApi("/Registry",data);
 
+            window.location.href = "registries.html";
+
             await main.hiddenLoading();
         },
         errorPlacement: function (error, element) {
