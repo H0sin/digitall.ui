@@ -1,5 +1,6 @@
 import * as registry from "./main-registry.js";
 import * as main from "./main.js";
+import {destroidModal} from "./main.js";
 
 
 // -------------------------------------------------------------------------------------
@@ -116,8 +117,10 @@ $(document).ready(async function (e) {
     let registries_container = $("#registries-container");
 
     async function loadRegistries(page) {
-        let {entities} = await registry.getRegistryApi(`Registry?page=${page}`, false);
-        // let data = await registry.getRegistryApi("/RejectionReasons/predefined");
+        let data = await registry.getRegistryApi("RejectionReasons/predefined");
+        let supporter = await registry.getRegistryApi("Authorization/has-permission/supporter");
+        debugger;
+        let {entities} = await registry.getRegistryApi(`${supporter ? 'Registry/get-all' : 'Registry'}?page=${page}`, false);
 
         await $.each(entities, async function (index, registry) {
             registries_container.append(generateRegistryAdminItem(registry));
@@ -198,8 +201,8 @@ async function submit_model_information_modal() {
 
             let data = {model, id}
 
-            registry.updateRegistryApi("/Registry/Decision", data);
-            location.reload();
+            registry.updateRegistryApi("Registry/Decision", data);
+            main.destroidModal("awaiting-support-review");
         }, errorPlacement: function (error, element) {
             error.addClass("invalid-feedback");
 
@@ -224,37 +227,37 @@ async function submit_model_information_modal() {
     });
 }
 
-async function submit_price_modal() {
-    await $("#price_modal").validate({
-        rules: {
-            price: {
-                required: true,
-            },
-        }, messages: {
-            price: {
-                required: "فایل نمیتواند خالی باشد .",
-            },
-        }, submitHandler: function (form) {
-        }, errorPlacement: function (error, element) {
-            error.addClass("invalid-feedback");
-
-            if (element.parent('.input-group').length) {
-                error.insertAfter(element.parent());
-            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-                error.insertAfter(element.parent().parent());
-            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                error.appendTo(element.parent().parent());
-            } else {
-                error.insertAfter(element);
-            }
-        }, highlight: function (element, errorClass) {
-            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                $(element).addClass("is-invalid").removeClass("is-valid");
-            }
-        }, unhighlight: function (element, errorClass) {
-            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                $(element).addClass("is-valid").removeClass("is-invalid");
-            }
-        }
-    });
-}
+// async function submit_price_modal() {
+//     await $("#price_modal").validate({
+//         rules: {
+//             price: {
+//                 required: true,
+//             },
+//         }, messages: {
+//             price: {
+//                 required: "فایل نمیتواند خالی باشد .",
+//             },
+//         }, submitHandler: function (form) {
+//         }, errorPlacement: function (error, element) {
+//             error.addClass("invalid-feedback");
+//
+//             if (element.parent('.input-group').length) {
+//                 error.insertAfter(element.parent());
+//             } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+//                 error.insertAfter(element.parent().parent());
+//             } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+//                 error.appendTo(element.parent().parent());
+//             } else {
+//                 error.insertAfter(element);
+//             }
+//         }, highlight: function (element, errorClass) {
+//             if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+//                 $(element).addClass("is-invalid").removeClass("is-valid");
+//             }
+//         }, unhighlight: function (element, errorClass) {
+//             if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+//                 $(element).addClass("is-valid").removeClass("is-invalid");
+//             }
+//         }
+//     });
+// }

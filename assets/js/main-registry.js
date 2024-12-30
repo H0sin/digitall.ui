@@ -12,7 +12,9 @@
 
 // --------------------------------------- CONSTANTS & GLOBALS ---------------------------------------
 
-export const BASE_URL = "http://localhost:8080/";
+import * as main from "./main.js";
+
+export const BASE_URL = "https://dev.samanii.com/";
 export const BASE_API_URL = `${BASE_URL}api`;
 
 export const HUB_SUPPORTER_ONLINE_URL = `${BASE_URL}supporterOnlineHub`;
@@ -186,8 +188,9 @@ export const postRegistryApi = async (path, credentials, fire = true, authType =
             },
         });
         const { data, isSuccess, message, statusCode } = result;
+
         // Optionally show notifications if "fire" is true
-        // e.g. autoNotification(statusCode, isSuccess, message);
+        if(fire) main.autoNotification(statusCode, isSuccess, message);
         response = data;
     } catch (ex) {
         console.error("Error in postRegistryApi:", ex);
@@ -252,6 +255,7 @@ export const updateRegistryApi = async (path, credentials, id = 0, fire = true, 
         const { data, isSuccess, message, statusCode } = result;
         // Optionally show notifications if "fire" is true
         // e.g. autoNotification(statusCode, isSuccess, message);
+        if(fire) main.autoNotification(statusCode, isSuccess, message);
         response = data;
     } catch (ex) {
         console.error("Error in updateRegistryApi:", ex);
