@@ -87,7 +87,9 @@ $(document).ready(async function () {
                 phone : phone.val(),
             };
 
-            await registry.postRegistryApi("/Registry",data);
+            await registry.postRegistryApi("Registry",data);
+            debugger;
+            window.location.href = "registries.html";
 
             await main.hiddenLoading();
         },

@@ -39,12 +39,12 @@ export const infoTheme = "info";
 export const warningTitle = "پیغام هشدار";
 export const warningTheme = "warning";
 
-export function notificationMessage(title, text, theme) {
+export function notificationMessage(title, text, theme,showDuration = 4000,closeOnClick = true) {
     window.createNotification({
-        closeOnClick: true,
+        closeOnClick,
         displayCloseButton: false,
         positionClass: "nfc-bottom-right",
-        showDuration: 4000,
+        showDuration,
         theme: theme !== "" ? theme : "success",
     })({
         title: title !== "" ? title : "اعلان",
