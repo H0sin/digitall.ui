@@ -38,7 +38,7 @@ let supporterOnlineConnection = null;
  */
 export const startAllSignalRConnections = async () => {
     // Load SignalR library from a CDN or a local path (if not already included in your HTML)
-    await $.getScript("../assets/vendors/signalr/signalr.min.js");
+    await $.getScript("../assets/vendors/signalR/signalr.min.js");
 
     // Create the PaymentHub connection
     paymentConnection = new signalR.HubConnectionBuilder()
