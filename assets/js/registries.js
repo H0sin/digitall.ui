@@ -59,7 +59,7 @@ const fixedRegistryButton = (status, id) => {
         case 1:
             return `<button id="model_information-${id}" class="btn btn-outline-primary">اعلام مدل</button>`;
         case 2:
-            return `<button id="price-${id}" class="btn btn-outline-info paymentPrice" disabled="disabled">درگاه پرداخت</button>`;
+            return `<button id="price-${id}" class="btn btn-outline-info paymentPrice" disabled="disabled">میخواهم پرداخت کنم</button>`;
     }
 }
 
@@ -67,11 +67,14 @@ function generateRegistryAdminItem(item) {
     return `<div class="d-flex align-items-center border-bottom py-3">
                     <div class="w-100">
                           <div class="d-flex justify-content-between">
-                                <div>
-                                  <p class="text-body"><span class="text-muted tx-13">IMEI 1 : </span>${item.imeI_1}</p>
-                                  ${item.imeI_2 ? `<p class="text-body"><span class="text-muted tx-13">IMEI 2 : </span>${item.imeI_2}</p>` : ""}
+                                <div id="registry-box-${item.id}">
+                                  <p class="d-none" id="model-${item.id}">${item.model}</p>  
+                                  <p class="d-none" id="forWho-${item.id}">${item.forWho}</p>
+                                  <p class="d-none" id="summery-${item.id}">${item.summery}</p>
+                                  <p class="text-body" id="imei-1-${item.imeI_1}"><span class="text-muted tx-13">IMEI 1 : </span>${item.imeI_1}</p>
+                                  ${item.imeI_2 ? `<p class="text-body" id="imei-2-${item.imeI_2}"><span class="text-muted tx-13">IMEI 2 : </span>${item.imeI_2}</p>` : ""}
                                   <p class="text-body mb-2"><span class="text-muted tx-13"> وضعیت : </span>${fixedRegistryStatus(item.status)}</p>
-                                  ${item.phone ? `<p class="text-body"><span class="text-muted tx-13">شماره : </span>${item.phone}</p>  ` : ""}   
+                                  ${item.phone ? `<p class="text-body" id="phone-${item.phone}"><span class="text-muted tx-13">شماره : </span>${item.phone}</p>  ` : ""}   
                                   <p class="text-body mb-2"><span class="text-muted tx-13">تاریخ ثبت : </span>${new Date(item.createDate).toLocaleString("fa-IR")}</p>
                                 </div>
                                 <div id="model_information-btn-${item.id}">
@@ -98,20 +101,14 @@ function generateRegistryItem(item) {
 
 $(document).ready(async function (e) {
 
-
     await main.showLoading();
     // await main.getUserInformation();
 
     const modals = {
         awaiting_support_review: {
-            name: "awaiting-support-review",
-            title: "اعلام مدل",
-            body: awaiting_support_review_form
-        },
-        awaiting_send_price: {
-            name: "awaiting_send_price",
-            title: "درگاه پرداخت",
-            body: awaiting_send_price_form
+            name: "awaiting-support-review", title: "اعلام مدل", body: awaiting_support_review_form
+        }, awaiting_send_price: {
+            name: "awaiting_send_price", title: "درگاه پرداخت", body: awaiting_send_price_form
         },
     }
 
@@ -119,18 +116,14 @@ $(document).ready(async function (e) {
     let registries_container = $("#registries-container");
 
     async function loadRegistries(page) {
-        let {entities} = await registry.getRegistryApi("/Registry" ,false);
-        let data = await registry.getRegistryApi("/RejectionReasons/predefined" );
+        let {entities} = await registry.getRegistryApi(`Registry?page=${page}`, false);
+        // let data = await registry.getRegistryApi("/RejectionReasons/predefined");
 
         await $.each(entities, async function (index, registry) {
             registries_container.append(generateRegistryAdminItem(registry));
 
-
-
-
             $(`#model_information-${registry.id}`).on("click", async function (e) {
                 main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
-
 
                 let form = $("#model_information_modal");
                 let input = $(`<input class="d-none" type="text" value="${e.target.id.replace("model_information-", "")}" />`);
@@ -142,26 +135,39 @@ $(document).ready(async function (e) {
                     dropdown.append(`<option value="${item.id}">${item.reason}</option>`);
                 });
 
-
                 await submit_model_information_modal();
             });
 
-            $(`#price-${registry.id}`).on("click", async function (e) {
-                main.generateModal(modals.awaiting_send_price.name, modals.awaiting_send_price.title, modals.awaiting_send_price.body);
-                await submit_price_modal();
-            });
-
+            // $(`#price-${registry.id}`).on("click", async function (e) {
+            //     main.generateModal(modals.awaiting_send_price.name, modals.awaiting_send_price.title, modals.awaiting_send_price.body);
+            //     await submit_price_modal();
+            // });
         });
 
-        // } else if (statusCode == 403) {
-        //     let {statusCode, data} = await registry.getRegistryApi("/Registry");
-        //     await $.each(data.entities, async function (index, registry) {registries_container.append(generateRegistryItem(registry));
-        //
-        //         $(".btn-outline-primary").on("click", function (e) {
-        //             main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
-        //         });
-        //     });
-        // }
+        $(".paymentPrice").on("click", async function (e) {
+            const id = +e.target.id.split("-")[1];
+            const registry_box = $(`#registry-box-${id}`);
+            let imeI_1 = registry_box.find('[id^="imei-1-"]')[0].id.split("-")[2];
+            let imeI_2 = registry_box.find('[id^="imei-2-"]')[0].id.split("-")[2];
+            let summery = $(`#summery-${id}`).html();
+            let forWho = $(`#forWho-${id}`).html();
+            let model = $(`#model-${id}`).html();
+            let phone = registry_box.find('[id^="phone-"]')[0].id.split("-")[1];
+
+            const data = {
+                id, imeI_1, imeI_2, summery, forWho, phone, model
+            };
+
+            await main.notificationMessage(
+                "در حال بررسی قیمت...",
+                "لطفاً تا زمان اعلام قیمت منتظر بمانید. در صورت ترک این صفحه، ممکن است قیمت نهایی اعلام نشود.",
+                main.infoTheme,
+                360000,
+                false);
+            await main.showLoading();
+            await registry.registerPayment(data);
+        });
+
     }
 
     await loadRegistries(current_page);
@@ -176,18 +182,14 @@ async function submit_model_information_modal() {
     await $("#model_information_modal").validate({
         rules: {
             model_phone: {
-                required: true,
-                number: true
+                required: true, number: true
             },
-            
-        },
-        messages: {
+
+        }, messages: {
             model_phone: {
-                required: "مبلغ نمیتواند خالی باشد .",
-                number: " مبلغ باید عدد باشد ."
+                required: "مبلغ نمیتواند خالی باشد .", number: " مبلغ باید عدد باشد ."
             },
-        },
-        submitHandler: async function (form, event) {
+        }, submitHandler: async function (form, event) {
             event.preventDefault();
 
             let hiddenInput = $(form).find('input.d-none');
@@ -198,8 +200,7 @@ async function submit_model_information_modal() {
 
             registry.updateRegistryApi("/Registry/Decision", data);
             location.reload();
-        },
-        errorPlacement: function (error, element) {
+        }, errorPlacement: function (error, element) {
             error.addClass("invalid-feedback");
 
             if (element.parent('.input-group').length) {
@@ -211,13 +212,11 @@ async function submit_model_information_modal() {
             } else {
                 error.insertAfter(element);
             }
-        },
-        highlight: function (element, errorClass) {
+        }, highlight: function (element, errorClass) {
             if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
                 $(element).addClass("is-invalid").removeClass("is-valid");
             }
-        },
-        unhighlight: function (element, errorClass) {
+        }, unhighlight: function (element, errorClass) {
             if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
                 $(element).addClass("is-valid").removeClass("is-invalid");
             }
@@ -231,15 +230,12 @@ async function submit_price_modal() {
             price: {
                 required: true,
             },
-        },
-        messages: {
+        }, messages: {
             price: {
                 required: "فایل نمیتواند خالی باشد .",
             },
-        },
-        submitHandler: function (form) {
-        },
-        errorPlacement: function (error, element) {
+        }, submitHandler: function (form) {
+        }, errorPlacement: function (error, element) {
             error.addClass("invalid-feedback");
 
             if (element.parent('.input-group').length) {
@@ -251,13 +247,11 @@ async function submit_price_modal() {
             } else {
                 error.insertAfter(element);
             }
-        },
-        highlight: function (element, errorClass) {
+        }, highlight: function (element, errorClass) {
             if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
                 $(element).addClass("is-invalid").removeClass("is-valid");
             }
-        },
-        unhighlight: function (element, errorClass) {
+        }, unhighlight: function (element, errorClass) {
             if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
                 $(element).addClass("is-valid").removeClass("is-invalid");
             }
