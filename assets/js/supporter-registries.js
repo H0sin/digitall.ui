@@ -131,6 +131,13 @@ $(document).ready(async () => {
     await main.showLoading();
     await startAllSignalRConnections();
 
+    /// get registries items
+    let registries = await paymentConnection.invoke('GetAllRegistries');
+    $.each(registries, async function (index, registry) {
+        registriesContainer.append(generateRegistryAdminItem(registry));
+    })
+
+
     // Grab the container where registry items will be appended
     const registriesContainer = $("#registries-container");
 
