@@ -1,7 +1,7 @@
 "use strict";
 
 import * as main from "./main.js";
-import {paymentConnection, startAllSignalRConnections} from "./main-registry.js";
+import {paymentConnection, startAllSignalRConnections,ready} from "./main-registry.js";
 import {generateModal} from "./main.js";
 
 
@@ -120,6 +120,7 @@ function generateRegistryAdminItem(item) {
 // Document ready: main entry point
 $(document).ready(async () => {
 
+    await ready;
     //Modal Object
     const modals = {
         price_link_form_modal: {
@@ -130,14 +131,16 @@ $(document).ready(async () => {
     // Show loading indicator
     await main.showLoading();
 
-    await startAllSignalRConnections();
+    // await startAllSignalRConnections();
 
     // Grab the container where registry items will be appended
     const registriesContainer = $("#registries-container");
 
 
+
     /// get registries items
     if (paymentConnection) {
+        debugger;
         let registries = await paymentConnection.invoke('GetAllRegistries');
         await $.each(registries, async function (index, registry) {
             registriesContainer.append(generateRegistryAdminItem(registry));
