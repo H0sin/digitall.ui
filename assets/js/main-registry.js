@@ -202,13 +202,19 @@ export const updateRegistryApi = async (path, data) => {
 
 // --------------------------------------- DOCUMENT READY ---------------------------------------
 
-$(document).ready(async () => {
-    try {
-        // debugger;
-        // await startAllSignalRConnections();
-        const supporters = await getOnlineSupporters();
-        console.log("Online supporters:", supporters);
-    } catch (err) {
-        console.error("Error on document ready:", err);
-    }
+export const ready = new Promise((resolve) => {
+    $(document).ready(async () => {
+        console.log("document ready in main-registry.js");
+
+        try {
+            debugger;
+            await startAllSignalRConnections();
+            const supporters = await getOnlineSupporters();
+            console.log("Online supporters:", supporters);
+        } catch (err) {
+            console.error("Error on document ready:", err);
+        }
+
+        resolve();
+    });
 });

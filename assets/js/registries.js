@@ -1,6 +1,7 @@
 import * as registry from "./main-registry.js";
 import * as main from "./main.js";
 import {destroidModal} from "./main.js";
+import {ready} from "./main-registry.js";
 
 
 // -------------------------------------------------------------------------------------
@@ -103,6 +104,7 @@ function generateRegistryItem(item) {
 $(document).ready(async function (e) {
 
     await main.showLoading();
+    await ready;
     // await main.getUserInformation();
 
     const modals = {

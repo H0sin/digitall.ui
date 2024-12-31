@@ -1,8 +1,11 @@
 import * as registry from "./main-registry.js";
 import * as main from "./main.js";
+import {ready} from "./main-registry.js";
 
 
 $(document).ready(async function () {
+
+    await ready;
 
     let registry_token = localStorage.getItem("registry-token");
 
