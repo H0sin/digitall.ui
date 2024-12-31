@@ -129,37 +129,41 @@ $(document).ready(async () => {
 
     // Show loading indicator
     await main.showLoading();
+
     await startAllSignalRConnections();
 
     // Grab the container where registry items will be appended
     const registriesContainer = $("#registries-container");
 
+
     /// get registries items
-    let registries = await paymentConnection.invoke('GetAllRegistries');
-    await $.each(registries, async function (index, registry) {
-        registriesContainer.append(generateRegistryAdminItem(registry));
-    })
-
-    /**
-     * Listen for PaymentRegistered events from the PaymentHub connection.
-     * Whenever a new payment is registered, log to console and optionally append it to the DOM.
-     */
-    paymentConnection.on("PaymentRegistered", (payment) => {
-        console.log("پرداخت ثبت شد:", payment);
-        // If you want to show this new payment in the admin list, uncomment:
-        registriesContainer.append(generateRegistryAdminItem(payment));
-
-        // Set Event
-        $(`#price-${payment.id}`).click(function (e) {
-            generateModal(modals.price_link_form_modal.name, modals.price_link_form_modal.title, modals.price_link_form_modal.body);
-            $(`#model_information_modal > input[type='hidden']`).val(payment.id);
+    if (paymentConnection) {
+        let registries = await paymentConnection.invoke('GetAllRegistries');
+        await $.each(registries, async function (index, registry) {
+            registriesContainer.append(generateRegistryAdminItem(registry));
         });
-    });
 
-    paymentConnection.on("PaymentUpdated", (payment) => {
-        // Remove From Ui
-        $(`#registry-container-${payment.id}`).remove();
-    });
+        /**
+         * Listen for PaymentRegistered events from the PaymentHub connection.
+         * Whenever a new payment is registered, log to console and optionally append it to the DOM.
+         */
+        paymentConnection.on("PaymentRegistered", (payment) => {
+            console.log("پرداخت ثبت شد:", payment);
+            // If you want to show this new payment in the admin list, uncomment:
+            registriesContainer.append(generateRegistryAdminItem(payment));
+
+            // Set Event
+            $(`#price-${payment.id}`).click(function (e) {
+                generateModal(modals.price_link_form_modal.name, modals.price_link_form_modal.title, modals.price_link_form_modal.body);
+                $(`#model_information_modal > input[type='hidden']`).val(payment.id);
+            });
+        });
+
+        paymentConnection.on("PaymentUpdated", (payment) => {
+            // Remove From Ui
+            $(`#registry-container-${payment.id}`).remove();
+        });
+    }
 
     // Hide the loading indicator when everything is set up
     await main.hiddenLoading();
