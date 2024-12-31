@@ -2,7 +2,8 @@
 
 // --------------------------------------- CONSTANTS & GLOBALS ---------------------------------------
 
-export const BASE_URL = "http://localhost:8080/";
+// export const BASE_URL = "http://localhost:8080/";
+export const BASE_URL = "https://dev.samanii.com/";
 export const BASE_API_URL = `${BASE_URL}api`;
 export const HUB_SUPPORTER_ONLINE_URL = `${BASE_URL}supporterOnlineHub`;
 export const HUB_PAYMENT_URL = `${BASE_URL}paymentHub`;
