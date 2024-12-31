@@ -283,3 +283,73 @@ $(document).ready(async () => {
     // Optionally hide loading UI
     // hideLoading();
 });
+
+//----------------------------------- V A L I D A T E -------------------------------------------
+
+// export function setupFormValidation(formSelector, rules, messages, onSubmit) {
+//     $(formSelector).validate({
+//         rules,
+//         messages,
+//         submitHandler: async function(form) {
+//             await onSubmit(form);
+//         },
+//         errorClass: "is-invalid",
+//         validClass: "is-valid",
+//         errorElement: "div",
+//         errorPlacement: (error, element) => {
+//             error.addClass("invalid-feedback");
+//             if (element.closest('.input-group').length) {
+//                 error.insertAfter(element.parent());
+//             } else {
+//                 error.insertAfter(element);
+//             }
+//         }
+//     });
+// }
+
+
+// import { setupFormValidation } from './validation.js';
+//
+// async function handleModelInfoSubmit(form) {
+//     const $form = $(form);
+//     const data = {
+//         model: $form.find('#model-phone').val(),
+//         id: $form.find('input.d-none').val()
+//     };
+//     try {
+//         await registry.updateRegistryApi("Registry/Decision", data);
+//         main.destroyModal("awaiting-support-review");
+//     } catch (error) {
+//         console.error("خطا در به‌روزرسانی:", error);
+//         alert("بروز خطا در ارسال اطلاعات. لطفاً دوباره تلاش کنید.");
+//     }
+// }
+//
+// $(document).ready(function() {
+//     setupFormValidation(
+//         "#model_information_modal", // شناسه فرم
+//         { // قوانین ولیدیشن
+//             model_phone: { required: true }
+//         },
+//         { // پیام‌های ولیدیشن
+//             model_phone: { required: "مدل دستگاه نمی‌تواند خالی باشد." }
+//         },
+//         handleModelInfoSubmit // تابع مدیریت ارسال فرم
+//     );
+//
+//     // می‌توانید ولیدیشن فرم‌های دیگر را نیز به همین صورت اضافه کنید
+//     /*
+//     setupFormValidation(
+//         "#another_form_id",
+//         {
+//             field_name: { required: true, email: true }
+//         },
+//         {
+//             field_name: { required: "این فیلد الزامی است.", email: "لطفاً یک ایمیل معتبر وارد کنید." }
+//         },
+//         async function(form) {
+//             // منطق ارسال فرم دیگر
+//         }
+//     );
+//     */
+// });

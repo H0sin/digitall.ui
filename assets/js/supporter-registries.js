@@ -39,11 +39,11 @@ const price_link_form = `
 const fixedRegistryStatus = (status) => {
     switch (status) {
         case 1:
-            return `<span class="badge bg-primary">Waiting for Support Review</span>`;
+            return `<span class="badge bg-primary">منتظر بررسی پشتیبانی</span>`;
         case 2:
-            return `<span class="badge bg-info">Waiting to Send File</span>`;
+            return `<span class="badge bg-info">منتظر ارسال فایل</span>`;
         default:
-            return `<span class="badge bg-secondary">Unknown Status</span>`;
+            return `<span class="badge bg-secondary">وضعیت نامشخص</span>`;
     }
 };
 
@@ -53,16 +53,18 @@ const fixedRegistryStatus = (status) => {
  * @param {number} id - Registry ID.
  * @returns {string} - HTML string for a button element.
  */
+
 const fixedRegistryButton = (status, id) => {
     switch (status) {
         case 1:
-            return `<button id="model_information-${id}" class="btn btn-outline-primary">Declare Model</button>`;
+            return `<button id="model_information-${id}" class="btn btn-outline-primary">اعلام مدل</button>`;
         case 2:
             return `<button id="price-${id}" class="btn btn-outline-info">اعلام قیمت</button>`;
         default:
-            return `<button class="btn btn-outline-secondary" disabled>Unsupported Status</button>`;
+            return `<button class="btn btn-outline-secondary" disabled>وضعیت پشتیبانی نشده</button>`;
     }
 };
+
 
 /**
  * Generates an HTML snippet for a registry item in the admin panel.
@@ -90,18 +92,18 @@ function generateRegistryAdminItem(item) {
             : ""
     }
             <p class="text-body mb-2">
-              <span class="text-muted tx-13">Status: </span>
+              <span class="text-muted tx-13">وضعیت: </span>
               ${fixedRegistryStatus(item.status)}
             </p>
             ${
         item.phone
             ? `<p class="text-body" id="phone-${item.phone}">
-                     <span class="text-muted tx-13">Phone: </span>${item.phone}
+                     <span class="text-muted tx-13">شماره تلفن: </span>${item.phone}
                    </p>`
             : ""
     }
             <p class="text-body mb-2">
-              <span class="text-muted tx-13">Registration Date: </span>
+              <span class="text-muted tx-13">تاریخ ثبت: </span>
               ${new Date(item.createDate).toLocaleString("fa-IR")}
             </p>
           </div>
@@ -137,7 +139,7 @@ $(document).ready(async () => {
      * Whenever a new payment is registered, log to console and optionally append it to the DOM.
      */
     paymentConnection.on("PaymentRegistered", (payment) => {
-        console.log("Payment Registered:", payment);
+        console.log("پرداخت ثبت شد:", payment);
         // If you want to show this new payment in the admin list, uncomment:
         registriesContainer.append(generateRegistryAdminItem(payment));
 
