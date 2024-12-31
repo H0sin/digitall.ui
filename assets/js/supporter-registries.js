@@ -12,8 +12,9 @@ import {generateModal} from "./main.js";
  */
 const price_link_form = `
         <form id="model_information_modal">
+          <input type="hidden">
           <div class="mb-3">
-            <label  class="form-label">هزینه 0 تا 100</label>
+            <label class="form-label">هزینه 0 تا 100</label>
             <input type="text" class="form-control" >
           </div>
           <div class="mb-3">
@@ -126,20 +127,18 @@ $(document).ready(async () => {
         }
     }
 
-
     // Show loading indicator
     await main.showLoading();
     await startAllSignalRConnections();
 
-    /// get registries items
-    let registries = await paymentConnection.invoke('GetAllRegistries');
-    $.each(registries, async function (index, registry) {
-        registriesContainer.append(generateRegistryAdminItem(registry));
-    })
-
-
     // Grab the container where registry items will be appended
     const registriesContainer = $("#registries-container");
+
+    /// get registries items
+    let registries = await paymentConnection.invoke('GetAllRegistries');
+    await $.each(registries, async function (index, registry) {
+        registriesContainer.append(generateRegistryAdminItem(registry));
+    })
 
     /**
      * Listen for PaymentRegistered events from the PaymentHub connection.
@@ -153,6 +152,7 @@ $(document).ready(async () => {
         // Set Event
         $(`#price-${payment.id}`).click(function (e) {
             generateModal(modals.price_link_form_modal.name, modals.price_link_form_modal.title, modals.price_link_form_modal.body);
+            $(`#model_information_modal > input[type='hidden']`).val(payment.id);
         });
     });
 
