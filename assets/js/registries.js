@@ -119,7 +119,6 @@ $(document).ready(async function (e) {
     async function loadRegistries(page) {
         let data = await registry.getRegistryApi("RejectionReasons/predefined");
         let supporter = await registry.getRegistryApi("Authorization/has-permission/supporter");
-        debugger;
         let {entities} = await registry.getRegistryApi(`${supporter ? 'Registry/get-all' : 'Registry'}?page=${page}`, false);
 
         await $.each(entities, async function (index, registry) {
@@ -185,12 +184,12 @@ async function submit_model_information_modal() {
     await $("#model_information_modal").validate({
         rules: {
             model_phone: {
-                required: true, number: true
+                required: true
             },
 
         }, messages: {
             model_phone: {
-                required: "مبلغ نمیتواند خالی باشد .", number: " مبلغ باید عدد باشد ."
+                required: "مدل دستگاه نمیتواند خالی باشد ."
             },
         }, submitHandler: async function (form, event) {
             event.preventDefault();

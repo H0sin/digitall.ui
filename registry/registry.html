@@ -15,6 +15,17 @@
     <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="../assets/css/demo4/style-rtl.min.css">
     <link rel="stylesheet" href="../assets/css/notifications.css">
+
+    <style>
+        .info-inputs {
+            height: 24px;
+            width: 24px;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -63,7 +74,7 @@
     </div>
     <div class="page-wrapper">
         <div class="page-content py-1" style="min-height:0">
-            <ul class="nav nav-pills nav-fill pt-4">
+            <ul id="nav-container" class="nav nav-pills nav-fill pt-4">
                 <li class="nav-item">
                     <a class="nav-link active" href="./registry.html">ثبت گوشی جدید</a>
                 </li>
@@ -71,7 +82,7 @@
                     <a class="nav-link" href="./registries.html">لیست ثبتی ها</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">name name</a>
+                    <a class="nav-link" href="./supporter-registry.html">پشتیبانی</a>
                 </li>
             </ul>
         </div>
@@ -122,10 +133,40 @@
                                         </label>
                                         <span class="info-inputs" data-feather="alert-circle"
                                               data-bs-container="body" data-bs-trigger="focus"
-                                              data-bs-toggle="popover" data-bs-placement="right"
-                                              data-bs-content="قوانین  "></span>
+                                              data-bs-toggle="popover" data-bs-html="true"
+                                              data-bs-placement="right"
+                                              data-bs-content="
+        <strong>قوانین و مقررات ثبت رجیستری گوشی</strong>
+        <p>لطفاً پیش از استفاده از خدمات ثبت رجیستری گوشی در این سایت، موارد زیر را به‌دقت مطالعه فرمایید. استفاده از خدمات به معنای پذیرش کامل این قوانین است:</p>
+        <ul>
+            <li>
+                <strong>عدم امکان استرداد وجه</strong>
+                <p>پس از انجام فرآیند ثبت و پرداخت هزینه، امکان استرداد وجه به هیچ عنوان وجود ندارد. لذا، پیش از تکمیل فرآیند، لطفاً از صحت اطلاعات وارد شده اطمینان حاصل فرمایید.</p>
+            </li>
+            <li>
+                <strong>مسئولیت اطلاعات وارد شده</strong>
+                <p>کاربران موظف هستند شماره سریال (IMEI) گوشی و سایر اطلاعات لازم را به‌صورت دقیق و صحیح وارد کنند. هرگونه اشتباه در وارد کردن اطلاعات به عهده کاربر است و سایت در این زمینه مسئولیتی نخواهد داشت.</p>
+            </li>
+            <li>
+                <strong>هزینه‌های متغیر پاسپورت و گمرک</strong>
+                <p>هزینه‌های مربوط به پاسپورت و گمرک به دلیل تغییرات نرخ ارز و قوانین جاری ممکن است متغیر باشد. قیمت دقیق هزینه‌ها در زمان ثبت درخواست به کاربر اعلام می‌گردد. در صورتی که فرآیند ثبت به دلایلی ناتمام بماند و کاربر مجدداً درخواست خود را ارسال کند، هزینه‌ها ممکن است متفاوت باشد و قیمت جدید اعمال خواهد شد.</p>
+            </li>
+            <li>
+                <strong>زمان درخواست و مراحل تکمیل</strong>
+                <p>فرآیند ثبت رجیستری فقط در ساعات مشخص‌شده قابل انجام است. اگر درخواست خارج از این بازه زمانی ارسال شود، ممکن است فرآیند با تأخیر مواجه گردد.</p>
+            </li>
+            <li>
+                <strong>مسئولیت مراحل پس از ثبت درخواست</strong>
+                <p>پس از ثبت درخواست، تمامی مراحل و پیگیری‌ها بر اساس اطلاعات ثبت‌شده انجام می‌شود. لطفاً پیش از ثبت، تمامی شرایط و جزئیات را با دقت بررسی نمایید. این سایت تمامی تلاش خود را برای ارائه خدمات باکیفیت انجام می‌دهد، اما مسئولیت پیگیری یا تغییرات احتمالی در فرآیندهای مربوط به رجیستری بر عهده کاربر است.</p>
+            </li>
+            <li>
+                <strong>تأیید قوانین و شرایط</strong>
+                <p>کاربر موظف است پیش از نهایی کردن درخواست، قوانین فوق را مطالعه کرده و با انتخاب گزینه <strong>قوانین را مطالعه و قبول دارم پذیرش خود را اعلام نماید.</strong></p>
+            </li>
+        </ul>
+        <p><strong>توجه:</strong> در صورت عدم رعایت این قوانین یا وارد کردن اطلاعات نادرست، این سایت هیچ‌گونه مسئولیتی در قبال مشکلات به وجود آمده نخواهد داشت.</p>
+      "></span>
                                     </div>
-
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 mt-3">ثبت</button>
                             </form>
@@ -153,6 +194,7 @@
 <script src="../assets/js/notifications.js"></script>
 <script type='module' src="../assets/js/registry.js"></script>
 <script type='module' src="../assets/js/main-registry.js"></script>
+
 </body>
 
 </html>
