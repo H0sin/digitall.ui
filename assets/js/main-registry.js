@@ -9,7 +9,7 @@ export const HUB_SUPPORTER_ONLINE_URL = `${BASE_URL}supporterOnlineHub`;
 export const HUB_PAYMENT_URL = `${BASE_URL}paymentHub`;
 
 export let paymentConnection = null;
-let supporterOnlineConnection = null;
+export let supporterOnlineConnection = null;
 let isConnecting = false;
 
 // --------------------------------------- SIGNALR CONFIG ---------------------------------------

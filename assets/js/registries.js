@@ -1,7 +1,7 @@
 import * as registry from "./main-registry.js";
 import * as main from "./main.js";
 import {destroidModal} from "./main.js";
-import {ready} from "./main-registry.js";
+import {ready, supporterOnlineConnection} from "./main-registry.js";
 
 
 // -------------------------------------------------------------------------------------
@@ -105,7 +105,6 @@ $(document).ready(async function (e) {
 
     await main.showLoading();
     await ready;
-    // await main.getUserInformation();
 
     const modals = {
         awaiting_support_review: {
@@ -147,6 +146,9 @@ $(document).ready(async function (e) {
             //     await submit_price_modal();
             // });
         });
+
+        let supporters = await supporterOnlineConnection.invoke('GetOnlineSupporterAsync');
+        $(".paymentPrice").prop("disabled", supporters.length === 0);
 
         $(".paymentPrice").on("click", async function (e) {
             const id = +e.target.id.split("-")[1];

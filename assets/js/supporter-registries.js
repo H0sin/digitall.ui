@@ -140,7 +140,7 @@ $(document).ready(async () => {
 
     /// get registries items
     if (paymentConnection) {
-        debugger;
+
         let registries = await paymentConnection.invoke('GetAllRegistries');
         await $.each(registries, async function (index, registry) {
             registriesContainer.append(generateRegistryAdminItem(registry));
