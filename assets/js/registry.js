@@ -14,7 +14,6 @@ $(document).ready(async function () {
     let for_who = $("#for_who");
     let phone = $("#phone");
 
-
     await $("#accept-registry-form").validate({
         rules: {
             imei_1: {
@@ -115,5 +114,6 @@ $(document).ready(async function () {
             }
         }
     });
+
 });
 

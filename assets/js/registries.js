@@ -6,6 +6,28 @@ import {paymentConnection, ready, supporterOnlineConnection} from "./main-regist
 
 // -------------------------------------------------------------------------------------
 
+const payment_information = (price, link) => `
+    <div class="payment-container text-center" style="padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9; max-width: 400px; margin: 20px auto;">
+        <h2 style="color: #333; margin-bottom: 10px;">اطلاعات پرداخت</h2>
+        <h5 style="color: #555; margin-bottom: 20px;">مبلغ: <span style="font-weight: bold;">${price.toLocaleString()} ریال</span></h5>
+        <p style="color: #777; font-size: 14px; margin-bottom: 20px;">
+            توجه: لطفاً هنگام پرداخت، مبلغ ذکرشده را دقیقاً به ریال وارد کنید. مسئولیت هرگونه اشتباه بر عهده خریدار است.
+        </p>
+        <div style="margin-bottom: 20px;">
+            <button class="btn btn-primary" onclick="copyToClipboard('${price}')" style="padding: 10px 15px; font-size: 14px;">کپی مبلغ</button>
+        </div>
+        <a class="btn btn-success" href="${link}" style="padding: 10px 15px; font-size: 14px; text-decoration: none; color: white; background-color: #28a745; border-radius: 5px;">برو به صفحه پرداخت</a>
+    </div>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => alert("مبلغ کپی شد!"))
+                .catch(err => alert("خطا در کپی مبلغ: " + err));
+        }
+    </script>
+`;
+
+
 const awaiting_support_review_form = `
         <form id="model_information_modal">
           <div class="mb-3">
@@ -56,16 +78,16 @@ const fixedRegistryStatus = (status) => {
     }
 }
 
-const fixedRegistryButton = (status, id) => {
+const fixedRegistryButton = (status, id, isSupporter) => {
     switch (status) {
-        case 1:
+        case 1 & isSupporter:
             return `<button id="model_information-${id}" class="btn btn-outline-primary">اعلام مدل</button>`;
         case 2:
             return `<button id="price-${id}" class="btn btn-outline-info paymentPrice" disabled="disabled">میخواهم پرداخت کنم</button>`;
     }
 }
 
-function generateRegistryAdminItem(item) {
+function generateRegistryAdminItem(item, isSupporter = false) {
     return `<div class="d-flex align-items-center border-bottom py-3">
                     <div class="w-100">
                           <div class="d-flex justify-content-between">
@@ -80,7 +102,7 @@ function generateRegistryAdminItem(item) {
                                   <p class="text-body mb-2"><span class="text-muted tx-13">تاریخ ثبت : </span>${new Date(item.createDate).toLocaleString("fa-IR")}</p>
                                 </div>
                                 <div id="model_information-btn-${item.id}">
-                                  ${fixedRegistryButton(item.status, item.id)}                             
+                                  ${fixedRegistryButton(item.status, item.id, isSupporter)}                             
                                 </div>
                           </div>
                     </div>
@@ -106,6 +128,8 @@ $(document).ready(async function (e) {
     await main.showLoading();
     await ready;
 
+    let supporter = await registry.getRegistryApi("Authorization/has-permission/supporter");
+
     const modals = {
         awaiting_support_review: {
             name: "awaiting-support-review", title: "اعلام مدل", body: awaiting_support_review_form
@@ -120,20 +144,20 @@ $(document).ready(async function (e) {
 
     await paymentConnection.on("PaymentUpdated", async (registry) => {
         await main.hiddenLoading();
-        modals.show_price_and_link.body = `<h1>${registry.price}</h1>`
+        modals.show_price_and_link.body = payment_information(registry.price, registry.paymentLink);
         main.generateModal(modals.show_price_and_link.name, modals.show_price_and_link.title, modals.show_price_and_link.body);
+        $("#show_price_and_link-modal").css("z-index", 99999999999999);
     })
 
     let current_page = 1;
     let registries_container = $("#registries-container");
 
     async function loadRegistries(page) {
-        let data = await registry.getRegistryApi("RejectionReasons/predefined");
-        let supporter = await registry.getRegistryApi("Authorization/has-permission/supporter");
+        // let data = await registry.getRegistryApi("RejectionReasons/predefined");
         let {entities} = await registry.getRegistryApi(`${supporter ? 'Registry/get-all' : 'Registry'}?page=${page}`, false);
 
         await $.each(entities, async function (index, registry) {
-            registries_container.append(generateRegistryAdminItem(registry));
+            registries_container.append(generateRegistryAdminItem(registry, supporter));
 
             $(`#model_information-${registry.id}`).on("click", async function (e) {
                 main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
@@ -144,25 +168,26 @@ $(document).ready(async function (e) {
 
                 let dropdown = $('#selected-form');
 
-                data.forEach(item => {
-                    dropdown.append(`<option value="${item.id}">${item.reason}</option>`);
-                });
+                // data.forEach(item => {
+                //     dropdown.append(`<option value="${item.id}">${item.reason}</option>`);
+                // });
 
                 await submit_model_information_modal();
             });
         });
 
         let supporters = await supporterOnlineConnection.invoke('GetOnlineSupporterAsync');
+
         $(".paymentPrice").prop("disabled", supporters.length === 0);
 
         $(".paymentPrice").on("click", async function (e) {
             const id = +e.target.id.split("-")[1];
             const registry_box = $(`#registry-box-${id}`);
             let imeI_1 = registry_box.find('[id^="imei-1-"]')[0].id.split("-")[2];
-            let imeI_2 = registry_box.find('[id^="imei-2-"]')[0].id.split("-")[2];
-            let summery = $(`#summery-${id}`).html();
-            let forWho = $(`#forWho-${id}`).html();
-            let model = $(`#model-${id}`).html();
+            let imeI_2 = registry_box.find('[id^="imei-2-"]')[0].id.split("-")[2] || null;
+            let summery = $(`#summery-${id}`).html() || null;
+            let forWho = $(`#forWho-${id}`).html() || null;
+            let model = $(`#model-${id}`).html() || null;
             let phone = registry_box.find('[id^="phone-"]')[0].id.split("-")[1];
 
             const data = {
@@ -170,11 +195,7 @@ $(document).ready(async function (e) {
             };
 
             await main.notificationMessage(
-                "در حال بررسی قیمت...",
-                "لطفاً تا زمان اعلام قیمت منتظر بمانید. در صورت ترک این صفحه، ممکن است قیمت نهایی اعلام نشود.",
-                main.infoTheme,
-                360000,
-                false);
+                "در حال بررسی قیمت...", "لطفاً تا زمان اعلام قیمت منتظر بمانید. در صورت ترک این صفحه، ممکن است قیمت نهایی اعلام نشود.", main.infoTheme, 360000, false);
             await main.showLoading();
             await registry.registerPayment(data);
         });

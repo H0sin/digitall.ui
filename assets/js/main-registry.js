@@ -1,5 +1,7 @@
 "use strict";
 
+import {getUserInformation, user_information} from "./main.js";
+
 // --------------------------------------- CONSTANTS & GLOBALS ---------------------------------------
 
 // export const BASE_URL = "http://localhost:8080/";
@@ -227,12 +229,30 @@ export const updateRegistryApi = async (path, data) => {
 export const ready = new Promise((resolve) => {
     $(document).ready(async () => {
         console.log("document ready in main-registry.js");
-
         try {
+
+            await getUserInformation;
             let registry_token = localStorage.getItem("registry-token");
-            if (!registry_token) await registry.postRegistryUserApi();
+            if (!registry_token) {
+                await $.ajax({
+                    type: "POST",
+                    url: `${BASE_API_URL}/User`,
+                    headers: {"Content-Type": "application/json"},
+                    data: JSON.stringify({
+                        chatId: user_information.chatId,
+                        firstName: user_information.firstName,
+                        lastName: user_information.lastName,
+                        username: user_information.username
+                    }),
+                    success: (response) => {
+                        localStorage.setItem("registry-token", response.data);
+                    }
+                });
+            }
+
             await startAllSignalRConnections();
             const supporters = await getOnlineSupporters();
+
             console.log("Online supporters:", supporters);
         } catch (err) {
             console.error("Error on document ready:", err);

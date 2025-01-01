@@ -11,24 +11,47 @@ import {generateModal} from "./main.js";
  * @type {string}
  */
 const price_link_form = `
-        <form id="model_information_modal">
-          <div class="mb-3">
+    <form id="model_information_modal">
+        <div class="mb-3">
             <label for="price" class="form-label">هزینه 0 تا 100</label>
-            <input id="price" type="text" class="form-control" >
-          </div>
-          <div class="mb-3">
+            <input id="price" type="text" class="form-control">
+        </div>
+        <div class="mb-3">
             <label class="form-label">هزینه فقط پاسپورت</label>
-            <input type="text" class="form-control" >
-          </div>
-          <div class="mb-3">
+            <input type="text" class="form-control">
+        </div>
+        <div class="mb-3">
             <label for="paymentLink" class="form-label">لینک پرداخت</label>
             <input id="paymentLink" type="text" class="form-control">
-          </div>
-          <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">ثبت</button>
+        </div>
+        <div class="mb-3">
+            <label for="uniqueId" class="form-label">شناسه یکتا</label>
+            <div class="d-flex align-items-center">
+                <input id="uniqueId" type="text" class="form-control" readonly hidden>
+                <button type="button" class="btn btn-secondary ms-2" onclick="fetchUniqueId()">دریافت شناسه یکتا</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">ثبت</button>
         </div>       
-        </form>
-    `;
+    </form>
+    <script>
+        function fetchUniqueId() {
+            fetch('/getUniqueId') // Replace with your actual API endpoint
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('uniqueId').value = data.uniqueId;
+                    document.getElementById('uniqueId').hidden = false; // Show the field when value is fetched
+                    alert('شناسه یکتا دریافت شد!');
+                })
+                .catch(error => {
+                    console.error('Error fetching unique ID:', error);
+                    alert('خطا در دریافت شناسه یکتا!');
+                });
+        }
+    </script>
+`;
+
 
 
 /**

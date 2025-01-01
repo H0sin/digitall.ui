@@ -39,7 +39,7 @@ export const infoTheme = "info";
 export const warningTitle = "پیغام هشدار";
 export const warningTheme = "warning";
 
-export function notificationMessage(title, text, theme,showDuration = 4000,closeOnClick = true) {
+export function notificationMessage(title, text, theme, showDuration = 4000, closeOnClick = true) {
     window.createNotification({
         closeOnClick,
         displayCloseButton: false,
@@ -302,19 +302,20 @@ async function loadNotificaciones() {
     notification_container.append(notifications);
 }
 
-export async function getUserInformation() {
-    await getDigitallApi("/User/GetInformation", false).then((data) => {
-        user_information = data
-    });
 
+export const getUserInformation = new Promise(async resolve => {
+
+    user_information = await getDigitallApi("/User/GetInformation", false);
     $("#fullName").html(" نام کاربری :" + " " + fullName(user_information));
     $("#balance").html("موجودی : " + (user_information.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "));
     $("#bot_name").html(user_information.botName.replace("bot", "<span class='px-1'> Bot</span>"));
     $("#bot_name").attr("href", user_information.botLink);
-    feather.replace();
-}
+    // feather.replace();
+
+    resolve();
+});
 
 $(document).ready(async function () {
-    await getUserInformation();
+    await getUserInformation;
     await loadNotificaciones();
 });
