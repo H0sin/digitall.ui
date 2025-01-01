@@ -1,7 +1,7 @@
 "use strict";
 
 import * as main from "./main.js";
-import {paymentConnection, startAllSignalRConnections,ready} from "./main-registry.js";
+import {paymentConnection, startAllSignalRConnections, ready, confirmPayment} from "./main-registry.js";
 import {generateModal} from "./main.js";
 
 
@@ -12,18 +12,17 @@ import {generateModal} from "./main.js";
  */
 const price_link_form = `
         <form id="model_information_modal">
-          <input type="hidden">
           <div class="mb-3">
-            <label class="form-label">هزینه 0 تا 100</label>
+            <label for="price" class="form-label">هزینه 0 تا 100</label>
+            <input id="price" type="text" class="form-control" >
+          </div>
+          <div class="mb-3">
+            <label class="form-label">هزینه فقط پاسپورت</label>
             <input type="text" class="form-control" >
           </div>
           <div class="mb-3">
-            <label  class="form-label">هزینه فقط پاسپورت</label>
-            <input type="text" class="form-control" >
-          </div>
-          <div class="mb-3">
-            <label  class="form-label">لینک پرداخت</label>
-            <input type="text" class="form-control">
+            <label for="paymentLink" class="form-label">لینک پرداخت</label>
+            <input id="paymentLink" type="text" class="form-control">
           </div>
           <div class="modal-footer">
           <button type="submit" class="btn btn-primary">ثبت</button>
@@ -124,7 +123,10 @@ $(document).ready(async () => {
     //Modal Object
     const modals = {
         price_link_form_modal: {
-            name: "price_and_link_form_modal", title: "اعلام اطلاعات پرداخت", body: price_link_form
+            name: "price_and_link_form_modal",
+            title: "اعلام اطلاعات پرداخت",
+            body: price_link_form,
+            form_id: "#model_information_modal"
         }
     }
 
@@ -137,37 +139,54 @@ $(document).ready(async () => {
     const registriesContainer = $("#registries-container");
 
 
-
     /// get registries items
-    if (paymentConnection) {
 
-        let registries = await paymentConnection.invoke('GetAllRegistries');
-        await $.each(registries, async function (index, registry) {
-            registriesContainer.append(generateRegistryAdminItem(registry));
-        });
 
-        /**
-         * Listen for PaymentRegistered events from the PaymentHub connection.
-         * Whenever a new payment is registered, log to console and optionally append it to the DOM.
-         */
-        paymentConnection.on("PaymentRegistered", (payment) => {
-            console.log("پرداخت ثبت شد:", payment);
-            // If you want to show this new payment in the admin list, uncomment:
-            registriesContainer.append(generateRegistryAdminItem(payment));
+    let registries = await paymentConnection.invoke('GetAllRegistries');
+    await $.each(registries, async function (index, payment) {
+        registriesContainer.append(generateRegistryAdminItem(payment));
 
-            // Set Event
-            $(`#price-${payment.id}`).click(function (e) {
-                generateModal(modals.price_link_form_modal.name, modals.price_link_form_modal.title, modals.price_link_form_modal.body);
-                $(`#model_information_modal > input[type='hidden']`).val(payment.id);
-            });
-        });
+        // Set Event
+        bindClickEventsToRegistries(payment.id);
+    });
 
-        paymentConnection.on("PaymentUpdated", (payment) => {
-            // Remove From Ui
-            $(`#registry-container-${payment.id}`).remove();
-        });
-    }
+    /**
+     * Listen for PaymentRegistered events from the PaymentHub connection.
+     * Whenever a new payment is registered, log to console and optionally append it to the DOM.
+     */
+    paymentConnection.on("PaymentRegistered", (payment) => {
+        // If you want to show this new payment in the admin list, uncomment:
+        registriesContainer.append(generateRegistryAdminItem(payment));
+
+        // Set Event
+        bindClickEventsToRegistries(payment.id);
+    });
+
+    paymentConnection.on("PaymentUpdated", (payment) => {
+        // Remove From Ui
+        $(`#registry-container-${payment.id}`).remove();
+    });
+
 
     // Hide the loading indicator when everything is set up
     await main.hiddenLoading();
+
+
+    // Utilities
+    function bindClickEventsToRegistries(id) {
+        $(`#price-${id}`).click(function (e) {
+            generateModal(modals.price_link_form_modal.name, modals.price_link_form_modal.title, modals.price_link_form_modal.body);
+
+            let form = $(modals.price_link_form_modal.form_id);
+
+            // submit form
+            form.submit(async function (e) {
+                e.preventDefault();
+                let price = $('#price').val();
+                let paymentLink = $('#paymentLink').val();
+                await confirmPayment(id, +price, paymentLink);
+            });
+        });
+    }
+
 });
