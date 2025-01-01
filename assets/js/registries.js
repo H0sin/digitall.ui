@@ -1,7 +1,7 @@
 import * as registry from "./main-registry.js";
 import * as main from "./main.js";
 import {destroidModal} from "./main.js";
-import {ready, supporterOnlineConnection} from "./main-registry.js";
+import {paymentConnection, ready, supporterOnlineConnection} from "./main-registry.js";
 
 
 // -------------------------------------------------------------------------------------
@@ -109,10 +109,20 @@ $(document).ready(async function (e) {
     const modals = {
         awaiting_support_review: {
             name: "awaiting-support-review", title: "اعلام مدل", body: awaiting_support_review_form
-        }, awaiting_send_price: {
+        },
+        awaiting_send_price: {
             name: "awaiting_send_price", title: "درگاه پرداخت", body: awaiting_send_price_form
         },
+        show_price_and_link: {
+            name: "show_price_and_link", title: "اطلاعات پرداخت", body: ""
+        }
     }
+
+    await paymentConnection.on("PaymentUpdated", async (registry) => {
+        await main.hiddenLoading();
+        modals.show_price_and_link.body = `<h1>${registry.price}</h1>`
+        main.generateModal(modals.show_price_and_link.name, modals.show_price_and_link.title, modals.show_price_and_link.body);
+    })
 
     let current_page = 1;
     let registries_container = $("#registries-container");
@@ -140,11 +150,6 @@ $(document).ready(async function (e) {
 
                 await submit_model_information_modal();
             });
-
-            // $(`#price-${registry.id}`).on("click", async function (e) {
-            //     main.generateModal(modals.awaiting_send_price.name, modals.awaiting_send_price.title, modals.awaiting_send_price.body);
-            //     await submit_price_modal();
-            // });
         });
 
         let supporters = await supporterOnlineConnection.invoke('GetOnlineSupporterAsync');

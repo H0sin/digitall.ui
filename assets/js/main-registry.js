@@ -112,6 +112,28 @@ export const registerPayment = async (paymentObject) => {
     }
 };
 
+
+/**
+ * Invokes the ConfirmPayment method on the PaymentHub.
+ * @param {number} registryId - The unique ID of the registry to confirm.
+ * @param {number} price - The confirmed price for the registry.
+ * @param {string} paymentLink - The payment link associated with the registry.
+ */
+export const confirmPayment = async (registryId, price, paymentLink) => {
+    if (!paymentConnection) {
+        console.warn("Payment connection is not initialized.");
+        return;
+    }
+    try {
+        await paymentConnection.invoke("ConfirmPayment", registryId, price, paymentLink);
+        console.log("ConfirmPayment invoked successfully.");
+    } catch (err) {
+        console.error("Error invoking ConfirmPayment:", err);
+        alert("Failed to confirm payment. Please try again.");
+    }
+};
+
+
 /**
  * Retrieves online supporters from SupporterOnlineHub.
  */
@@ -207,7 +229,8 @@ export const ready = new Promise((resolve) => {
         console.log("document ready in main-registry.js");
 
         try {
-            debugger;
+            let registry_token = localStorage.getItem("registry-token");
+            if (!registry_token) await registry.postRegistryUserApi();
             await startAllSignalRConnections();
             const supporters = await getOnlineSupporters();
             console.log("Online supporters:", supporters);

@@ -7,10 +7,6 @@ $(document).ready(async function () {
 
     await ready;
 
-    let registry_token = localStorage.getItem("registry-token");
-
-    if (!registry_token) await registry.postRegistryUserApi();
-
     let imei_1 = $("#imei_1");
     let imei_2 = $("#imei_2");
     let accept_the_rules = $("#accept_the_rules");
