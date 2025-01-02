@@ -1,9 +1,8 @@
 "use strict";
 
 import * as main from "./main.js";
-import {paymentConnection, startAllSignalRConnections, ready, confirmPayment} from "./main-registry.js";
+import {getRegistryApi, paymentConnection, startAllSignalRConnections, ready, confirmPayment} from "./main-registry.js";
 import {generateModal} from "./main.js";
-
 
 // -------------------------------------------------------------------------------------
 /**
@@ -11,47 +10,32 @@ import {generateModal} from "./main.js";
  * @type {string}
  */
 const price_link_form = `
-    <form id="model_information_modal">
-        <div class="mb-3">
-            <label for="price" class="form-label">هزینه 0 تا 100</label>
-            <input id="price" type="text" class="form-control">
+  <form id="model_information_modal">
+    <div class="mb-3">
+        <label for="price" class="form-label">هزینه 0 تا 100</label>
+        <input id="price" type="text" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">هزینه فقط پاسپورت</label>
+        <input type="text" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="paymentLink" class="form-label">لینک پرداخت</label>
+        <input id="paymentLink" type="text" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="uniqueId" class="form-label">شناسه یکتا</label>
+        <div class="d-flex align-items-center">
+            <input id="uniqueId" type="text" class="form-control" readonly hidden>
+            <button type="button" class="btn btn-secondary ms-2" id="fetchUniqueId">دریافت شناسه یکتا</button>
         </div>
-        <div class="mb-3">
-            <label class="form-label">هزینه فقط پاسپورت</label>
-            <input type="text" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="paymentLink" class="form-label">لینک پرداخت</label>
-            <input id="paymentLink" type="text" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="uniqueId" class="form-label">شناسه یکتا</label>
-            <div class="d-flex align-items-center">
-                <input id="uniqueId" type="text" class="form-control" readonly hidden>
-                <button type="button" class="btn btn-secondary ms-2" onclick="fetchUniqueId()">دریافت شناسه یکتا</button>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">ثبت</button>
-        </div>       
-    </form>
-    <script>
-        function fetchUniqueId() {
-            fetch('/getUniqueId') // Replace with your actual API endpoint
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('uniqueId').value = data.uniqueId;
-                    document.getElementById('uniqueId').hidden = false; // Show the field when value is fetched
-                    alert('شناسه یکتا دریافت شد!');
-                })
-                .catch(error => {
-                    console.error('Error fetching unique ID:', error);
-                    alert('خطا در دریافت شناسه یکتا!');
-                });
-        }
-    </script>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">ثبت</button>
+        <button type="button" class="btn btn-danger ms-2" onclick="rejectRequest()">رد درخواست</button>
+    </div>       
+</form>
 `;
-
 
 
 /**
@@ -202,14 +186,20 @@ $(document).ready(async () => {
 
             let form = $(modals.price_link_form_modal.form_id);
 
+            $("#fetchUniqueId").click(async function (e) {
+                let uniqueId = await getRegistryApi(`Registry/SendUniqueId/${id}`);
+                $('#uniqueId').val(uniqueId);
+                $('#uniqueId').attr("hidden", false);
+            });
+
             // submit form
             form.submit(async function (e) {
                 e.preventDefault();
+
                 let price = $('#price').val();
                 let paymentLink = $('#paymentLink').val();
                 await confirmPayment(id, +price, paymentLink);
             });
         });
     }
-
 });
