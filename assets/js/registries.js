@@ -102,7 +102,7 @@ function generateRegistryAdminItem(item, isSupporter = false) {
                                   <p class="text-body mb-2"><span class="text-muted tx-13">تاریخ ثبت : </span>${new Date(item.createDate).toLocaleString("fa-IR")}</p>
                                 </div>
                                 <div id="model_information-btn-${item.id}">
-                                  ${fixedRegistryButton(item.status, item.id, isSupporter)}                             
+                                  ${fixedRegistryButton(item.status, item.id, isSupporter) || ""}                             
                                 </div>
                           </div>
                     </div>
