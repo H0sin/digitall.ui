@@ -143,6 +143,7 @@ $(document).ready(async function (e) {
     }
 
     await paymentConnection.on("PaymentUpdated", async (registry) => {
+        debugger;
         await main.hiddenLoading();
         modals.show_price_and_link.body = payment_information(registry.price, registry.paymentLink);
         main.generateModal(modals.show_price_and_link.name, modals.show_price_and_link.title, modals.show_price_and_link.body);

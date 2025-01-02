@@ -230,7 +230,6 @@ export const ready = new Promise((resolve) => {
     $(document).ready(async () => {
         console.log("document ready in main-registry.js");
         try {
-
             await getUserInformation;
             let registry_token = localStorage.getItem("registry-token");
             if (!registry_token) {
