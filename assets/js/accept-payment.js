@@ -3,7 +3,8 @@ import {postRegistryApi, updateRegistryApi} from "./main-registry.js";
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
     const params = new URLSearchParams(url.search);
-    await updateRegistryApi(`Registry/AcceptPayment/${params.get(unique)}`);
+    const unique = params.get('unique');
+    await updateRegistryApi(`Registry/AcceptPayment/${unique}`);
 
     setInterval(async function () {
         window.location.href = "registries.html";
