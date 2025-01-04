@@ -1,8 +1,15 @@
 "use strict";
 
 import * as main from "./main.js";
-import {getRegistryApi, paymentConnection, startAllSignalRConnections, ready, confirmPayment} from "./main-registry.js";
-import {generateModal} from "./main.js";
+import {
+    getRegistryApi,
+    paymentConnection,
+    startAllSignalRConnections,
+    ready,
+    confirmPayment,
+    cancelPayment
+} from "./main-registry.js";
+import {generateModal, hiddenLoading, hiddenModal,destroidModal} from "./main.js";
 
 // -------------------------------------------------------------------------------------
 /**
@@ -27,16 +34,17 @@ const price_link_form = `
         <label for="uniqueId" class="form-label">شناسه یکتا</label>
         <div class="d-flex align-items-center">
             <input id="uniqueId" type="text" class="form-control" readonly hidden>
-            <button type="button" class="btn btn-secondary ms-2" id="fetchUniqueId">دریافت شناسه یکتا</button>
+            <button type="button" class="btn btn-secondary ms-2" id="successLink">پرداخت موفق</button>
+            <button type="button" class="btn btn-danger ms-2" id="dangerLink">پرداخت ناموفق</button>
         </div>
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">ثبت</button>
-        <button type="button" class="btn btn-danger ms-2" onclick="rejectRequest()">رد درخواست</button>
+        <button type="button" class="btn btn-danger ms-2" id="reject_payment">رد درخواست</button>
     </div>       
 </form>
 `;
-
+// <input id="uniqueId" type="text" className="form-control" readOnly hidden/>
 
 /**
  * Returns an HTML badge representing the registry status.
@@ -145,9 +153,7 @@ $(document).ready(async () => {
     // Grab the container where registry items will be appended
     const registriesContainer = $("#registries-container");
 
-
     /// get registries items
-
 
     let registries = await paymentConnection.invoke('GetAllRegistries');
     await $.each(registries, async function (index, payment) {
@@ -161,12 +167,13 @@ $(document).ready(async () => {
      * Listen for PaymentRegistered events from the PaymentHub connection.
      * Whenever a new payment is registered, log to console and optionally append it to the DOM.
      */
-    paymentConnection.on("PaymentRegistered", (payment) => {
+    paymentConnection.on("PaymentRegistered", async (payment) => {
         // If you want to show this new payment in the admin list, uncomment:
         registriesContainer.append(generateRegistryAdminItem(payment));
 
         // Set Event
         bindClickEventsToRegistries(payment.id);
+
     });
 
     paymentConnection.on("PaymentUpdated", (payment) => {
@@ -181,24 +188,34 @@ $(document).ready(async () => {
 
     // Utilities
     function bindClickEventsToRegistries(id) {
-        $(`#price-${id}`).click(function (e) {
+        $(`#price-${id}`).click(async function (e) {
             generateModal(modals.price_link_form_modal.name, modals.price_link_form_modal.title, modals.price_link_form_modal.body);
 
             let form = $(modals.price_link_form_modal.form_id);
+            let uniqueId = await getRegistryApi(`Registry/SendUniqueId/${id}`);
 
-            $("#fetchUniqueId").click(async function (e) {
-                let uniqueId = await getRegistryApi(`Registry/SendUniqueId/${id}`);
-                $('#uniqueId').val(uniqueId);
-                $('#uniqueId').attr("hidden", false);
+            $("#reject_payment").on("click", async function () {
+                await cancelPayment(id);
+                await destroidModal("price_and_link_form_modal");
+            })
+
+            $("#successLink").click(function (e) {
+                navigator.clipboard.writeText("https://digitalldns.com/registry/accept-payment.html?unique=" + uniqueId);
+                alert("با موفقیت کپی شد");
             });
 
-            // submit form
+            $("#dangerLink").click(function (e) {
+                navigator.clipboard.writeText("https://digitalldns.com/registry/reject-payment.html?unique=" + uniqueId);
+                alert("با موفقیت کپی شد")
+            });
+
             form.submit(async function (e) {
                 e.preventDefault();
 
                 let price = $('#price').val();
                 let paymentLink = $('#paymentLink').val();
                 await confirmPayment(id, +price, paymentLink);
+                await destroidModal("price_and_link_form_modal");
             });
         });
     }

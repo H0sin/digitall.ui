@@ -1,6 +1,6 @@
 "use strict";
 
-import {getUserInformation, user_information} from "./main.js";
+import {autoNotification, getUserInformation, user_information} from "./main.js";
 
 // --------------------------------------- CONSTANTS & GLOBALS ---------------------------------------
 
@@ -9,7 +9,7 @@ export const BASE_URL = "https://dev.samanii.com/";
 export const BASE_API_URL = `${BASE_URL}api`;
 export const HUB_SUPPORTER_ONLINE_URL = `${BASE_URL}supporterOnlineHub`;
 export const HUB_PAYMENT_URL = `${BASE_URL}paymentHub`;
-
+export let supporter;
 export let paymentConnection = null;
 export let supporterOnlineConnection = null;
 let isConnecting = false;
@@ -136,6 +136,21 @@ export const confirmPayment = async (registryId, price, paymentLink) => {
 };
 
 
+export const cancelPayment = async (registryId) => {
+    if (!paymentConnection) {
+        console.warn("Payment connection is not initialized.");
+        return;
+    }
+    try {
+        await paymentConnection.invoke("CancelPayment", registryId);
+        console.log("CancelPayment invoked successfully.");
+    } catch (err) {
+        console.error("Error invoking CancelPayment:", err);
+        alert("Failed to cancel payment. Please try again.");
+    }
+};
+
+
 /**
  * Retrieves online supporters from SupporterOnlineHub.
  */
@@ -173,7 +188,7 @@ export const postRegistryApi = async (path, data, fire = true) => {
                 "Content-Type": "application/json",
             },
         });
-        if (fire) console.log("Success:", response);
+        if (fire) autoNotification(response.statusCode, response.isSuccess, response.message);
         return response.data;
     } catch (err) {
         console.error("Error in POST:", err);
@@ -206,7 +221,7 @@ export const getRegistryApi = async (path) => {
  * @param {string} path - API endpoint path.
  * @param {object} data - Data to update.
  */
-export const updateRegistryApi = async (path, data) => {
+export const updateRegistryApi = async (path, data,fire = true) => {
     try {
         const response = await $.ajax({
             type: "PUT",
@@ -217,6 +232,7 @@ export const updateRegistryApi = async (path, data) => {
                 "Content-Type": "application/json",
             },
         });
+        if (fire) autoNotification(response.statusCode, response.isSuccess, response.message);
         return response.data;
     } catch (err) {
         console.error("Error in PUT:", err);
@@ -230,9 +246,15 @@ export const ready = new Promise((resolve) => {
     $(document).ready(async () => {
         console.log("document ready in main-registry.js");
         try {
-
             await getUserInformation;
+
+
+            supporter = await getRegistryApi("Authorization/has-permission/supporter");
+            $("#nav-container").append(supporter ? `<li class="nav-item"><a class="nav-link" href="./supporter-registry.html">پشتیبانی</a></li>` : "");
+            if (window.location.href.indexOf("supporter-registry") > -1) $("li > a[href='./supporter-registry.html']").addClass("active");
+
             let registry_token = localStorage.getItem("registry-token");
+
             if (!registry_token) {
                 await $.ajax({
                     type: "POST",

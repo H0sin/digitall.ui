@@ -1,7 +1,7 @@
 import * as registry from "./main-registry.js";
 import * as main from "./main.js";
-import {destroidModal} from "./main.js";
-import {paymentConnection, ready, supporterOnlineConnection} from "./main-registry.js";
+import {destroidModal, errorTheme, errorTitle, notificationMessage, warningTheme, warningTitle} from "./main.js";
+import {paymentConnection, ready, supporterOnlineConnection, supporter} from "./main-registry.js";
 
 
 // -------------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ const fixedRegistryStatus = (status) => {
             return `<span class="badge bg-primary">در انتظار برسی پشتیبان</span>`;
 
         case 2:
-            return `<span class="badge bg-info">در انتظار ارسال فایل</span>`;
+            return `<span class="badge bg-info">در انتظار پرداخت</span>`;
     }
 }
 
@@ -88,7 +88,8 @@ const fixedRegistryButton = (status, id, isSupporter) => {
 }
 
 function generateRegistryAdminItem(item, isSupporter = false) {
-    return `<div class="d-flex align-items-center border-bottom py-3">
+    return `<a href="../../digitall.ui/registry/registry-information.html">
+<div class="d-flex align-items-center border-bottom py-3">
                     <div class="w-100">
                           <div class="d-flex justify-content-between">
                                 <div id="registry-box-${item.id}">
@@ -101,12 +102,14 @@ function generateRegistryAdminItem(item, isSupporter = false) {
                                   ${item.phone ? `<p class="text-body" id="phone-${item.phone}"><span class="text-muted tx-13">شماره : </span>${item.phone}</p>  ` : ""}   
                                   <p class="text-body mb-2"><span class="text-muted tx-13">تاریخ ثبت : </span>${new Date(item.createDate).toLocaleString("fa-IR")}</p>
                                 </div>
+                                </a> 
                                 <div id="model_information-btn-${item.id}">
                                   ${fixedRegistryButton(item.status, item.id, isSupporter) || ""}                             
                                 </div>
                           </div>
                     </div>
-                </div>`;
+                </div>
+               `;
 }
 
 function generateRegistryItem(item) {
@@ -128,8 +131,6 @@ $(document).ready(async function (e) {
     await main.showLoading();
     await ready;
 
-    let supporter = await registry.getRegistryApi("Authorization/has-permission/supporter");
-
     const modals = {
         awaiting_support_review: {
             name: "awaiting-support-review", title: "اعلام مدل", body: awaiting_support_review_form
@@ -143,10 +144,16 @@ $(document).ready(async function (e) {
     }
 
     await paymentConnection.on("PaymentUpdated", async (registry) => {
-        await main.hiddenLoading();
-        modals.show_price_and_link.body = payment_information(registry.price, registry.paymentLink);
-        main.generateModal(modals.show_price_and_link.name, modals.show_price_and_link.title, modals.show_price_and_link.body);
-        $("#show_price_and_link-modal").css("z-index", 99999999999999);
+        await main.hideNotificationMessage();
+        debugger;
+        if (registry.status != 2) {
+            await main.hiddenLoading();
+            await notificationMessage(warningTitle, "با عرض پوزش درخواست شما رد شده لطفا دوباره برای پرداخت درخواست بدهید", warningTheme);
+        } else if (registry.status == 2) {
+            modals.show_price_and_link.body = payment_information(registry.price, registry.paymentLink);
+            main.generateModal(modals.show_price_and_link.name, modals.show_price_and_link.title, modals.show_price_and_link.body);
+            $("#show_price_and_link-modal").css("z-index", 99999999999999);
+        }
     })
 
     let current_page = 1;
@@ -184,11 +191,11 @@ $(document).ready(async function (e) {
             const id = +e.target.id.split("-")[1];
             const registry_box = $(`#registry-box-${id}`);
             let imeI_1 = registry_box.find('[id^="imei-1-"]')[0].id.split("-")[2];
-            let imeI_2 = registry_box.find('[id^="imei-2-"]')[0].id.split("-")[2] || null;
+            let imeI_2 = registry_box.find('[id^="imei-2-"]')[0]?.id?.split("-")[2] || null;
             let summery = $(`#summery-${id}`).html() || null;
             let forWho = $(`#forWho-${id}`).html() || null;
             let model = $(`#model-${id}`).html() || null;
-            let phone = registry_box.find('[id^="phone-"]')[0].id.split("-")[1];
+            let phone = registry_box.find('[id^="phone-"]')[0]?.id?.split("-")[1] || null;
 
             const data = {
                 id, imeI_1, imeI_2, summery, forWho, phone, model
@@ -204,57 +211,60 @@ $(document).ready(async function (e) {
 
     await loadRegistries(current_page);
 
+    // ----------------------------------------------- forms
+
+    async function submit_model_information_modal() {
+        await $("#model_information_modal").validate({
+            rules: {
+                model_phone: {
+                    required: true
+                },
+
+            }, messages: {
+                model_phone: {
+                    required: "مدل دستگاه نمیتواند خالی باشد ."
+                },
+            }, submitHandler: async function (form, event) {
+                event.preventDefault();
+
+                let hiddenInput = $(form).find('input.d-none');
+                let model = $(form).find('input#model-phone').val();
+                let id = hiddenInput.val();
+
+                let data = {model, id}
+
+                await registry.updateRegistryApi("Registry/Decision", data);
+                await loadRegistries(current_page);
+                main.destroidModal("awaiting-support-review");
+
+            }, errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+
+                if (element.parent('.input-group').length) {
+                    error.insertAfter(element.parent());
+                } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                    error.insertAfter(element.parent().parent());
+                } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                    error.appendTo(element.parent().parent());
+                } else {
+                    error.insertAfter(element);
+                }
+            }, highlight: function (element, errorClass) {
+                if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                    $(element).addClass("is-invalid").removeClass("is-valid");
+                }
+            }, unhighlight: function (element, errorClass) {
+                if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
+                    $(element).addClass("is-valid").removeClass("is-invalid");
+                }
+            }
+        });
+    }
+
     await main.hiddenLoading();
 });
 
 
-// ----------------------------------------------- forms
-
-async function submit_model_information_modal() {
-    await $("#model_information_modal").validate({
-        rules: {
-            model_phone: {
-                required: true
-            },
-
-        }, messages: {
-            model_phone: {
-                required: "مدل دستگاه نمیتواند خالی باشد ."
-            },
-        }, submitHandler: async function (form, event) {
-            event.preventDefault();
-
-            let hiddenInput = $(form).find('input.d-none');
-            let model = $(form).find('input#model-phone').val();
-            let id = hiddenInput.val();
-
-            let data = {model, id}
-
-            registry.updateRegistryApi("Registry/Decision", data);
-            main.destroidModal("awaiting-support-review");
-        }, errorPlacement: function (error, element) {
-            error.addClass("invalid-feedback");
-
-            if (element.parent('.input-group').length) {
-                error.insertAfter(element.parent());
-            } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-                error.insertAfter(element.parent().parent());
-            } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                error.appendTo(element.parent().parent());
-            } else {
-                error.insertAfter(element);
-            }
-        }, highlight: function (element, errorClass) {
-            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                $(element).addClass("is-invalid").removeClass("is-valid");
-            }
-        }, unhighlight: function (element, errorClass) {
-            if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-                $(element).addClass("is-valid").removeClass("is-invalid");
-            }
-        }
-    });
-}
 
 // async function submit_price_modal() {
 //     await $("#price_modal").validate({
