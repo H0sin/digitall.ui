@@ -75,6 +75,12 @@ const fixedRegistryStatus = (status) => {
 
         case 2:
             return `<span class="badge bg-info">در انتظار پرداخت</span>`;
+
+        case 3:
+            return `<span class="badge bg-danger">رد شده</span>`;
+
+        case 4:
+            return `<span class="badge bg-success">در صف عملیات</span>`;
     }
 }
 
@@ -88,10 +94,10 @@ const fixedRegistryButton = (status, id, isSupporter) => {
 }
 
 function generateRegistryAdminItem(item, isSupporter = false) {
-    return `<a href="../../digitall.ui/registry/registry-information.html">
-<div class="d-flex align-items-center border-bottom py-3">
+    return `<div class="d-flex align-items-center border-bottom py-3">
                     <div class="w-100">
                           <div class="d-flex justify-content-between">
+                          <a href="../../digitall.ui/registry/registry-information.html?id=${item.id}">
                                 <div id="registry-box-${item.id}">
                                   <p class="d-none" id="model-${item.id}">${item.model}</p>  
                                   <p class="d-none" id="forWho-${item.id}">${item.forWho}</p>
@@ -101,8 +107,8 @@ function generateRegistryAdminItem(item, isSupporter = false) {
                                   <p class="text-body mb-2"><span class="text-muted tx-13"> وضعیت : </span>${fixedRegistryStatus(item.status)}</p>
                                   ${item.phone ? `<p class="text-body" id="phone-${item.phone}"><span class="text-muted tx-13">شماره : </span>${item.phone}</p>  ` : ""}   
                                   <p class="text-body mb-2"><span class="text-muted tx-13">تاریخ ثبت : </span>${new Date(item.createDate).toLocaleString("fa-IR")}</p>
-                                </div>
-                                </a> 
+                                </div> 
+                          </a>
                                 <div id="model_information-btn-${item.id}">
                                   ${fixedRegistryButton(item.status, item.id, isSupporter) || ""}                             
                                 </div>
