@@ -86,17 +86,6 @@
 <script src="../assets/js/template.js"></script>
 <script src="../assets/js/dashboard-dark.js"></script>
 <script src="../assets/js/notifications.js"></script>
-<script type="module">
-    import {postRegistryApi} from "../assets/js/main-registry";
-
-    const currentUrl = window.location.href;
-    const uniqueId = currentUrl.split('/').pop();
-    await postRegistryApi(`Registry/AcceptPayment/${uniqueId}`);
-
-    setInterval(async function () {
-        window.location.href = "registries.html";
-    }, 4000)
-
-</script>
+<script type="module" src="../assets/js/accept-payment.js"></script>
 </body>
 </html>
