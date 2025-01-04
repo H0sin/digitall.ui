@@ -1,8 +1,15 @@
 "use strict";
 
 import * as main from "./main.js";
-import {getRegistryApi, paymentConnection, startAllSignalRConnections, ready, confirmPayment} from "./main-registry.js";
-import {generateModal} from "./main.js";
+import {
+    getRegistryApi,
+    paymentConnection,
+    startAllSignalRConnections,
+    ready,
+    confirmPayment,
+    cancelPayment
+} from "./main-registry.js";
+import {generateModal, hiddenLoading, hiddenModal,destroidModal} from "./main.js";
 
 // -------------------------------------------------------------------------------------
 /**
@@ -33,7 +40,7 @@ const price_link_form = `
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">ثبت</button>
-        <button type="button" class="btn btn-danger ms-2" onclick="rejectRequest()">رد درخواست</button>
+        <button type="button" class="btn btn-danger ms-2" id="reject_payment">رد درخواست</button>
     </div>       
 </form>
 `;
@@ -160,12 +167,13 @@ $(document).ready(async () => {
      * Listen for PaymentRegistered events from the PaymentHub connection.
      * Whenever a new payment is registered, log to console and optionally append it to the DOM.
      */
-    paymentConnection.on("PaymentRegistered", (payment) => {
+    paymentConnection.on("PaymentRegistered", async (payment) => {
         // If you want to show this new payment in the admin list, uncomment:
         registriesContainer.append(generateRegistryAdminItem(payment));
 
         // Set Event
         bindClickEventsToRegistries(payment.id);
+
     });
 
     paymentConnection.on("PaymentUpdated", (payment) => {
@@ -186,6 +194,11 @@ $(document).ready(async () => {
             let form = $(modals.price_link_form_modal.form_id);
             let uniqueId = await getRegistryApi(`Registry/SendUniqueId/${id}`);
 
+            $("#reject_payment").on("click", async function () {
+                await cancelPayment(id);
+                await destroidModal("price_and_link_form_modal");
+            })
+
             $("#successLink").click(function (e) {
                 navigator.clipboard.writeText("https://digitalldns.com/registry/accept-payment.html?unique=" + uniqueId);
                 alert("با موفقیت کپی شد");
@@ -202,6 +215,7 @@ $(document).ready(async () => {
                 let price = $('#price').val();
                 let paymentLink = $('#paymentLink').val();
                 await confirmPayment(id, +price, paymentLink);
+                await destroidModal("price_and_link_form_modal");
             });
         });
     }

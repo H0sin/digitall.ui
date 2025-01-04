@@ -52,6 +52,12 @@ export function notificationMessage(title, text, theme, showDuration = 4000, clo
     });
 }
 
+export function hideNotificationMessage() {
+    $('.ncf').fadeOut(300, function() {
+        $(this).remove();
+    });
+}
+
 export function autoNotification(statusCode, isSuccess, message) {
     if (statusCode == 0 && isSuccess) {
         notificationMessage(successTitle, message, successTheme);
@@ -287,7 +293,7 @@ async function generateNotificationItem(notification) {
 
 async function loadNotificaciones() {
     const notification_container = await $("#notification-container");
-
+// todo همه تراکنش ها 6 عدد درست شود
     const notifications = $(`<div class="dropdown-menu p-2" id="notifications" aria-labelledby="notificationDropdown"><div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom"><p>6 تراکنش جدید</p></div>`);
 
     let data = await getDigitallApi("/Notification/GetNotifications", false);

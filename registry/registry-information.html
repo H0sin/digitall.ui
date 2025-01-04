@@ -64,12 +64,9 @@
     </div>
     <div class="page-wrapper">
         <div class="page-content py-1" style="min-height:0">
-            <ul id="nav-container" class="nav nav-pills nav-fill pt-4">
+            <ul class="nav nav-pills nav-fill pt-4">
                 <li class="nav-item">
-                    <a class="nav-link" href="./registry.html">ثبت گوشی جدید</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./registries.html">لیست ثبتی ها</a>
+                    <p class="nav-link active">اطلاعات ثبت شده</p>
                 </li>
             </ul>
         </div>
@@ -78,31 +75,23 @@
                 <div class="col-xl-12 grid-margin grid-margin-xl-0 stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <div class="col-12 d-flex justify-content-between align-items-baseline mb-3">
-                                <select id="registry-status" class="form-select form-select-sm me-1">
-                                    <option value="1">منتظر برسی پشتیبان</option>
-                                    <option value="2">منتظر ارسال عکس</option>
-                                    <option selected value="null">همه وضعیت ها</option>
-                                </select>
-                                <div class="input-group">
-                                    <div class="input-group mt-3">
-                                        <input id="imei-filter" type="text" class="form-control form-control-sm"
-                                               placeholder="جستجو ...">
-                                        <div class="input-group-text" style="padding: 7px">
-                                            <i data-feather="search"></i>
-                                        </div>
-                                    </div>
+                            <h4 class=" mb-3"> اطلاعات </h4>
+                            <section class="row">
+                                <div class="col-12">
+                                    <p class="card-text">IMEI 1 : 123453278463724</p>
+                                    <p class="card-text">IMEI 2 : 123453278463724</p>
+                                    <p class="card-text">شماره ی درخواست دهنده : 89895213525</p>
+                                    <p class="card-text">تاریخ ثبت :</p>
+                                    <p class="card-text">مدل دستگاه :</p>
+                                    <p class="card-text">قیمت اعلام شده :</p>
+
                                 </div>
-                            </div>
-                            <div id="registries-container"
-                                 style="max-height: 65vh; overflow-x: hidden; overflow-y: auto"
-                                 class="col-12 d-flex flex-column">
-                            </div>
+                            </section>
                         </div>
                         <div class="row">
                             <div class="col stretch-card">
                                 <div class="col btn-group">
-                                    <a class="w-100 btn btn-primary" href="./index.html"
+                                    <a class="w-100 btn btn-primary" href="./registries.html"
                                        role="button">
                                         <i data-feather="x"></i>
                                         برگشت</a>
@@ -133,6 +122,6 @@
 <script src="../assets/js/dashboard-dark.js"></script>
 <script src="../assets/js/notifications.js"></script>
 <script type='module' src="../assets/js/main-registry.js"></script>
-<script type='module' src="../assets/js/supporter-registries.js"></script>
+<!--<script type='module' src="../assets/js/registry-information.js"></script>-->
 </body>
 </html>
