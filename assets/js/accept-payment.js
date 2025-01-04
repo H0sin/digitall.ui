@@ -1,6 +1,5 @@
+import {postRegistryApi} from "../assets/js/main-registry";
 (async function () {
-    import {postRegistryApi} from "../assets/js/main-registry";
-
     const currentUrl = window.location.href;
     const uniqueId = currentUrl.split('/').pop();
     await postRegistryApi(`Registry/AcceptPayment/${uniqueId}`);
