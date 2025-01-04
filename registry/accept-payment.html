@@ -6,33 +6,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5">
-<!--    <title></title>-->
-<!--    <link rel="stylesheet" href="../assets/fonts/feather-font/css/iconfont.css">-->
-<!--    <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">-->
-<!--    <link rel="stylesheet" href="../assets/css/demo4/style-rtl.min.css">-->
-
+    <meta name="author" content="NobleUI">
+    <meta name="keywords"
+          content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    <title></title>
+    <link rel="stylesheet" href="../assets/vendors/core/core.css">
+    <link rel="stylesheet" href="../assets/vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../assets/fonts/feather-font/css/iconfont.css">
+    <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../assets/css/demo4/style-rtl.min.css">
+    <link rel="stylesheet" href="../assets/css/notifications.css">
 </head>
-
 <body>
 <div class="main-wrapper">
-    <div class="page-wrapper"></div>
-    <div class="page-content d-flex align-items-center justify-content-between">
-        <div class="row">
-            <div class="col-xl-12 grid-margin grid-margin-xl-0 stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <h1>پرداخت شما با موفقیت انجام شد</h1>
-                    </div>
+    <div class="horizontal-menu">
+        <nav class="navbar top-navbar">
+            <div class="container">
+                <div class="navbar-content">
+                    <a id="bot_name" class="navbar-brand">
+                        <span>Bot</span>
+                    </a>
+                    <ul class="navbar-nav">
+                        <li id="notification-container" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="bell"></i>
+                                <div class="indicator">
+                                    <div class="circle">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="wd-30 ht-30 rounded-circle" src="../assets/images/faces/face7.jpg"
+                                     alt="profile">
+                            </a>
+                            <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
+                                <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
+                                    <div class="mb-3">
+                                        <img class="wd-80 ht-80 rounded-circle"
+                                             src="../assets/images/faces/face7.jpg" alt="">
+                                    </div>
+                                    <div class="text-center">
+                                        <p id="fullName" class="tx-16 fw-bolder"></p>
+                                        <p id="balance" class="tx-12 text-muted"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
+            </div>
+        </nav>
+    </div>
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="row">
+                <h1>پرداخت شما با موفقیت انجام شد</h1>
             </div>
         </div>
     </div>
-
+    <div id="loading-container" class="d-none"
+         style="height: 100vh;width: 100%;top: 0;position: fixed;z-index: 99999;background-color: rgba(0, 0, 0, .5);">
+        <div class="d-flex h-100 align-items-center justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">بارگزاری...</span>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="../assets/vendors/apexcharts/apexcharts.min.js"></script>
+<script src="../assets/vendors/core/core.js"></script>
+<script src="../assets/vendors/feather-icons/feather.min.js"></script>
+<script src="../assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+<script src="../assets/vendors/select2/select2.min.js"></script>
+<script src="../assets/js/template.js"></script>
+<script src="../assets/js/dashboard-dark.js"></script>
+<script src="../assets/js/notifications.js"></script>
 <script>
+    import {postRegistryApi} from "../assets/js/main-registry";
+
     const currentUrl = window.location.href;
-    const numericPart = currentUrl.split('/').pop();
-    console.log(numericPart);
+    const uniqueId = currentUrl.split('/').pop();
+    await postRegistryApi(`Registry/AcceptPayment/${uniqueId}`);
+
+    setInterval(async function () {
+        window.location.href = "registries.html";
+    }, 4000)
+
 </script>
 </body>
 </html>

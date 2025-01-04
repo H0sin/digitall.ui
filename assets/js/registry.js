@@ -86,7 +86,10 @@ $(document).ready(async function () {
             };
 
             await registry.postRegistryApi("Registry",data);
-            window.location.href = "registries.html";
+
+            setInterval(async function () {
+                window.location.href = "registries.html";
+            },1000)
 
             await main.hiddenLoading();
         },
