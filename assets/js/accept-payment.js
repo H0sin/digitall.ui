@@ -1,4 +1,4 @@
-import {postRegistryApi} from "../assets/js/main-registry.js";
+import {postRegistryApi} from "./main-registry.js";
 (async function () {
     const currentUrl = window.location.href;
     const uniqueId = currentUrl.split('/').pop();
