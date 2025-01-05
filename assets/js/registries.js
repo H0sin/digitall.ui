@@ -56,8 +56,8 @@ const awaiting_support_review_form = `
             </select>
             </div>
             <div class="mb-3">
-            <label type="text" for="text" class="form-label">توضیحات  : </label>
-          <textarea name="text" rows="15" class="form-control"></textarea>
+            <label for="additionalExplanation" class="form-label">توضیحات  : </label>
+            <textarea name="additionalExplanation" id="additionalExplanation"  rows="15" class="form-control"></textarea>
           </div>
           <div class="modal-footer">
           <button type="submit" class="btn btn-primary">ثبت</button>
@@ -83,21 +83,6 @@ const awaiting_send_price_form = `
 
 // -------------------------------------------------------------------------------------
 
-// const fixedRegistryStatus = (status) => {
-//     switch (status) {
-//         case 1:
-//             return `<span class="badge bg-primary">در انتظار برسی پشتیبان</span>`;
-//
-//         case 2:
-//             return `<span class="badge bg-info">در انتظار پرداخت</span>`;
-//
-//         case 3:
-//             return `<span class="badge bg-danger">رد شده</span>`;
-//
-//         case 4:
-//             return `<span class="badge bg-success">در صف عملیات</span>`;
-//     }
-// }
 
 const fixedRegistryButton = (status, id, isSupporter) => {
     switch (status) {
@@ -105,8 +90,11 @@ const fixedRegistryButton = (status, id, isSupporter) => {
             return `<button id="model_information-${id}" class="btn btn-outline-primary">اعلام مدل</button>`;
         case 2:
             return `<button id="price-${id}" class="btn btn-outline-info paymentPrice" disabled="disabled">میخواهم پرداخت کنم</button>`;
+        case 3:
+            return `<button id="edite-registry-${id}" class="btn btn-outline-danger">ویرایش اطلاعات</button>`;
     }
 }
+
 // todo creat modal
 function generateRegistryAdminItem(item, isSupporter = false) {
     return `<div class="d-flex align-items-center border-bottom py-3">
@@ -120,6 +108,8 @@ function generateRegistryAdminItem(item, isSupporter = false) {
                                   <p class="text-body" id="imei-1-${item.imeI_1}"><span class="text-muted tx-13">IMEI 1 : </span>${item.imeI_1}</p>
                                   ${item.imeI_2 ? `<p class="text-body" id="imei-2-${item.imeI_2}"><span class="text-muted tx-13">IMEI 2 : </span>${item.imeI_2}</p>` : ""}
                                   <p class="text-body mb-2"><span class="text-muted tx-13"> وضعیت : </span>${fixedRegistryStatus(item.status)}</p>
+                                  ${item.status == 3 ? `<p class="text-body mb-2"><span class="text-muted tx-13"> علت :</span>${item.reason}</p>` : ""}
+                                  ${(item.status == 3 && item.additionalExplanation != null) ? `<p class="text-body mb-2"><span class="text-muted tx-13"> توضیحات رد شده :</span>${item.additionalExplanation}</p>` : ""}
                                   ${item.phone ? `<p class="text-body" id="phone-${item.phone}"><span class="text-muted tx-13">شماره : </span>${item.phone}</p>  ` : ""}   
                                   <p class="text-body mb-2"><span class="text-muted tx-13">تاریخ ثبت : </span>${new Date(item.createDate).toLocaleString("fa-IR")}</p>
                                 </div> 
@@ -166,7 +156,6 @@ $(document).ready(async function (e) {
 
     await paymentConnection.on("PaymentUpdated", async (registry) => {
         await main.hideNotificationMessage();
-        debugger;
         if (registry.status != 2) {
             await main.hiddenLoading();
             await notificationMessage(warningTitle, "با عرض پوزش درخواست شما رد شده لطفا دوباره برای پرداخت درخواست بدهید", warningTheme);
@@ -176,6 +165,7 @@ $(document).ready(async function (e) {
             $("#show_price_and_link-modal").css("z-index", 99999999999999);
         }
     })
+
 
     let current_page = 1;
     let registries_container = $("#registries-container");
@@ -229,6 +219,10 @@ $(document).ready(async function (e) {
             await registry.registerPayment(data);
         });
 
+        $('[id^="edite-registry-"]').on("click", async function (e) {
+            window.location.href = `edit-registry.html?id=${e.currentTarget.id.split("-")[2]}`
+        });
+
     }
 
     await loadRegistries(current_page);
@@ -239,7 +233,7 @@ $(document).ready(async function (e) {
         await $("#model_information_modal").validate({
             rules: {
                 model_phone: {
-                    required: function(element) {
+                    required: function (element) {
                         return $("#predefinedRejectionReason").val() === "null";
                     }
                 },
@@ -256,11 +250,8 @@ $(document).ready(async function (e) {
                 let model = $(form).find('input#model-phone').val();
                 let id = hiddenInput.val();
                 let predefinedRejectionReasonId = +$("#predefinedRejectionReason").val();
-                // if (predefinedRejectionReasonId.val != "" ){
-                //     model.val = this.rules
-                // }
-                // model,
-                let data = {id, predefinedRejectionReasonId}
+                let additionalExplanation = $("#additionalExplanation").val();
+                let data = {id, predefinedRejectionReasonId, additionalExplanation}
 
                 await registry.updateRegistryApi("Registry/Decision", data);
                 await loadRegistries(current_page);

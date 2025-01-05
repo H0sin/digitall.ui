@@ -292,7 +292,7 @@ async function generateNotificationItem(notification) {
 }
 
 async function loadNotificaciones() {
-    const notification_container = await $("#notification-container");
+    const notification_container = $("#notification-container");
 // todo همه تراکنش ها 6 عدد درست شود
     const notifications = $(`<div class="dropdown-menu p-2" id="notifications" aria-labelledby="notificationDropdown"><div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom"><p>6 تراکنش جدید</p></div>`);
 

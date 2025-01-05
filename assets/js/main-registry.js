@@ -16,6 +16,7 @@ let isConnecting = false;
 
 // --------------------------------------- SIGNALR CONFIG ---------------------------------------
 
+
 /**
  * Initializes and starts SignalR connections for PaymentHub and SupporterOnlineHub.
  */
@@ -303,6 +304,6 @@ export const fixedRegistryStatus = (status) => {
             return `<span class="badge bg-danger">رد شده</span>`;
 
         case 4:
-            return `<span class="badge bg-success">در صف عملیات</span>`;
+            return `<span class="badge bg-warning">در صف عملیات</span>`;
     }
 }

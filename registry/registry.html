@@ -17,13 +17,17 @@
     <link rel="stylesheet" href="../assets/css/notifications.css">
 
     <style>
-        .info-inputs {
-            height: 24px;
-            width: 24px;
+        .info-inputs  {
+            height: 15px;
+            width: 15px;
             padding: 0;
             margin: 0;
             text-align: center;
             cursor: pointer;
+        }
+        .info-inputs > svg {
+            height: 15px;
+            width: 15px;
         }
     </style>
 </head>
@@ -128,7 +132,9 @@
                                             قوانین و مقررات سایت را خواندم و میپذیرم.
 
                                         </label>
-                                        <a href="./rules.html" class="info-inputs" role="button" data-feather="alert-circle"></a>
+                                        <a href="rules.html" class="info-inputs" role="button">
+                                            <span  data-feather="alert-circle"></span>
+                                        </a>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 mt-3">ثبت</button>
