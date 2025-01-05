@@ -74,17 +74,23 @@
             <div class="row">
                 <div class="col-xl-12 grid-margin grid-margin-xl-0 stretch-card">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" id="informationRegistery">
                             <h4 class=" mb-3"> اطلاعات </h4>
                             <section class="row">
                                 <div class="col-12">
-                                    <p class="card-text">IMEI 1 : 123453278463724</p>
-                                    <p class="card-text">IMEI 2 : 123453278463724</p>
-                                    <p class="card-text">شماره ی درخواست دهنده : 89895213525</p>
-                                    <p class="card-text">تاریخ ثبت :</p>
-                                    <p class="card-text">مدل دستگاه :</p>
-                                    <p class="card-text">قیمت اعلام شده :</p>
-                                    <p class="card-text">توضیحات :</p>
+                                    <p class="card-text" data-value="id" data-draft="شناسه"></p>
+                                    <p class="card-text" data-value="imeI_1" data-draft="ایمی آی اول"></p>
+                                    <p class="card-text" data-value="imeI_2" data-draft="ایمی آی دوم"></p>
+                                    <p class="card-text" data-value="forWho" data-draft="برای چه کسی"></p>
+                                    <p class="card-text" data-value="createDate" data-type="date"
+                                       data-draft="زمان ایجاد"></p>
+                                    <p class="card-text" data-value="modifiedDate" data-type="date"
+                                       data-draft="تاریخ ویرایش"></p>
+                                    <p class="card-text" data-value="model" data-draft="مدل"></p>
+                                    <p class="card-text" data-value="phone" data-draft="شماره"></p>
+                                    <p class="card-text" data-value="price" data-draft="قیمت"></p>
+                                    <p class="card-text" data-value="summery" data-draft="توضیحات کوتاه"></p>
+                                    <p class="card-text" data-value="status" data-draft="وضعیت" data-type="status"></p>
                                 </div>
                             </section>
                         </div>
@@ -108,6 +114,43 @@
         <div class="d-flex h-100 align-items-center justify-content-center">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">بارگزاری...</span>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="statusModalLabel">تغییر وضعیت</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="status-form">
+                        <div class="mb-3">
+                            <label for="status_registry" class="form-label">وضعیت</label>
+                            <select class="form-select" name="status_registry" id="statusRegistry">
+                                <option selected disabled>وضعیت کاربر را انتخاب کنید</option>
+                                <option>اعلام مدل</option>
+                                <option>در انتظار پرداخت</option>
+                                <option>در صف عملیات</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>توضیحات</label>
+                            <textarea name="textMessage" rows="15" class="form-control"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
+                                    data-feather="x"></i> بستن
+                            </button>
+                            <button type="submit" class="btn btn-outline-primary"><i data-feather="check"></i>
+                                ثبت وضعیت
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

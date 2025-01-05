@@ -1,7 +1,22 @@
 import * as registry from "./main-registry.js";
 import * as main from "./main.js";
-import {destroidModal, errorTheme, errorTitle, notificationMessage, warningTheme, warningTitle} from "./main.js";
-import {paymentConnection, ready, supporterOnlineConnection, supporter} from "./main-registry.js";
+import {
+    destroidModal,
+    errorTheme,
+    errorTitle,
+    generateModal,
+    notificationMessage,
+    warningTheme,
+    warningTitle
+} from "./main.js";
+import {
+    paymentConnection,
+    getRegistryApi,
+    ready,
+    supporterOnlineConnection,
+    supporter,
+    fixedRegistryStatus
+} from "./main-registry.js";
 
 
 // -------------------------------------------------------------------------------------
@@ -36,7 +51,7 @@ const awaiting_support_review_form = `
           </div>
           <div class="mb-3">
            <label class="form-label">یک مورد را انتخاب کنید</label>
-            <select class="form-select" id="selected-form" name="reason_select" data-width="100%">
+            <select class="form-select" id="predefinedRejectionReason" name="reason_select" data-width="100%">
                 <option selected value="null">یک مورد را انتخاب کنید</option>
             </select>
             </div>
@@ -68,21 +83,21 @@ const awaiting_send_price_form = `
 
 // -------------------------------------------------------------------------------------
 
-const fixedRegistryStatus = (status) => {
-    switch (status) {
-        case 1:
-            return `<span class="badge bg-primary">در انتظار برسی پشتیبان</span>`;
-
-        case 2:
-            return `<span class="badge bg-info">در انتظار پرداخت</span>`;
-
-        case 3:
-            return `<span class="badge bg-danger">رد شده</span>`;
-
-        case 4:
-            return `<span class="badge bg-success">در صف عملیات</span>`;
-    }
-}
+// const fixedRegistryStatus = (status) => {
+//     switch (status) {
+//         case 1:
+//             return `<span class="badge bg-primary">در انتظار برسی پشتیبان</span>`;
+//
+//         case 2:
+//             return `<span class="badge bg-info">در انتظار پرداخت</span>`;
+//
+//         case 3:
+//             return `<span class="badge bg-danger">رد شده</span>`;
+//
+//         case 4:
+//             return `<span class="badge bg-success">در صف عملیات</span>`;
+//     }
+// }
 
 const fixedRegistryButton = (status, id, isSupporter) => {
     switch (status) {
@@ -92,7 +107,7 @@ const fixedRegistryButton = (status, id, isSupporter) => {
             return `<button id="price-${id}" class="btn btn-outline-info paymentPrice" disabled="disabled">میخواهم پرداخت کنم</button>`;
     }
 }
-
+// todo creat modal
 function generateRegistryAdminItem(item, isSupporter = false) {
     return `<div class="d-flex align-items-center border-bottom py-3">
                     <div class="w-100">
@@ -166,24 +181,25 @@ $(document).ready(async function (e) {
     let registries_container = $("#registries-container");
 
     async function loadRegistries(page) {
-        // let data = await registry.getRegistryApi("RejectionReasons/predefined");
-        let {entities} = await registry.getRegistryApi(`${supporter ? 'Registry/get-all' : 'Registry'}?page=${page}`, false);
+        let {entities} = await getRegistryApi(`${supporter ? 'Registry/get-all' : 'Registry'}?page=${page}`, false);
 
         await $.each(entities, async function (index, registry) {
             registries_container.append(generateRegistryAdminItem(registry, supporter));
 
             $(`#model_information-${registry.id}`).on("click", async function (e) {
-                main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
+
+                generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
+
+                let predefined = await getRegistryApi("RejectionReasons/predefined");
+                let dropdown = $('#predefinedRejectionReason');
+
+                predefined.map(x => dropdown.append(`<option value="${x.id}">${x.reason}</option>`));
 
                 let form = $("#model_information_modal");
+
                 let input = $(`<input class="d-none" type="text" value="${e.target.id.replace("model_information-", "")}" />`);
+
                 $(form).append(input);
-
-                let dropdown = $('#selected-form');
-
-                // data.forEach(item => {
-                //     dropdown.append(`<option value="${item.id}">${item.reason}</option>`);
-                // });
 
                 await submit_model_information_modal();
             });
@@ -223,21 +239,28 @@ $(document).ready(async function (e) {
         await $("#model_information_modal").validate({
             rules: {
                 model_phone: {
-                    required: true
+                    required: function(element) {
+                        return $("#predefinedRejectionReason").val() === "null";
+                    }
+                },
+            },
+            messages: {
+                model_phone: {
+                    required: "مدل دستگاه نمیتواند خالی باشد."
                 },
 
-            }, messages: {
-                model_phone: {
-                    required: "مدل دستگاه نمیتواند خالی باشد ."
-                },
             }, submitHandler: async function (form, event) {
                 event.preventDefault();
 
                 let hiddenInput = $(form).find('input.d-none');
                 let model = $(form).find('input#model-phone').val();
                 let id = hiddenInput.val();
-
-                let data = {model, id}
+                let predefinedRejectionReasonId = +$("#predefinedRejectionReason").val();
+                // if (predefinedRejectionReasonId.val != "" ){
+                //     model.val = this.rules
+                // }
+                // model,
+                let data = {id, predefinedRejectionReasonId}
 
                 await registry.updateRegistryApi("Registry/Decision", data);
                 await loadRegistries(current_page);
@@ -269,7 +292,6 @@ $(document).ready(async function (e) {
 
     await main.hiddenLoading();
 });
-
 
 
 // async function submit_price_modal() {

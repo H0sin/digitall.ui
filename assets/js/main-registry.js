@@ -283,3 +283,26 @@ export const ready = new Promise((resolve) => {
         resolve();
     });
 });
+
+
+/**
+ * @function fixedRegistryStatus
+ * @param {number} status
+ * @returns {string} - HTML Badge
+ */
+
+export const fixedRegistryStatus = (status) => {
+    switch (status) {
+        case 1:
+            return `<span class="badge bg-primary">در انتظار برسی پشتیبان</span>`;
+
+        case 2:
+            return `<span class="badge bg-info">در انتظار پرداخت</span>`;
+
+        case 3:
+            return `<span class="badge bg-danger">رد شده</span>`;
+
+        case 4:
+            return `<span class="badge bg-success">در صف عملیات</span>`;
+    }
+}
