@@ -1,6 +1,6 @@
 "use strict";
 
-import {autoNotification, getUserInformation, user_information} from "./main.js";
+import {autoNotification, getCookie, getUserInformation, setCookie, user_information} from "./main.js";
 
 // --------------------------------------- CONSTANTS & GLOBALS ---------------------------------------
 
@@ -36,7 +36,7 @@ export const startAllSignalRConnections = async () => {
         if (!paymentConnection || paymentConnection.state === signalR.HubConnectionState.Disconnected) {
             paymentConnection = new signalR.HubConnectionBuilder()
                 .withUrl(HUB_PAYMENT_URL, {
-                    accessTokenFactory: () => localStorage.getItem("registry-token"),
+                    accessTokenFactory: () => getCookie("registry-token"),
                 })
                 .configureLogging(signalR.LogLevel.Information)
                 .withAutomaticReconnect()
@@ -66,7 +66,7 @@ export const startAllSignalRConnections = async () => {
         if (!supporterOnlineConnection || supporterOnlineConnection.state === signalR.HubConnectionState.Disconnected) {
             supporterOnlineConnection = new signalR.HubConnectionBuilder()
                 .withUrl(HUB_SUPPORTER_ONLINE_URL, {
-                    accessTokenFactory: () => localStorage.getItem("registry-token"),
+                    accessTokenFactory: () => getCookie("registry-token"),
                 })
                 .configureLogging(signalR.LogLevel.Information)
                 .withAutomaticReconnect()
@@ -185,7 +185,7 @@ export const postRegistryApi = async (path, data, fire = true) => {
             url: `${BASE_API_URL}/${path}`,
             data: JSON.stringify(data),
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("registry-token")}`,
+                Authorization: `Bearer ${getCookie("registry-token")}`,
                 "Content-Type": "application/json",
             },
         });
@@ -207,7 +207,7 @@ export const getRegistryApi = async (path) => {
             type: "GET",
             url: `${BASE_API_URL}/${path}`,
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("registry-token")}`,
+                Authorization: `Bearer ${getCookie("registry-token")}`,
             },
         });
         return response.data;
@@ -222,14 +222,14 @@ export const getRegistryApi = async (path) => {
  * @param {string} path - API endpoint path.
  * @param {object} data - Data to update.
  */
-export const updateRegistryApi = async (path, data,fire = true) => {
+export const updateRegistryApi = async (path, data, fire = true) => {
     try {
         const response = await $.ajax({
             type: "PUT",
             url: `${BASE_API_URL}/${path}`,
             data: JSON.stringify(data),
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("registry-token")}`,
+                Authorization: `Bearer ${getCookie("registry-token")}`,
                 "Content-Type": "application/json",
             },
         });
@@ -249,29 +249,25 @@ export const ready = new Promise((resolve) => {
         try {
             await getUserInformation;
 
-
             supporter = await getRegistryApi("Authorization/has-permission/supporter");
+
             $("#nav-container").append(supporter ? `<li class="nav-item"><a class="nav-link" href="./supporter-registry.html">پشتیبانی</a></li>` : "");
             if (window.location.href.indexOf("supporter-registry") > -1) $("li > a[href='./supporter-registry.html']").addClass("active");
 
-            let registry_token = localStorage.getItem("registry-token");
-
-            if (!registry_token) {
-                await $.ajax({
-                    type: "POST",
-                    url: `${BASE_API_URL}/User`,
-                    headers: {"Content-Type": "application/json"},
-                    data: JSON.stringify({
-                        chatId: user_information.chatId,
-                        firstName: user_information.firstName,
-                        lastName: user_information.lastName,
-                        username: user_information.username
-                    }),
-                    success: (response) => {
-                        localStorage.setItem("registry-token", response.data);
-                    }
-                });
-            }
+            await $.ajax({
+                type: "POST",
+                url: `${BASE_API_URL}/User`,
+                headers: {"Content-Type": "application/json"},
+                data: JSON.stringify({
+                    chatId: user_information.chatId,
+                    firstName: user_information.firstName,
+                    lastName: user_information.lastName,
+                    username: user_information.username
+                }),
+                success: (response) => {
+                    setCookie("registry-token", response.data, 820)
+                }
+            });
 
             await startAllSignalRConnections();
             const supporters = await getOnlineSupporters();

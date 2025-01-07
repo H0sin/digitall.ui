@@ -11,7 +11,7 @@ $(document).ready(async function () {
     const url = new URL(currentUrl);
     const params = new URLSearchParams(url.search);
     let token = params.get("token");
-    if(token) setCookie("token", token, 5);
+    if(token) setCookie("token", token, 820);
 
     //get agent information data
     await api.getDigitallApi("/Agent/GetAdminAgentInformation", false).then((data) => {
