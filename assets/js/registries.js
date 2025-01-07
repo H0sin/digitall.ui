@@ -251,7 +251,7 @@ $(document).ready(async function (e) {
                 let id = hiddenInput.val();
                 let predefinedRejectionReasonId = +$("#predefinedRejectionReason").val();
                 let additionalExplanation = $("#additionalExplanation").val();
-                let data = {id, predefinedRejectionReasonId, additionalExplanation}
+                let data = {id,model, predefinedRejectionReasonId, additionalExplanation}
 
                 await registry.updateRegistryApi("Registry/Decision", data);
                 await loadRegistries(current_page);
