@@ -6,6 +6,29 @@ export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
 export let user_information = {};
 
+// Cookie Option -----------------------------------------------------------------------------------------------
+
+export function setCookie(name,value,minuts) {
+    let expires = "";
+    if (minuts) {
+        let date = new Date();
+        date.setTime(date.getTime() + (minuts*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+export function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for(let i=0;i < ca.length;i++) {
+        let c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
 // path variable -----------------------------------------------------------------------------------------------
 
 export const transactionImagePath = (name) => `${baseUrl}/images/TransactionAvatar/origin/${name}`;
@@ -53,7 +76,7 @@ export function notificationMessage(title, text, theme, showDuration = 4000, clo
 }
 
 export function hideNotificationMessage() {
-    $('.ncf').fadeOut(300, function() {
+    $('.ncf').fadeOut(300, function () {
         $(this).remove();
     });
 }
@@ -156,7 +179,7 @@ export const DigitallLogin = async (action, credentials) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const {data, isSuccess} = await response.json();
+        const { data, isSuccess } = await response.json();
 
         if (isSuccess) {
             if (data) {
@@ -192,10 +215,10 @@ export const postDigitallApi = async (url, credentials, fire = true, authType = 
         url: baseApiRequest + url,
         data: JSON.stringify(credentials),
         headers: {
-            Authorization: authType + localStorage.getItem("token"),
+            Authorization: authType + getCookie("token"),
             "Content-Type": "application/json",
         },
-        success: async function ({data, isSuccess, message, statusCode}) {
+        success: async function ({ data, isSuccess, message, statusCode }) {
             if (fire) autoNotification(statusCode, isSuccess, message);
             response = data;
         },
@@ -218,10 +241,10 @@ export const getDigitallApi = async (url, fire = true, authType = 'bearer ') => 
             type: "GET",
             url: baseApiRequest + url,
             headers: {
-                Authorization: authType + localStorage.getItem("token"),
+                Authorization: authType + getCookie("token"),
                 "Content-Type": "application/json",
             },
-            success: async function ({data, isSuccess, message, statusCode}) {
+            success: async function ({ data, isSuccess, message, statusCode }) {
                 if (fire) autoNotification(statusCode, isSuccess, message);
                 response = data;
             },
@@ -249,10 +272,10 @@ export const updateDigitallApi = async (url, credentials, id = 0, fire = true, a
         url: baseApiRequest + url,
         data: JSON.stringify(credentials),
         headers: {
-            Authorization: authType + localStorage.getItem("token"),
+            Authorization: authType + getCookie("token"),
             "Content-Type": "application/json",
         },
-        success: async function ({data, isSuccess, message, statusCode}) {
+        success: async function ({ data, isSuccess, message, statusCode }) {
             if (fire) autoNotification(statusCode, isSuccess, message);
             response = data;
         },
@@ -275,37 +298,110 @@ const icons = {
     rebuy: "refresh-cw",
 };
 
-async function generateNotificationItem(notification) {
+//-------------------------------N O T I F I C A T I O N T Y P E ----------------------------------------
+
+const fixedGenerateNotificationItem = (notificationType) => {
+    switch (notificationType) {
+        case 0:
+            return `<p class="tx-12 text-muted mb-0">پیام جدید</p>`;
+        case 1:
+            return `<p class="tx-12 text-muted mb-0">هشدار جدید</p>`;
+        case 2:
+            return `<p class="tx-12 text-muted mb-0">خطا جدید</p>`;
+        case 3:
+            return `<p class="tx-12 text-muted mb-0">موفقیت جدید</p>`;
+        case 4:
+            return `<p class="tx-12 text-muted mb-0">اغاز جدید</p>`;
+        case 5:
+            return `<p class="tx-12 text-muted mb-0">FinancialReports</p>`;
+        case 6:
+            return `<p class="tx-12 text-muted mb-0">باگ جدید</p>`;
+        case 7:
+            return `<p class="tx-12 text-muted mb-0">خرید جدید</p>`;
+        case 8:
+            return `<p class="tx-12 text-muted mb-0">تمدید جدید</p>`;
+        case 9:
+            return `<p class="tx-12 text-muted mb-0">پرداخت جدید</p>`;
+        case 10:
+            return `<p class="tx-12 text-muted mb-0">DeletedReports</p>`;
+        case 11:
+            return `<p class="tx-12 text-muted mb-0">درخواست نماینده جدید</p>`;
+    }
+}
+
+const fixedFeatherIcon = (notificationType) => {
+    switch (notificationType) {
+        case 0:
+            return `<i data-feather="mail" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 1:
+            return `<i data-feather="alert-triangle" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 2:
+            return `<i data-feather="x" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 3:
+            return `<i data-feather="check" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 4:
+            return `<i data-feather="power" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 5:
+            return `<i data-feather="" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 6:
+            return `<i data-feather="cloud-off" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 7:
+            return `<i data-feather="shopping-cart" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 8:
+            return `<i data-feather="rotate-cw" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 9:
+            return `<i data-feather="gift" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 10:
+            return `<i data-feather="" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+        case 11:
+            return `<i data-feather="user-plus" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+    }
+}
+
+//------------------------------------------------------------------------------------------------------
+
+async function generateNotificationItem(data) {
     return `
-				<div class="p-1 border-bottom">
-					<a href="#" class="dropdown-item d-flex align-items-center py-2">
-						<div class=" d-flex align-items-center justify-content-center me-3">
-						<i data-feather="shopping-cart" class="text-white" style="width: 20px; height: 20px; " ></i>
-						</div>
-						<div class="flex-grow-1 me-2" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">
-							<p>خرید جدید</p>
-							<p class="tx-12 text-muted">${notification.message}</p>
-						</div>
-					</a>
-			    </div>`;
+				<li>
+                <a href="#" class="dropdown-item d-flex align-items-center py-2">
+                    <div class="d-flex align-items-center justify-content-center me-3">
+                        ${fixedFeatherIcon(data.notificationType)}
+                    </div>
+                    <div class="flex-grow-1 me-2 text-truncate">
+                        <p class="mb-0">${fixedGenerateNotificationItem(data.notificationType)}</p>
+                        <p class="tx-12 text-muted mb-0">${data.message}</p>
+                    </div>
+                </a>
+            </li>
+`;
 
 }
 
 async function loadNotificaciones() {
     const notification_container = $("#notification-container");
-// todo همه تراکنش ها 6 عدد درست شود
-    const notifications = $(`<div class="dropdown-menu p-2" id="notifications" aria-labelledby="notificationDropdown"><div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom"><p>6 تراکنش جدید</p></div>`);
 
     let data = await getDigitallApi("/Notification/GetNotifications", false);
 
-    if (data.length)
-        for (let i = 0; i < 6; i++) {
+    const notificationCount = Math.min(6, data.length);
+
+    const notifications = $(`
+        <div class="dropdown-menu p-2" id="notifications" aria-labelledby="notificationDropdown">
+            <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+                <p>${notificationCount} تراکنش جدید</p>
+            </div>
+        </div>
+    `);
+
+    if (data.length > 0) {
+        for (let i = 0; i < notificationCount; i++) {
             notifications.append(await generateNotificationItem(data[i]));
         }
+    }
 
-    notifications.append(`<div class="px-3 py-2 d-flex align-items-center justify-content-center border-top"><a href="/digitall.ui/transaction.html">مشاهده همه</a></div>`);
+    notifications.append(`<div class="px-3 py-2 d-flex align-items-center justify-content-center border-top"><a href="/digitall.ui/notification.html">مشاهده همه</a></div>`);
 
     notification_container.append(notifications);
+
 }
 
 
@@ -314,8 +410,10 @@ export const getUserInformation = new Promise(async resolve => {
     user_information = await getDigitallApi("/User/GetInformation", false);
     $("#fullName").html(" نام کاربری :" + " " + fullName(user_information));
     $("#balance").html("موجودی : " + (user_information.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "));
+    // $("#profile").html();
     $("#bot_name").html(user_information.botName.replace("bot", "<span class='px-1'> Bot</span>"));
     $("#bot_name").attr("href", user_information.botLink);
+
     // feather.replace();
 
     resolve();
@@ -325,3 +423,4 @@ $(document).ready(async function () {
     await getUserInformation;
     await loadNotificaciones();
 });
+

@@ -1,22 +1,20 @@
 import * as api from "./main.js";
-import {user_information} from "./main.js";
+import {setCookie} from "./main.js";
+// import {user_information} from "./main.js";
 
 'use stric'
 
 $(document).ready(async function () {
     await api.showLoading();
 
-    let token = localStorage.getItem("token");
-    if (!token) {
-        const currentUrl = window.location.href;
-        const url = new URL(currentUrl);
-        const params = new URLSearchParams(url.search);
-        localStorage.setItem("token", params.get("token"));
-    }
-
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const params = new URLSearchParams(url.search);
+    let token = params.get("token");
+    setCookie("token", token, 5);
 
     //get agent information data
-    await api.getDigitallApi("/Agent/GetAdminAgentInformation",false).then((data) => {
+    await api.getDigitallApi("/Agent/GetAdminAgentInformation", false).then((data) => {
         $(`#agent_information > div.card-body #agent-brand-name`).html(
             "نمایندگی : " + data.brandName || "ثبت نشده"
         );
@@ -32,7 +30,7 @@ $(document).ready(async function () {
     });
 
     //get agent information payment
-    await api.getDigitallApi("/Transaction/GetTransactionDetail",false).then((data) => {
+    await api.getDigitallApi("/Transaction/GetTransactionDetail", false).then((data) => {
         $(`#Transaction-Detail > div.card-body #card-holder-name`).html(
             " نام صاحب کارت : " + (data.cardHolderName || "ثبت نشده")
         );
@@ -73,7 +71,7 @@ $(document).ready(async function () {
     }
 
     if ($('#agentProfit').length) {
-        await api.getDigitallApi("/Agent/ProfitReport?TakeEntity=0",false).then((data) => {
+        await api.getDigitallApi("/Agent/ProfitReport?TakeEntity=0", false).then((data) => {
             const dailyProfits = {};
             let totalProfits = 0;
             let growPercent = 0;
@@ -158,7 +156,7 @@ $(document).ready(async function () {
         const totalMax = data.agency.amountWithNegative;
 
         let usedPercentage = 0;
-        if(data.balance < 0){
+        if (data.balance < 0) {
             usedPercentage = (data.balance * 100) / data.agency.amountWithNegative;
         }
 
