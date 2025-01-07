@@ -410,7 +410,7 @@ export const getUserInformation = new Promise(async resolve => {
     user_information = await getDigitallApi("/User/GetInformation", false);
     $("#fullName").html(" نام کاربری :" + " " + fullName(user_information));
     $("#balance").html("موجودی : " + (user_information.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "));
-    // $("#profile").html();
+    $("#profile").html();
     $("#bot_name").html(user_information.botName.replace("bot", "<span class='px-1'> Bot</span>"));
     $("#bot_name").attr("href", user_information.botLink);
 
