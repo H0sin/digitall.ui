@@ -11,12 +11,27 @@
           content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
     <title></title>
     <link rel="stylesheet" href="../assets/vendors/core/core.css">
-    <link rel="stylesheet" href="../assets/vendors/select2/select2.min.css">
     <link rel="stylesheet" href="../assets/fonts/feather-font/css/iconfont.css">
     <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="../assets/css/demo4/style-rtl.min.css">
     <link rel="stylesheet" href="../assets/css/notifications.css">
+
+    <style>
+        .info-inputs  {
+            height: 15px;
+            width: 15px;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            cursor: pointer;
+        }
+        .info-inputs > svg {
+            height: 15px;
+            width: 15px;
+        }
+    </style>
 </head>
+
 <body>
 <div class="main-wrapper">
     <div class="horizontal-menu">
@@ -62,13 +77,46 @@
         </nav>
     </div>
     <div class="page-wrapper">
+        <div class="page-content py-1" style="min-height:0">
+            <ul class="nav nav-pills nav-fill pt-4">
+                <li class="nav-item">
+                    <p class="nav-link active" href="./registry.html">ویرایش اطلاعات</p>
+                </li>
+            </ul>
+        </div>
         <div class="page-content">
-            <div class="row m-2 p-4">
-                <div class="card p-0" style="border-radius: 10px; min-height: 75vh;">
-                    <div class="card-body" style="border-radius:10px; background-color: #a10909a6">
-                        <h2 class="text-center m-2 p-1">پرداخت شما ناموفق بود</h2>
-                        <p class="text-center">IMEI</p>
-                        <i data-feather="x-circle" class="text-danger icon-xxl d-block mx-auto my-3"></i>
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="accept-registry-form">
+                                <div class="form-group mb-3">
+                                    <label for="for_who">مالک دستگاه</label>
+                                    <input type="text" name="for_who" class="form-control" id="for-who"
+                                           placeholder="مالک دستگاه را مشخص کنید">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="phone">شماره تماس</label>
+                                    <input type="text" name="phone" class="form-control" id="edit-phone"
+                                           placeholder="شماره تماس را برای ثبت گوشی">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="imei_1">کد IMEI اول دستگاه</label>
+                                    <input type="text" name="imei_1" class="form-control" id="imei-1"
+                                           placeholder="IMEI اول را وارد کنید">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="imei_2">کد IMEI دوم دستگاه ( درصورت داشتن IMEI دوم )</label>
+                                    <input type="text" name="imei_2" class="form-control" id="imei-2"
+                                           placeholder="IMEI دوم را وارد کنید">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="summery">توضیحات کوتاه</label>
+                                    <textarea rows="8" name="summery" class="form-control" id="edit-summery"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 mt-3">ثبت ویرایش</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,14 +132,16 @@
     </div>
 </div>
 
-<script src="../assets/vendors/apexcharts/apexcharts.min.js"></script>
 <script src="../assets/vendors/core/core.js"></script>
 <script src="../assets/vendors/feather-icons/feather.min.js"></script>
 <script src="../assets/vendors/jquery-validation/jquery.validate.min.js"></script>
-<script src="../assets/vendors/select2/select2.min.js"></script>
 <script src="../assets/js/template.js"></script>
 <script src="../assets/js/dashboard-dark.js"></script>
 <script src="../assets/js/notifications.js"></script>
-<script type="module" src="../assets/js/reject-payment.js"></script>
+<script type='module' src="../assets/js/registry.js"></script>
+<script type='module' src="../assets/js/main-registry.js"></script>
+<script type='module' src="../assets/js/edit-registry.js"></script>
+
 </body>
+
 </html>

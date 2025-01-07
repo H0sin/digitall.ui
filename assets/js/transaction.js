@@ -144,9 +144,9 @@ $(document).ready(async function () {
     transaction_container.html('');
 
     const loadTransaction = async (page) => {
-        let {allEntitiesCount,entities} = await api.getDigitallApi(`/Transaction/FilterTransaction?takeEntity=6&page=${page}${type_transaction != "null" ? `&type=${type_transaction}` : ""}${status_transaction != "null" ? `&status=${status_transaction}` : ""}${start_date != "null" ? `&startDate=${start_date}` : ""}${end_date != "null" ? `&endDate=${end_date}` : ""}${details_filter != "null" ? `&details=${details_filter}` : ""}${id ? `&userId=${id}` : ""}`,false);
+        let {allEntitiesCount: counts, entities} = await api.getDigitallApi(`/Transaction/FilterTransaction?takeEntity=8&page=${page}${type_transaction != "null" ? `&type=${type_transaction}` : ""}${status_transaction != "null" ? `&status=${status_transaction}` : ""}${start_date != "null" ? `&startDate=${start_date}` : ""}${end_date != "null" ? `&endDate=${end_date}` : ""}${details_filter != "null" ? `&details=${details_filter}` : ""}${id ? `&userId=${id}` : ""}`,false);
 
-        allEntitiesCount = allEntitiesCount;
+        allEntitiesCount = counts;
 
         if (allEntitiesCount === 0) {
             transaction_container.append("<h4 class='text-center p-4'>تراکنشی یافت نشد</h4>");

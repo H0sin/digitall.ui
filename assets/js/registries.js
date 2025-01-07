@@ -1,7 +1,22 @@
 import * as registry from "./main-registry.js";
 import * as main from "./main.js";
-import {destroidModal, errorTheme, errorTitle, notificationMessage, warningTheme, warningTitle} from "./main.js";
-import {paymentConnection, ready, supporterOnlineConnection, supporter} from "./main-registry.js";
+import {
+    destroidModal,
+    errorTheme,
+    errorTitle,
+    generateModal,
+    notificationMessage,
+    warningTheme,
+    warningTitle
+} from "./main.js";
+import {
+    paymentConnection,
+    getRegistryApi,
+    ready,
+    supporterOnlineConnection,
+    supporter,
+    fixedRegistryStatus
+} from "./main-registry.js";
 
 
 // -------------------------------------------------------------------------------------
@@ -36,13 +51,13 @@ const awaiting_support_review_form = `
           </div>
           <div class="mb-3">
            <label class="form-label">یک مورد را انتخاب کنید</label>
-            <select class="form-select" id="selected-form" name="reason_select" data-width="100%">
+            <select class="form-select" id="predefinedRejectionReason" name="reason_select" data-width="100%">
                 <option selected value="null">یک مورد را انتخاب کنید</option>
             </select>
             </div>
             <div class="mb-3">
-            <label type="text" for="text" class="form-label">توضیحات  : </label>
-          <textarea name="text" rows="15" class="form-control"></textarea>
+            <label for="additionalExplanation" class="form-label">توضیحات  : </label>
+            <textarea name="additionalExplanation" id="additionalExplanation"  rows="15" class="form-control"></textarea>
           </div>
           <div class="modal-footer">
           <button type="submit" class="btn btn-primary">ثبت</button>
@@ -68,15 +83,6 @@ const awaiting_send_price_form = `
 
 // -------------------------------------------------------------------------------------
 
-const fixedRegistryStatus = (status) => {
-    switch (status) {
-        case 1:
-            return `<span class="badge bg-primary">در انتظار برسی پشتیبان</span>`;
-
-        case 2:
-            return `<span class="badge bg-info">در انتظار پرداخت</span>`;
-    }
-}
 
 const fixedRegistryButton = (status, id, isSupporter) => {
     switch (status) {
@@ -84,14 +90,17 @@ const fixedRegistryButton = (status, id, isSupporter) => {
             return `<button id="model_information-${id}" class="btn btn-outline-primary">اعلام مدل</button>`;
         case 2:
             return `<button id="price-${id}" class="btn btn-outline-info paymentPrice" disabled="disabled">میخواهم پرداخت کنم</button>`;
+        case 3:
+            return `<button id="edite-registry-${id}" class="btn btn-outline-danger">ویرایش اطلاعات</button>`;
     }
 }
 
+// todo creat modal
 function generateRegistryAdminItem(item, isSupporter = false) {
-    return `<a href="../../digitall.ui/registry/registry-information.html">
-<div class="d-flex align-items-center border-bottom py-3">
+    return `<div class="d-flex align-items-center border-bottom py-3">
                     <div class="w-100">
                           <div class="d-flex justify-content-between">
+                          <a href="../../digitall.ui/registry/registry-information.html?id=${item.id}">
                                 <div id="registry-box-${item.id}">
                                   <p class="d-none" id="model-${item.id}">${item.model}</p>  
                                   <p class="d-none" id="forWho-${item.id}">${item.forWho}</p>
@@ -99,10 +108,12 @@ function generateRegistryAdminItem(item, isSupporter = false) {
                                   <p class="text-body" id="imei-1-${item.imeI_1}"><span class="text-muted tx-13">IMEI 1 : </span>${item.imeI_1}</p>
                                   ${item.imeI_2 ? `<p class="text-body" id="imei-2-${item.imeI_2}"><span class="text-muted tx-13">IMEI 2 : </span>${item.imeI_2}</p>` : ""}
                                   <p class="text-body mb-2"><span class="text-muted tx-13"> وضعیت : </span>${fixedRegistryStatus(item.status)}</p>
+                                  ${item.status == 3 ? `<p class="text-body mb-2"><span class="text-muted tx-13"> علت :</span>${item.reason}</p>` : ""}
+                                  ${(item.status == 3 && item.additionalExplanation != null) ? `<p class="text-body mb-2"><span class="text-muted tx-13"> توضیحات رد شده :</span>${item.additionalExplanation}</p>` : ""}
                                   ${item.phone ? `<p class="text-body" id="phone-${item.phone}"><span class="text-muted tx-13">شماره : </span>${item.phone}</p>  ` : ""}   
                                   <p class="text-body mb-2"><span class="text-muted tx-13">تاریخ ثبت : </span>${new Date(item.createDate).toLocaleString("fa-IR")}</p>
-                                </div>
-                                </a> 
+                                </div> 
+                          </a>
                                 <div id="model_information-btn-${item.id}">
                                   ${fixedRegistryButton(item.status, item.id, isSupporter) || ""}                             
                                 </div>
@@ -145,7 +156,6 @@ $(document).ready(async function (e) {
 
     await paymentConnection.on("PaymentUpdated", async (registry) => {
         await main.hideNotificationMessage();
-        debugger;
         if (registry.status != 2) {
             await main.hiddenLoading();
             await notificationMessage(warningTitle, "با عرض پوزش درخواست شما رد شده لطفا دوباره برای پرداخت درخواست بدهید", warningTheme);
@@ -156,28 +166,30 @@ $(document).ready(async function (e) {
         }
     })
 
+
     let current_page = 1;
     let registries_container = $("#registries-container");
 
     async function loadRegistries(page) {
-        // let data = await registry.getRegistryApi("RejectionReasons/predefined");
-        let {entities} = await registry.getRegistryApi(`${supporter ? 'Registry/get-all' : 'Registry'}?page=${page}`, false);
+        let {entities} = await getRegistryApi(`${supporter ? 'Registry/get-all' : 'Registry'}?page=${page}`, false);
 
         await $.each(entities, async function (index, registry) {
             registries_container.append(generateRegistryAdminItem(registry, supporter));
 
             $(`#model_information-${registry.id}`).on("click", async function (e) {
-                main.generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
+
+                generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
+
+                let predefined = await getRegistryApi("RejectionReasons/predefined");
+                let dropdown = $('#predefinedRejectionReason');
+
+                predefined.map(x => dropdown.append(`<option value="${x.id}">${x.reason}</option>`));
 
                 let form = $("#model_information_modal");
+
                 let input = $(`<input class="d-none" type="text" value="${e.target.id.replace("model_information-", "")}" />`);
+
                 $(form).append(input);
-
-                let dropdown = $('#selected-form');
-
-                // data.forEach(item => {
-                //     dropdown.append(`<option value="${item.id}">${item.reason}</option>`);
-                // });
 
                 await submit_model_information_modal();
             });
@@ -207,6 +219,10 @@ $(document).ready(async function (e) {
             await registry.registerPayment(data);
         });
 
+        $('[id^="edite-registry-"]').on("click", async function (e) {
+            window.location.href = `edit-registry.html?id=${e.currentTarget.id.split("-")[2]}`
+        });
+
     }
 
     await loadRegistries(current_page);
@@ -217,21 +233,25 @@ $(document).ready(async function (e) {
         await $("#model_information_modal").validate({
             rules: {
                 model_phone: {
-                    required: true
+                    required: function (element) {
+                        return $("#predefinedRejectionReason").val() === "null";
+                    }
+                },
+            },
+            messages: {
+                model_phone: {
+                    required: "مدل دستگاه نمیتواند خالی باشد."
                 },
 
-            }, messages: {
-                model_phone: {
-                    required: "مدل دستگاه نمیتواند خالی باشد ."
-                },
             }, submitHandler: async function (form, event) {
                 event.preventDefault();
 
                 let hiddenInput = $(form).find('input.d-none');
                 let model = $(form).find('input#model-phone').val();
                 let id = hiddenInput.val();
-
-                let data = {model, id}
+                let predefinedRejectionReasonId = +$("#predefinedRejectionReason").val();
+                let additionalExplanation = $("#additionalExplanation").val();
+                let data = {id, predefinedRejectionReasonId, additionalExplanation}
 
                 await registry.updateRegistryApi("Registry/Decision", data);
                 await loadRegistries(current_page);
@@ -263,7 +283,6 @@ $(document).ready(async function (e) {
 
     await main.hiddenLoading();
 });
-
 
 
 // async function submit_price_modal() {

@@ -12,21 +12,24 @@ $(document).ready(async function () {
         endDate = endDate.toLocaleDateString("de-DE").split(".").reverse().join("/");
         startDate = startDate.toLocaleDateString("de-DE").split(".").reverse().join("/");
 
-        await main.getDigitallApi(`/Agent/InputUserReport?takeEntity=0&startDate=${startDate}&endDate=${endDate}`, false)
+        await main.getDigitallApi(`/Agent/InputUserReport?takeEntity=10&startDate=${startDate}&endDate=${endDate}`, false)
             .then((data) => {
 
                 let categories = [];
                 let count = [];
+
                 data.entities.forEach(entity => {
-                    categories.push(entity.date.split("T")[0].replaceAll("-", "/"));
+                    let gregorianDate = entity.date.split("T")[0];
+                    let jalaliDate = main.gregorianToJalali(gregorianDate);
+
+                    categories.push(jalaliDate);
                     count.push(entity.count);
                 });
-                // console.log(categories);
 
-                var options = {
+                let options = {
                     chart: {
                         type: 'bar',
-                        height: '400',
+                        height: '600',
                         parentHeightOffset: 0,
                         foreColor: main.colors.bodyColor,
                         background: main.colors.cardBg,
@@ -43,7 +46,7 @@ $(document).ready(async function () {
                     colors: [main.colors.primary],
                     fill: {
                         opacity: .9
-                    } ,
+                    },
                     grid: {
                         padding: {
                             bottom: -4
@@ -60,7 +63,7 @@ $(document).ready(async function () {
                         data: count
                     }],
                     xaxis: {
-                        type: 'datetime',
+                        type: 'category',
                         categories,
                         axisBorder: {
                             color: main.colors.gridBorder,
@@ -72,9 +75,9 @@ $(document).ready(async function () {
                     yaxis: {
                         opposite: true,
                         title: {
-                            text: 'تعداد فروش',
+                            text: 'تعداد عضویت',
                             offsetX: -5,
-                            style:{
+                            style: {
                                 size: 9,
                                 color: main.colors.muted
                             }
@@ -109,7 +112,7 @@ $(document).ready(async function () {
                     },
                     plotOptions: {
                         bar: {
-                            columnWidth: "10%",
+                            columnWidth: "20%",
                             borderRadius: 4,
                             dataLabels: {
                                 position: 'top',
@@ -123,5 +126,6 @@ $(document).ready(async function () {
             })
     }
     await main.hiddenLoading();
+
 
 });
