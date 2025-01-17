@@ -165,11 +165,12 @@ $(document).ready(async function (e) {
 
     await paymentConnection.on("PaymentUpdated", async (registry) => {
         await hideNotificationMessage();
+
         if (registry.status != 2) {
             await hiddenLoading();
             await notificationMessage(warningTitle, "با عرض پوزش درخواست شما رد شده لطفا دوباره برای پرداخت درخواست بدهید", warningTheme);
         } else if (registry.status == 2) {
-            modals.show_price_and_link.body = payment_information(registry.price, registry.paymentLink);
+            modals.show_price_and_link.body = payment_information((+registry.price + +registry.profit), registry.paymentLink);
             generateModal(modals.show_price_and_link.name, modals.show_price_and_link.title, modals.show_price_and_link.body);
             $("#show_price_and_link-modal").css("z-index", 99999999999999);
         }
