@@ -140,7 +140,6 @@ $(document).ready(async function () {
         }, 500);
     });
 
-
     transaction_container.html('');
 
     const loadTransaction = async (page) => {

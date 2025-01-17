@@ -9,7 +9,7 @@
     <meta name="author" content="NobleUI"/>
     <meta name="keywords"
           content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"/>
-    <title>لیست تراکنش ها</title>
+    <title></title>
     <link rel="stylesheet" href="./assets/vendors/core/core.css"/>
     <link rel="stylesheet" href="./assets/css/persian-datepicker-0.4.5-dark.min.css">
     <link rel="stylesheet" href="./assets/vendors/flatpickr/flatpickr.min.css">
@@ -21,6 +21,7 @@
         .distance p {
             margin-bottom: 10px;
         }
+
         .datepicker-plot-area {
             z-index: 2;
         }
@@ -71,7 +72,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="wd-30 ht-30 rounded-circle" src="./assets/images/faces/face7.jpg"
+                                <img class="wd-30 ht-30 rounded-circle" src="../assets/images/Users.jpg"
                                      alt="profile">
                             </a>
 
@@ -79,7 +80,7 @@
                                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                                     <div class="mb-3">
                                         <img class="wd-80 ht-80 rounded-circle"
-                                             src="./assets/images/faces/face7.jpg" alt="">
+                                             src="../assets/images/Users.jpg" alt="">
                                     </div>
                                     <div class="text-center">
                                         <p id="fullName" class="tx-16 fw-bolder"></p>
@@ -94,7 +95,7 @@
                                         </a>
                                     </li>
                                     <li class="dropdown-item py-2">
-                                        <a href="transaction.html" id="profile" class="text-body ms-0">
+                                        <a href="/transaction.html" id="profile" class="text-body ms-0">
                                             <i class="me-2 icon-md" data-feather="dollar-sign"></i>
                                             <span>تراکنش ها</span>
                                         </a>
@@ -131,20 +132,16 @@
                                         <option value="6">درخواست نماینده</option>
                                         <option selected value="null">همه اعلان ها</option>
                                     </select>
-                                
                                 </div>
-                                <div class="input-group flatpickr mt-3" id="start-date">
-                                    <input type="text" class="form-control tarikh">
-                                    <span class="input-group-text input-group-addon" data-toggle><i
-                                            data-feather="calendar"></i></span>
-                                </div>
-                                <div class="input-group flatpickr mt-3" id="end-date">
-                                    <input type="text" class="form-control tarikh">
-                                    <span class="input-group-text input-group-addon" data-toggle><i
-                                            data-feather="calendar"></i></span>
-                                </div>
-                                
                             </div>
+<!--                            <div class="col-md-4 grid-margin stretch-card">-->
+<!--                                <div class="card">-->
+<!--                                    <div class="card-body d-flex flex-column align-items-center">-->
+<!--                                        <p class="text-muted mb-3">یک عنوان به همراه یک متن زیرین</p>-->
+<!--                                        <button class="btn btn-primary" onclick="showSwal('title-and-text')">اینجا کلیک کنید !</button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div id="notification-container-type"
                                  style="max-height: 65vh; overflow-x: hidden; overflow-y: auto"
                                  class="col-12 d-flex flex-column">
@@ -180,29 +177,6 @@
         </div>
     </div>
 </div>
- <!-- <div id="modal_form_details">
-    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detailsModalLabel">جزئیات تراکنش</h5>
-                </div>
-                <div class="modal-body">
-                    <img class="w-100 p-2 mb-2" id="avatar-transaction">
-                    <div class="text-center distance">
-                        <p class="card-text text-muted" id="user-id"></p>
-                        <p class="card-text" id="title"></p>
-                        <p class="card-text" id="transaction-change"></p>
-                        <p class="card-text" id="transaction-time"></p>
-                        
-                    </div>
-                </div>
-                <div class="modal-footer">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>  -->
 
 <script src="./assets/vendors/core/core.js"></script>
 <script src="./assets/vendors/feather-icons/feather.min.js"></script>
@@ -213,6 +187,8 @@
 <script type="module" src="./assets/js/all-notifications.js"></script>
 <script src="./assets/js/persian-date-0.1.8.min.js"></script>
 <script src="./assets/js/persian-datepicker-0.4.5.min.js"></script>
+
+
 </body>
 
 </html>

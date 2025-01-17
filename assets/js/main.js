@@ -313,7 +313,7 @@ const fixedGenerateNotificationItem = (notificationType) => {
         case 4:
             return `<p class="tx-12 text-muted mb-0">اغاز جدید</p>`;
         case 5:
-            return `<p class="tx-12 text-muted mb-0">FinancialReports</p>`;
+            return `<p class="tx-12 text-muted mb-0">پرداخت جدید</p>`;
         case 6:
             return `<p class="tx-12 text-muted mb-0">باگ جدید</p>`;
         case 7:
@@ -321,7 +321,7 @@ const fixedGenerateNotificationItem = (notificationType) => {
         case 8:
             return `<p class="tx-12 text-muted mb-0">تمدید جدید</p>`;
         case 9:
-            return `<p class="tx-12 text-muted mb-0">پرداخت جدید</p>`;
+            return `<p class="tx-12 text-muted mb-0">FinancialReports</p>`;
         case 10:
             return `<p class="tx-12 text-muted mb-0">DeletedReports</p>`;
         case 11:
@@ -329,7 +329,7 @@ const fixedGenerateNotificationItem = (notificationType) => {
     }
 }
 
-const fixedFeatherIcon = (notificationType) => {
+export const fixedFeatherIcon = (notificationType) => {
     switch (notificationType) {
         case 0:
             return `<i data-feather="mail" class="text-primary" style="width: 20px; height: 20px;"></i>`;
@@ -342,7 +342,7 @@ const fixedFeatherIcon = (notificationType) => {
         case 4:
             return `<i data-feather="power" class="text-primary" style="width: 20px; height: 20px;"></i>`;
         case 5:
-            return `<i data-feather="" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+            return `<i data-feather="gift" class="text-primary" style="width: 20px; height: 20px;"></i>`;
         case 6:
             return `<i data-feather="cloud-off" class="text-primary" style="width: 20px; height: 20px;"></i>`;
         case 7:
@@ -350,7 +350,7 @@ const fixedFeatherIcon = (notificationType) => {
         case 8:
             return `<i data-feather="rotate-cw" class="text-primary" style="width: 20px; height: 20px;"></i>`;
         case 9:
-            return `<i data-feather="gift" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+            return `<i data-feather="" class="text-primary" style="width: 20px; height: 20px;"></i>`;
         case 10:
             return `<i data-feather="" class="text-primary" style="width: 20px; height: 20px;"></i>`;
         case 11:
@@ -413,10 +413,14 @@ export const getUserInformation = new Promise(async resolve => {
     $("#profile").html();
     $("#bot_name").html(user_information.botName.replace("bot", "<span class='px-1'> Bot</span>"));
     $("#bot_name").attr("href", user_information.botLink);
-
     // feather.replace();
 
     resolve();
+});
+
+export const getAgentUserInformation = new Promise(async resolve => {
+    const user_agent_information = await getDigitallApi("/Agent/GetUserAgent", false);
+    resolve(user_agent_information);
 });
 
 $(document).ready(async function () {

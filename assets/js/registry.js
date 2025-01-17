@@ -87,6 +87,7 @@ $(document).ready(async function () {
 
             await registry.postRegistryApi("Registry",data);
 
+
             setInterval(async function () {
                 window.location.href = "registries.html";
             },1000)
