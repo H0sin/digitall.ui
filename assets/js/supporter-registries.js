@@ -19,22 +19,13 @@ import {generateModal, hiddenLoading, hiddenModal,destroidModal} from "./main.js
 const price_link_form = `
   <form id="model_information_modal">
     <div class="mb-3">
-        <label for="price" class="form-label">هزینه 0 تا 100</label>
+        <label for="price" class="form-label">مبلغ</label>
         <input id="price" type="text" class="form-control">
     </div>
     <div class="mb-3">
-        <label class="form-label">هزینه فقط پاسپورت</label>
-        <input type="text" class="form-control">
-    </div>
-    <div class="d-flex w-100">
-    <div class="mb-3 w-50 pe-2">
-        <label class="form-label">هزینه تمام شده</label>
-        <input type="text" class="form-control w-100">
-    </div>
-    <div class="mb-3 w-50 ps-2">
-        <label class="form-label">مبلغ سود شما</label>
-        <input type="text" class="form-control w-100">
-    </div>
+        <label class="form-label">سود شما</label>
+        <input id="profit" type="text" class="form-control w-100">
+        <span class="text-muted p-2" id="calculator-profit"></span>
     </div>
     <div class="mb-3">
         <label for="paymentLink" class="form-label">لینک پرداخت</label>
@@ -183,7 +174,6 @@ $(document).ready(async () => {
 
         // Set Event
         bindClickEventsToRegistries(payment.id);
-
     });
 
     paymentConnection.on("PaymentUpdated", (payment) => {
@@ -204,6 +194,18 @@ $(document).ready(async () => {
             let form = $(modals.price_link_form_modal.form_id);
             let uniqueId = await getRegistryApi(`Registry/SendUniqueId/${id}`);
 
+            let price = $("#price");
+            let profit = $('#profit');
+
+            // Attach the input event to both elements using a comma-separated selector.
+            $("#price, #profit").on("input", function () {
+                // Calculate the total value from the input fields.
+                let total = (+price.val()) + (+profit.val());
+
+                // Update the HTML content of the target element.
+                $("#calculator-profit").html(total + " مبلغ تمام شده");
+            });
+
             $("#reject_payment").on("click", async function () {
                 await cancelPayment(id);
                 await destroidModal("price_and_link_form_modal");
@@ -221,10 +223,8 @@ $(document).ready(async () => {
 
             form.submit(async function (e) {
                 e.preventDefault();
-
-                let price = $('#price').val();
                 let paymentLink = $('#paymentLink').val();
-                await confirmPayment(id, +price, paymentLink);
+                await confirmPayment(id, profit.val(), +price.val(), paymentLink);
                 await destroidModal("price_and_link_form_modal");
             });
         });
