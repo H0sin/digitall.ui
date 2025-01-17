@@ -26,6 +26,16 @@ const price_link_form = `
         <label class="form-label">هزینه فقط پاسپورت</label>
         <input type="text" class="form-control">
     </div>
+    <div class="d-flex w-100">
+    <div class="mb-3 w-50 pe-2">
+        <label class="form-label">هزینه تمام شده</label>
+        <input type="text" class="form-control w-100">
+    </div>
+    <div class="mb-3 w-50 ps-2">
+        <label class="form-label">مبلغ سود شما</label>
+        <input type="text" class="form-control w-100">
+    </div>
+    </div>
     <div class="mb-3">
         <label for="paymentLink" class="form-label">لینک پرداخت</label>
         <input id="paymentLink" type="text" class="form-control">
@@ -34,7 +44,7 @@ const price_link_form = `
         <label for="uniqueId" class="form-label">شناسه یکتا</label>
         <div class="d-flex align-items-center">
             <input id="uniqueId" type="text" class="form-control" readonly hidden>
-            <button type="button" class="btn btn-secondary ms-2" id="successLink">پرداخت موفق</button>
+            <button type="button" class="btn btn-success ms-2" id="successLink">پرداخت موفق</button>
             <button type="button" class="btn btn-danger ms-2" id="dangerLink">پرداخت ناموفق</button>
         </div>
     </div>

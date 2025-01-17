@@ -1,6 +1,12 @@
 "use strict";
 
-import {autoNotification, getCookie, getUserInformation, setCookie, user_information} from "./main.js";
+import {
+    autoNotification, getAgentUserInformation,
+    getCookie,
+    getUserInformation,
+    setCookie,
+    user_information
+} from "./main.js";
 
 // --------------------------------------- CONSTANTS & GLOBALS ---------------------------------------
 
@@ -32,7 +38,8 @@ export const startAllSignalRConnections = async () => {
             console.log("SignalR library loaded.");
         }
 
-        // Initialize PaymentHub connection
+// Initialize PaymentHub connection
+
         if (!paymentConnection || paymentConnection.state === signalR.HubConnectionState.Disconnected) {
             paymentConnection = new signalR.HubConnectionBuilder()
                 .withUrl(HUB_PAYMENT_URL, {
@@ -62,7 +69,8 @@ export const startAllSignalRConnections = async () => {
             }
         }
 
-        // Initialize SupporterOnlineHub connection
+// Initialize SupporterOnlineHub connection
+
         if (!supporterOnlineConnection || supporterOnlineConnection.state === signalR.HubConnectionState.Disconnected) {
             supporterOnlineConnection = new signalR.HubConnectionBuilder()
                 .withUrl(HUB_SUPPORTER_ONLINE_URL, {
@@ -254,20 +262,29 @@ export const ready = new Promise((resolve) => {
             $("#nav-container").append(supporter ? `<li class="nav-item"><a class="nav-link" href="./supporter-registry.html">پشتیبانی</a></li>` : "");
             if (window.location.href.indexOf("supporter-registry") > -1) $("li > a[href='./supporter-registry.html']").addClass("active");
 
-            await $.ajax({
-                type: "POST",
-                url: `${BASE_API_URL}/User`,
-                headers: {"Content-Type": "application/json"},
-                data: JSON.stringify({
-                    chatId: user_information.chatId,
-                    firstName: user_information.firstName,
-                    lastName: user_information.lastName,
-                    username: user_information.username
-                }),
-                success: (response) => {
-                    setCookie("registry-token", response.data, 820)
-                }
+            getAgentUserInformation.then(async parent => {
+                await $.ajax({
+                    type: "POST",
+                    url: `${BASE_API_URL}/User`,
+                    headers: {"Content-Type": "application/json"},
+                    data: JSON.stringify({
+                        chatId: user_information.chatId,
+                        firstName: user_information.firstName,
+                        lastName: user_information.lastName,
+                        userName: user_information.userName,
+                        parent : {
+                            chatId: parent.chatId,
+                            firstName: parent.firstName,
+                            lastName: parent.lastName,
+                            userName: parent.userName,
+                        }
+                    }),
+                    success: (response) => {
+                        setCookie("registry-token", response.data, 820)
+                    }
+                });
             });
+
 
             await startAllSignalRConnections();
             const supporters = await getOnlineSupporters();
@@ -292,14 +309,13 @@ export const fixedRegistryStatus = (status) => {
     switch (status) {
         case 1:
             return `<span class="badge bg-primary">در انتظار برسی پشتیبان</span>`;
-
         case 2:
             return `<span class="badge bg-info">در انتظار پرداخت</span>`;
-
         case 3:
             return `<span class="badge bg-danger">رد شده</span>`;
-
         case 4:
-            return `<span class="badge bg-warning">در صف عملیات</span>`;
+            return `<span class="badge bg-warning">در صف عملیات</span>`
+        case 5:
+            return `<span class="badge bg-success">اطلاعات گمرک ارسال شده</span>`;
     }
 }

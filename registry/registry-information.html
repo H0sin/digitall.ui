@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
@@ -12,10 +12,21 @@
     <title></title>
     <link rel="stylesheet" href="../assets/vendors/core/core.css">
     <link rel="stylesheet" href="../assets/vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../assets/css/persian-datepicker-0.4.5-dark.min.css">
+    <link rel="stylesheet" href="../assets/vendors/flatpickr/flatpickr.min.css">
     <link rel="stylesheet" href="../assets/fonts/feather-font/css/iconfont.css">
     <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="../assets/css/demo4/style-rtl.min.css">
     <link rel="stylesheet" href="../assets/css/notifications.css">
+    <style>
+        .distance p {
+            margin-bottom: 10px;
+        }
+
+        .datepicker-plot-area {
+            z-index: 9999999999;
+        }
+    </style>
 </head>
 
 <body>
@@ -40,7 +51,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="wd-30 ht-30 rounded-circle" src="./assets/images/faces/face7.jpg"
+                                <img class="wd-30 ht-30 rounded-circle" src="../assets/images/Users.jpg"
                                      alt="profile">
                             </a>
 
@@ -48,7 +59,7 @@
                                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                                     <div class="mb-3">
                                         <img class="wd-80 ht-80 rounded-circle"
-                                             src="./assets/images/faces/face7.jpg" alt="">
+                                             src="../assets/images/Users.jpg" alt="">
                                     </div>
                                     <div class="text-center">
                                         <p id="fullName" class="tx-16 fw-bolder"></p>
@@ -88,7 +99,7 @@
             <div class="row">
                 <div class="col-xl-12 grid-margin grid-margin-xl-0 stretch-card">
                     <div class="card">
-                        <div class="card-body" id="informationRegistery">
+                        <div class="card-body" id="informationRegistry">
                             <h4 class=" mb-3"> اطلاعات </h4>
                             <section class="row">
                                 <div class="col-12">
@@ -105,6 +116,18 @@
                                     <p class="card-text" data-value="price" data-draft="قیمت"></p>
                                     <p class="card-text" data-value="summery" data-draft="توضیحات کوتاه"></p>
                                     <p class="card-text" data-value="status" data-draft="وضعیت" data-type="status"></p>
+                                </div>
+                            </section>
+                            <section class="row">
+                                <div class="col-12 mt-3">
+<!--                                    <p class="card-text" data-="شماره مبایل"></p>-->
+                                    <p class="card-text" data-value="travelerNationalId" data-draft="کد ملی"></p>
+                                    <p class="card-text" data-value="travelerPhone" data-draft="شماره مبایل"></p>
+                                    <p class="card-text" data-value="travelerBirthDate" data-type="date"
+                                       data-draft="تاریخ تولد"></p>
+                                    <p class="card-text" data-value="customsIBAN" data-draft="شماره شباء"></p>
+                                    <p class="card-text" data-value="customsPaymentId" data-draft="شناسه پرداخت"></p>
+                                    <p class="card-text" data-value="customsAmount" data-draft="مبلغ"></p>
                                 </div>
                             </section>
                         </div>
@@ -131,50 +154,102 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="varyingModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="statusModalLabel">تغییر وضعیت</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="btn-close"></button>
+    <div id="modals">
+        <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="statusModalLabel">تغییر وضعیت</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="status-form">
+                            <div class="mb-3">
+                                <label for="status_registry" class="form-label">وضعیت</label>
+                                <select class="form-select" name="status_registry" id="statusRegistry" required>
+                                    <option selected disabled>وضعیت کاربر را انتخاب کنید</option>
+                                    <option value="model_declared">اعلام مدل</option>
+                                    <option value="awaiting_payment">در انتظار پرداخت</option>
+                                    <option value="processing_queue">در صف عملیات</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="statusDescription" class="form-label">توضیحات</label>
+                                <textarea name="statusDescription" id="statusDescription" rows="5"
+                                          class="form-control"></textarea>
+                            </div>
+                            <div class="modal-footer footer-status"></div>
+                        </form>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form id="status-form">
-                        <div class="mb-3">
-                            <label for="status_registry" class="form-label">وضعیت</label>
-                            <select class="form-select" name="status_registry" id="statusRegistry">
-                                <option selected disabled>وضعیت کاربر را انتخاب کنید</option>
-                                <option>اعلام مدل</option>
-                                <option>در انتظار پرداخت</option>
-                                <option>در صف عملیات</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label>توضیحات</label>
-                            <textarea name="textMessage" rows="15" class="form-control"></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-outline-primary"><i data-feather="check"></i>
-                                ثبت وضعیت
-                            </button>
-                        </div>
-                    </form>
+            </div>
+        </div>
+        <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">ارسال اطلاعات</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="information-form">
+                            <div class="mb-3">
+                                <label class="form-label">اطلاعات</label>
+                                <p class="card-text" id="idInformation"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="travelerNational" class="form-label">کد ملی مسافر</label>
+                                <input id="travelerNational" class="form-control" name="travelerNational" type="text">
+                            </div>
+                            <div class="mb-3">
+                                <label for="travelerPhone" class="form-label">شماره مبایل مسافر</label>
+                                <input id="travelerPhone" class="form-control" name="travelerPhone" type="text">
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-group flatpickr" id="flatpickr-date">
+                                    <label class="d-block w-100 text-muted">تاریخ تولد مسافر</label>
+                                    <input type="text" class="form-control " data-input>
+                                    <span class="input-group-text input-group-addon" data-toggle><i
+                                            data-feather="calendar"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="customsIBAN" class="form-label">شباء گمرک</label>
+                                <input id="customsIBAN" class="form-control" name="customsIBAN"
+                                       placeholder="شماره شباء گمرک را با IR وارد کنید" type="text">
+                            </div>
+                            <div class="mb-3">
+                                <label for="customsPayment" class="form-label">شناسه پرداخت</label>
+                                <input id="customsPayment" class="form-control" name="customsPayment" type="text">
+                            </div>
+                            <div class="mb-3">
+                                <label for="customsAmount" class="form-label">مبلغ گمرک</label>
+                                <input id="customsAmount" class="form-control" name="customsAmount" type="text">
+                            </div>
+                            <div class="mb-3">
+                                <label for="textMessage" class="form-label">توضیحات</label>
+                                <textarea rows="5" class="form-control"></textarea>
+                            </div>
+                            <div class="modal-footer footer-information"></div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script src="../assets/vendors/apexcharts/apexcharts.min.js"></script>
 <script src="../assets/vendors/core/core.js"></script>
 <script src="../assets/vendors/feather-icons/feather.min.js"></script>
 <script src="../assets/vendors/jquery-validation/jquery.validate.min.js"></script>
 <script src="../assets/vendors/select2/select2.min.js"></script>
+<script src="../assets/vendors/flatpickr/flatpickr.min.js"></script>
 <script src="../assets/js/template.js"></script>
 <script src="../assets/js/dashboard-dark.js"></script>
 <script src="../assets/js/notifications.js"></script>
 <script type='module' src="../assets/js/registry-information.js"></script>
+
 </body>
 </html>

@@ -11,7 +11,9 @@ $(document).ready(async function () {
     const url = new URL(currentUrl);
     const params = new URLSearchParams(url.search);
     let token = params.get("token");
+    let registry = params.get("registry");
     if(token) setCookie("token", token, 820);
+    if(registry) location.href = "registry/registry.html";
 
     //get agent information data
     await api.getDigitallApi("/Agent/GetAdminAgentInformation", false).then((data) => {

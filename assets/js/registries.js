@@ -1,22 +1,6 @@
 import * as registry from "./main-registry.js";
-import * as main from "./main.js";
-import {
-    destroidModal,
-    errorTheme,
-    errorTitle,
-    generateModal,
-    notificationMessage,
-    warningTheme,
-    warningTitle
-} from "./main.js";
-import {
-    paymentConnection,
-    getRegistryApi,
-    ready,
-    supporterOnlineConnection,
-    supporter,
-    fixedRegistryStatus
-} from "./main-registry.js";
+import { warningTheme , warningTitle ,infoTheme, generateModal, notificationMessage, showLoading, hiddenLoading , destroidModal, hideNotificationMessage} from "./main.js";
+import {ready,paymentConnection,supporter, getRegistryApi ,supporterOnlineConnection,fixedRegistryStatus } from "./main-registry.js";
 
 
 // -------------------------------------------------------------------------------------
@@ -39,9 +23,7 @@ const payment_information = (price, link) => `
                 .then(() => alert("مبلغ کپی شد!"))
                 .catch(err => alert("خطا در کپی مبلغ: " + err));
         }
-    </script>
-`;
-
+    </script>`;
 
 const awaiting_support_review_form = `
         <form id="model_information_modal">
@@ -66,6 +48,7 @@ const awaiting_support_review_form = `
     `;
 
 // -------------------------------------------------------------------------------------
+
 // -------------------------------------------------------------------------------------
 
 const awaiting_send_price_form = `
@@ -77,12 +60,9 @@ const awaiting_send_price_form = `
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">ارسال عکس</button>
           </div>       
-        </form>
-`;
-
+        </form>`;
 
 // -------------------------------------------------------------------------------------
-
 
 const fixedRegistryButton = (status, id, isSupporter) => {
     switch (status) {
@@ -92,6 +72,8 @@ const fixedRegistryButton = (status, id, isSupporter) => {
             return `<button id="price-${id}" class="btn btn-outline-info paymentPrice" disabled="disabled">میخواهم پرداخت کنم</button>`;
         case 3:
             return `<button id="edite-registry-${id}" class="btn btn-outline-danger">ویرایش اطلاعات</button>`;
+        // case 5:
+        //     return `<button id="${id}" class="btn btn-outline-success">اطلاعات گمرک ثبت شده</button>`;
     }
 }
 
@@ -119,8 +101,7 @@ function generateRegistryAdminItem(item, isSupporter = false) {
                                 </div>
                           </div>
                     </div>
-                </div>
-               `;
+                </div>`;
 }
 
 function generateRegistryItem(item) {
@@ -136,11 +117,39 @@ function generateRegistryItem(item) {
                 </a>`;
 }
 
-
 $(document).ready(async function (e) {
 
-    await main.showLoading();
+    await showLoading();
     await ready;
+
+    let current_page = 1;
+    let registries_container = $("#registries-container");
+    let registry_status = "null";
+    let allEntitiesCount = 0;
+    let imei_filter = "null";
+    let debounce_timeout;
+
+    $("#registry-status").on("change", async function (e) {
+        registry_status = e.target.value;
+        await showLoading();
+        current_page = 1;
+        registries_container.html('');
+        await loadRegistries(current_page);
+        await hiddenLoading();
+    });
+
+    $("#imei-filter").on("input", function (event) {
+        imei_filter = event.target.value.trim();
+        clearTimeout(debounce_timeout);
+
+        debounce_timeout = setTimeout(async () => {
+            current_page = 1;
+            registries_container.html('');
+            await showLoading();
+            await loadRegistries(current_page);
+            await hiddenLoading();
+        }, 500);
+    });
 
     const modals = {
         awaiting_support_review: {
@@ -155,46 +164,50 @@ $(document).ready(async function (e) {
     }
 
     await paymentConnection.on("PaymentUpdated", async (registry) => {
-        await main.hideNotificationMessage();
+        await hideNotificationMessage();
         if (registry.status != 2) {
-            await main.hiddenLoading();
+            await hiddenLoading();
             await notificationMessage(warningTitle, "با عرض پوزش درخواست شما رد شده لطفا دوباره برای پرداخت درخواست بدهید", warningTheme);
         } else if (registry.status == 2) {
             modals.show_price_and_link.body = payment_information(registry.price, registry.paymentLink);
-            main.generateModal(modals.show_price_and_link.name, modals.show_price_and_link.title, modals.show_price_and_link.body);
+            generateModal(modals.show_price_and_link.name, modals.show_price_and_link.title, modals.show_price_and_link.body);
             $("#show_price_and_link-modal").css("z-index", 99999999999999);
         }
     })
 
 
-    let current_page = 1;
-    let registries_container = $("#registries-container");
-
     async function loadRegistries(page) {
-        let {entities} = await getRegistryApi(`${supporter ? 'Registry/get-all' : 'Registry'}?page=${page}`, false);
+        let {
+            allEntitiesCount: counts,
+            entities
+        } = await getRegistryApi(`${supporter ? 'Registry/get-all' : 'Registry'}?takeEntity=8&page=${page}${registry_status != "null" ? `&status=${registry_status}`  : ""}${imei_filter != "null" ? `&imei=${imei_filter}` : ""}`, false);
+        allEntitiesCount = counts;
+        if (allEntitiesCount === 0) {
+            registries_container.append("<h4 class='text-center p-4'>موردی یافت نشد</h4>");
+        } else {
+            await $.each(entities, async function (index, registry) {
+                registries_container.append(generateRegistryAdminItem(registry, supporter));
 
-        await $.each(entities, async function (index, registry) {
-            registries_container.append(generateRegistryAdminItem(registry, supporter));
+                $(`#model_information-${registry.id}`).on("click", async function (e) {
 
-            $(`#model_information-${registry.id}`).on("click", async function (e) {
+                    generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
 
-                generateModal(modals.awaiting_support_review.name, modals.awaiting_support_review.title, modals.awaiting_support_review.body);
+                    let predefined = await getRegistryApi("RejectionReasons/predefined");
+                    let dropdown = $('#predefinedRejectionReason');
 
-                let predefined = await getRegistryApi("RejectionReasons/predefined");
-                let dropdown = $('#predefinedRejectionReason');
+                    predefined.map(x => dropdown.append(`<option value="${x.id}">${x.reason}</option>`));
 
-                predefined.map(x => dropdown.append(`<option value="${x.id}">${x.reason}</option>`));
+                    let form = $("#model_information_modal");
 
-                let form = $("#model_information_modal");
+                    let input = $(`<input class="d-none" type="text" value="${e.target.id.replace("model_information-", "")}" />`);
 
-                let input = $(`<input class="d-none" type="text" value="${e.target.id.replace("model_information-", "")}" />`);
+                    $(form).append(input);
 
-                $(form).append(input);
+                    await submit_model_information_modal();
+                });
 
-                await submit_model_information_modal();
             });
-        });
-
+        }
         let supporters = await supporterOnlineConnection.invoke('GetOnlineSupporterAsync');
 
         $(".paymentPrice").prop("disabled", supporters.length === 0);
@@ -213,9 +226,9 @@ $(document).ready(async function (e) {
                 id, imeI_1, imeI_2, summery, forWho, phone, model
             };
 
-            await main.notificationMessage(
-                "در حال بررسی قیمت...", "لطفاً تا زمان اعلام قیمت منتظر بمانید. در صورت ترک این صفحه، ممکن است قیمت نهایی اعلام نشود.", main.infoTheme, 360000, false);
-            await main.showLoading();
+            await notificationMessage(
+                "در حال بررسی قیمت...", "لطفاً تا زمان اعلام قیمت منتظر بمانید. در صورت ترک این صفحه، ممکن است قیمت نهایی اعلام نشود.", infoTheme, 360000, false);
+            await showLoading();
             await registry.registerPayment(data);
         });
 
@@ -226,6 +239,23 @@ $(document).ready(async function (e) {
     }
 
     await loadRegistries(current_page);
+
+    registries_container.on("scroll", async function () {
+        const container = $(this);
+        const scrollHeight = container[0].scrollHeight;
+        const scrollTop = container.scrollTop();
+        const containerHeight = container.height();
+
+        if (scrollTop + containerHeight >= scrollHeight - 10) {
+            if ($("#registries-container > div").length >= allEntitiesCount) {
+                return;
+            }
+            current_page++;
+            await showLoading();
+            await loadRegistries(current_page);
+            await hiddenLoading();
+        }
+    });
 
     // ----------------------------------------------- forms
 
@@ -251,11 +281,11 @@ $(document).ready(async function (e) {
                 let id = hiddenInput.val();
                 let predefinedRejectionReasonId = +$("#predefinedRejectionReason").val();
                 let additionalExplanation = $("#additionalExplanation").val();
-                let data = {id,model, predefinedRejectionReasonId, additionalExplanation}
+                let data = {id, model, predefinedRejectionReasonId, additionalExplanation}
 
                 await registry.updateRegistryApi("Registry/Decision", data);
                 await loadRegistries(current_page);
-                main.destroidModal("awaiting-support-review");
+                destroidModal("awaiting-support-review");
 
             }, errorPlacement: function (error, element) {
                 error.addClass("invalid-feedback");
@@ -281,41 +311,6 @@ $(document).ready(async function (e) {
         });
     }
 
-    await main.hiddenLoading();
+    await hiddenLoading();
 });
 
-
-// async function submit_price_modal() {
-//     await $("#price_modal").validate({
-//         rules: {
-//             price: {
-//                 required: true,
-//             },
-//         }, messages: {
-//             price: {
-//                 required: "فایل نمیتواند خالی باشد .",
-//             },
-//         }, submitHandler: function (form) {
-//         }, errorPlacement: function (error, element) {
-//             error.addClass("invalid-feedback");
-//
-//             if (element.parent('.input-group').length) {
-//                 error.insertAfter(element.parent());
-//             } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-//                 error.insertAfter(element.parent().parent());
-//             } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-//                 error.appendTo(element.parent().parent());
-//             } else {
-//                 error.insertAfter(element);
-//             }
-//         }, highlight: function (element, errorClass) {
-//             if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-//                 $(element).addClass("is-invalid").removeClass("is-valid");
-//             }
-//         }, unhighlight: function (element, errorClass) {
-//             if ($(element).prop('type') != 'checkbox' && $(element).prop('type') != 'radio') {
-//                 $(element).addClass("is-valid").removeClass("is-invalid");
-//             }
-//         }
-//     });
-// }
