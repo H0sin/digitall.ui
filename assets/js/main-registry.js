@@ -18,6 +18,8 @@ export const HUB_PAYMENT_URL = `${BASE_URL}paymentHub`;
 export let supporter;
 export let paymentConnection = null;
 export let supporterOnlineConnection = null;
+export let REGISTRY_USER = null;
+
 let isConnecting = false;
 
 // --------------------------------------- SIGNALR CONFIG ---------------------------------------
@@ -130,13 +132,13 @@ export const registerPayment = async (paymentObject) => {
  * @param {number} price - The confirmed price for the registry.
  * @param {string} paymentLink - The payment link associated with the registry.
  */
-export const confirmPayment = async (registryId, price, paymentLink) => {
+export const confirmPayment = async (registryId, price,profit, paymentLink) => {
     if (!paymentConnection) {
         console.warn("Payment connection is not initialized.");
         return;
     }
     try {
-        await paymentConnection.invoke("ConfirmPayment", registryId, price, paymentLink);
+        await paymentConnection.invoke("ConfirmPayment", registryId,profit, price, paymentLink);
         console.log("ConfirmPayment invoked successfully.");
     } catch (err) {
         console.error("Error invoking ConfirmPayment:", err);
@@ -285,10 +287,10 @@ export const ready = new Promise((resolve) => {
                 });
             });
 
-
             await startAllSignalRConnections();
             const supporters = await getOnlineSupporters();
-
+            REGISTRY_USER = await getRegistryApi("User/information",false);
+            $("#balance").after( `<p class="tx-12 text-muted">${"کیف پول  رجیستری:" + (REGISTRY_USER.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی ")}</p>`);
             console.log("Online supporters:", supporters);
         } catch (err) {
             console.error("Error on document ready:", err);
