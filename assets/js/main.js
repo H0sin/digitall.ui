@@ -350,9 +350,9 @@ export const fixedFeatherIcon = (notificationType) => {
         case 8:
             return `<i data-feather="rotate-cw" class="text-primary" style="width: 20px; height: 20px;"></i>`;
         case 9:
-            return `<i data-feather="" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+            return `<i data-feather="file" class="text-primary" style="width: 20px; height: 20px;"></i>`;
         case 10:
-            return `<i data-feather="" class="text-primary" style="width: 20px; height: 20px;"></i>`;
+            return `<i data-feather="delete" class="text-primary" style="width: 20px; height: 20px;"></i>`;
         case 11:
             return `<i data-feather="user-plus" class="text-primary" style="width: 20px; height: 20px;"></i>`;
     }

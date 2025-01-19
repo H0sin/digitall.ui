@@ -15,6 +15,45 @@
     <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css">
     <link rel="stylesheet" href="./assets/css/notifications.css">
+    <style>
+
+        .myImg {
+            opacity: 1;
+            display: block;
+            height: 100px;
+            width: 100px;
+            position: relative;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 115px;
+            right: 50px;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        img:hover {
+            cursor: pointer;
+        }
+
+        .test:hover .myImg {
+            opacity: 0.3;
+        }
+
+        .test:hover .middle {
+            opacity: 1;
+        }
+
+        .text {
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -80,111 +119,62 @@
     <div class="page-wrapper">
         <div class="page-content py-1" style="min-height:0">
             <ul class="nav nav-pills nav-fill pt-4">
-                <li class="nav-item">
-                    <a class="nav-link active" href="index.html">نمایندگی</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="users.html">کاربران</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="report.html">گزارشات</a>
-                </li>
+                <div class="nav-item">
+                    <p class="nav-link active">پروفایل</p>
+                </div>
             </ul>
         </div>
 
         <div class="page-content">
             <div class="row">
                 <div class="col grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title mb-0">لحظه قطع شدن سرویس</h6>
-                            <div id="total_inventory"></div>
-                            <div class="row">
-                                <div class="col-6 d-flex justify-content-end">
-                                    <div>
-                                        <label class="d-flex align-items-center justify-content-end tx-10 text-uppercase fw-bolder">کل
-                                            موجودی<span class="p-1 me-1 rounded-circle bg-primary"></span></label>
-                                        <h5 class="fw-bolder mb-0 text-end" id="total_storage_display"></h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div>
-                                        <label class="d-flex align-items-center tx-10 text-uppercase fw-bolder">مقدار
-                                            خرید منفی<span class="p-1 ms-1 rounded-circle bg-secondary"></span></label>
-                                        <h5 class="fw-bolder mb-0" id="negative_storage_display"></h5>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title mb-2">رشد فروش</h6>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h5 class="mb-2" id="sales_profit"></h5>
-                                    <div class="d-flex align-items-baseline">
-                                        <p>
-                                            <span id="growth_profit"></span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-12 col-xl-7">
-                                    <div id="agentProfit" class="mt-md-3 mt-xl-0">میزان رشد</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col grid-margin stretch-card">
                     <div class="card" id="agent_information">
                         <div class="card-body">
                             <h5 class="card-title">اطلاعات نمایندگی</h5>
-                            <section class="row">
-                                <div class="col-6">
-                                    <p class="card-text text-muted" id="agent-brand-name"></p>
-                                    <p class="card-text text-muted" id="agent-code"></p>
+                            <form>
+                                <div class="d-flex align-items-start  py-3">
+                                    <div class="me-3 d-flex">
+                                        <label for="upload">
+                                            <div
+                                                    class="test" aria-hidden="true">
+                                                <img id="myImg" class="myImg"
+                                                     src="./assets/images/Users.jpg" alt="پروفایل"/>
+                                                <div class="middle">
+                                                    <div class="text" data-feather="edit-2"></div>
+                                                </div>
+                                            </div>
+                                            <input type="file" id="upload" style="display:none">
+                                        </label>
+                                        <!--                                        <div class="d-flex w-100"  style="height: 100px ; width: 100px;">-->
+                                        <!--                                            <input type="file" style="position: fixed;" />-->
+                                        <!--                                            <img id="myImg" src="./assets/images/Users.jpg" alt="پروفایل" />-->
+
+                                        <!--                                        </div>-->
+                                    </div>
+                                    <div class="w-100">
+                                        <div class="d-flex justify-content-between">
+                                            <p class="card-text text-muted" id="agent-brand-name"></p>
+                                        </div>
+                                        <p class="card-text text-muted" id="agent-code"></p>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <p class="card-text text-muted" id="agent-Percent"></p>
-                                    <p class="card-text text-muted" id="user-Percent"></p>
+                                <div class="row mt-3">
+                                    <div class="col grid-margin stretch-card">
+                                        <div class="btn-group col">
+                                            <button type="submit" class="w-100 btn btn-outline-primary">
+                                                <i data-feather="edit-3"></i>
+                                                ثبت پروفایل
+                                            </button>
+                                            <a class="w-100 btn btn-outline-primary" href="./index.html"
+                                               role="button">
+                                                <i data-feather="x"></i>
+                                                برگشت</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </section>
+                            </form>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col grid-margin stretch-card">
-                    <div class="card" id="Transaction-Detail">
-                        <div class="card-body">
-                            <h5 class="card-title">اطلاعات پرداخت</h5>
-                            <section class="row">
-                                <div class="col-6">
-                                    <p class="card-text text-muted" id="card-holder-name"></p>
-                                    <p class="card-text text-muted" id="card-number"></p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="card-text text-muted" id="maximum-payment"></p>
-                                    <p class="card-text text-muted" id="minimum-payment"></p>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col grid-margin stretch-card">
-                    <a class="w-100 btn btn-primary" href="./edit-agent.html" role="button">
-                        <i data-feather="edit"></i>
-                        ویرایش اطلاعات نمایندگی</a>
                 </div>
             </div>
         </div>
@@ -206,6 +196,9 @@
 <script src="./assets/js/dashboard-dark.js"></script>
 <script src="./assets/js/notifications.js"></script>
 <script type="module" src="./assets/js/agent-information.js"></script>
+<script type="module" src="./assets/js/profile.js"></script>
+
+
 </body>
 
 </html>
