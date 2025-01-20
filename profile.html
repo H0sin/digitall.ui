@@ -11,13 +11,14 @@
           content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
     <title></title>
     <link rel="stylesheet" href="./assets/vendors/core/core.css">
+    <link rel="stylesheet" href="./assets/vendors/jquery-tags-input/jquery.tagsinput.min.css">
     <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css">
     <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css">
     <link rel="stylesheet" href="./assets/css/notifications.css">
     <style>
 
-        .myImg {
+        .imageProfile {
             opacity: 1;
             display: block;
             height: 100px;
@@ -25,6 +26,8 @@
             position: relative;
             transition: .5s ease;
             backface-visibility: hidden;
+            border-radius: 50%;
+            object-fit: contain;
         }
 
         .middle {
@@ -49,7 +52,7 @@
             opacity: 1;
         }
 
-        .text {
+        .editor {
             color: white;
             cursor: pointer;
         }
@@ -78,15 +81,15 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="wd-30 ht-30 rounded-circle" src="../assets/images/Users.jpg"
+                                <img id="profileSetMain" class="wd-30 ht-30 rounded-circle" src=""
                                      alt="profile">
                             </a>
 
                             <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                                     <div class="mb-3">
-                                        <img class="wd-80 ht-80 rounded-circle"
-                                             src="../assets/images/Users.jpg" alt="">
+                                        <img id="profileSet" class="wd-80 ht-80 rounded-circle"
+                                             src="" alt="profile">
                                     </div>
                                     <div class="text-center">
                                         <p id="fullName" class="tx-16 fw-bolder"></p>
@@ -131,31 +134,69 @@
                     <div class="card" id="agent_information">
                         <div class="card-body">
                             <h5 class="card-title">اطلاعات نمایندگی</h5>
-                            <form>
+                            <form id="edit-profile" novalidate="novalidate">
                                 <div class="d-flex align-items-start  py-3">
                                     <div class="me-3 d-flex">
                                         <label for="upload">
-                                            <div
-                                                    class="test" aria-hidden="true">
-                                                <img id="myImg" class="myImg"
+                                            <div class="test" aria-hidden="true">
+                                                <img id="profileImg" class="imageProfile"
                                                      src="./assets/images/Users.jpg" alt="پروفایل"/>
                                                 <div class="middle">
-                                                    <div class="text" data-feather="edit-2"></div>
+                                                    <div class="editor" data-feather="edit-2"></div>
                                                 </div>
                                             </div>
                                             <input type="file" id="upload" style="display:none">
                                         </label>
-                                        <!--                                        <div class="d-flex w-100"  style="height: 100px ; width: 100px;">-->
-                                        <!--                                            <input type="file" style="position: fixed;" />-->
-                                        <!--                                            <img id="myImg" src="./assets/images/Users.jpg" alt="پروفایل" />-->
-
-                                        <!--                                        </div>-->
                                     </div>
                                     <div class="w-100">
                                         <div class="d-flex justify-content-between">
                                             <p class="card-text text-muted" id="agent-brand-name"></p>
                                         </div>
-                                        <p class="card-text text-muted" id="agent-code"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="firstName" class="form-label">نام</label>
+                                            <input type="text" name="firstName" id="first-name"
+                                                   class="form-control" placeholder="نام خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="lastName" class="form-label">نام خانوادگی</label>
+                                            <input type="text" name="lastName" id="last-name"
+                                                   class="form-control" placeholder="نام خانوادگی خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="mobile" class="form-label">شماره مبایل</label>
+                                            <input type="text" name="mobile" id="mobile"
+                                                   class="form-control" placeholder="شماره مبایل خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">ایمیل</label>
+                                            <input type="email" name="email" id="email"
+                                                   class="form-control" placeholder="ایمیل خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">آدرس</label>
+                                            <input type="text" name="address" id="address"
+                                                   class="form-control" placeholder="آدرس خود را وارد کنید"/>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -193,9 +234,11 @@
 <script src="./assets/vendors/core/core.js"></script>
 <script src="./assets/vendors/feather-icons/feather.min.js"></script>
 <script src="./assets/js/template.js"></script>
+<script src="./assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+<script src="./assets/vendors/inputmask/jquery.inputmask.min.js"></script>
+<script src="./assets/vendors/jquery-tags-input/jquery.tagsinput.min.js"></script>
 <script src="./assets/js/dashboard-dark.js"></script>
 <script src="./assets/js/notifications.js"></script>
-<script type="module" src="./assets/js/agent-information.js"></script>
 <script type="module" src="./assets/js/profile.js"></script>
 
 

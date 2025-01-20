@@ -63,6 +63,7 @@ $(document).ready(async function () {
         feather.replace();
     }
 
+
     await loadNotifications();
 
 });

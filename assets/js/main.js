@@ -95,6 +95,10 @@ export function fullName(data) {
     if (data) return data.firstName ? ((data.firstName || "") + " " + (data.lastName || "")) : data.telegramUsername;
     return "";
 }
+export function avatar(data) {
+    if (data) return data.avatar ? ((data.avatar || "")) : data.avatar;
+    return "";
+}
 
 export const hiddenModal = () => {
     let show = $(".show");
@@ -287,6 +291,38 @@ export const updateDigitallApi = async (url, credentials, id = 0, fire = true, a
     return response;
 }
 
+//---------------------------------------------------------------------------------------------------------
+
+//update profile method  token from header  -----------------------------------------------------------------------------
+export const updateProfileDigitallApi = async (url, credentials, id = 0, fire = true, authType = 'bearer ') => {
+    let response;
+    let formData = new FormData();
+
+    formData.append("firstName", credentials.firstName);
+    formData.append("lastName", credentials.lastName);
+    formData.append("avatar", credentials.avatar);
+
+    await $.ajax({
+        type: "PUT",
+        url: baseApiRequest + url,
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {
+            Authorization: authType + getCookie("token"),
+        },
+        success: function ({ data, isSuccess, message, statusCode }) {
+            if (fire) autoNotification(statusCode, isSuccess, message);
+            response = data;
+        },
+
+        error: function (ex) {
+            notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
+        },
+    });
+
+    return response;
+}
 
 // --------------------------------------------------------------------------------------------------------
 
@@ -408,9 +444,12 @@ async function loadNotificaciones() {
 export const getUserInformation = new Promise(async resolve => {
 
     user_information = await getDigitallApi("/User/GetInformation", false);
+    const avatarUrl = avatar(user_information).replace('/app/wwwroot', baseUrl);
+
     $("#fullName").html(" نام کاربری :" + " " + fullName(user_information));
     $("#balance").html("موجودی : " + (user_information.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "));
-    $("#profile").html();
+    $("#profileSetMain").attr("src", avatarUrl);
+    $("#profileSet").attr("src", avatarUrl);
     $("#bot_name").html(user_information.botName.replace("bot", "<span class='px-1'> Bot</span>"));
     $("#bot_name").attr("href", user_information.botLink);
     // feather.replace();
