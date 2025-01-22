@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="NobleUI">
+    <meta name="keywords"
+          content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    <title></title>
+    <link rel="stylesheet" href="./assets/vendors/core/core.css">
+    <link rel="stylesheet" href="./assets/vendors/jquery-tags-input/jquery.tagsinput.min.css">
+    <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css">
+    <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css">
+    <link rel="stylesheet" href="./assets/css/notifications.css">
+    <style>
+
+        .imageProfile {
+            opacity: 1;
+            display: block;
+            height: 100px;
+            width: 100px;
+            position: relative;
+            transition: .5s ease;
+            backface-visibility: hidden;
+            border-radius: 50%;
+            object-fit: contain;
+        }
+
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 115px;
+            right: 50px;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        img:hover {
+            cursor: pointer;
+        }
+
+        .test:hover .myImg {
+            opacity: 0.3;
+        }
+
+        .test:hover .middle {
+            opacity: 1;
+        }
+
+        .editor {
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div class="horizontal-menu">
+        <nav class="navbar top-navbar">
+            <div class="container">
+                <div class="navbar-content">
+                    <a id="bot_name" class="navbar-brand">
+                        <span>Bot</span>
+                    </a>
+                    <ul class="navbar-nav">
+                        <li id="notification-container" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="bell"></i>
+                                <div class="indicator">
+                                    <div class="circle"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img id="profileSetMain" class="wd-30 ht-30 rounded-circle" src=""
+                                     alt="profile">
+                            </a>
+
+                            <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
+                                <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
+                                    <div class="mb-3">
+                                        <img id="profileSet" class="wd-80 ht-80 rounded-circle"
+                                             src="" alt="profile">
+                                    </div>
+                                    <div class="text-center">
+                                        <p id="fullName" class="tx-16 fw-bolder"></p>
+                                        <p id="balance" class="tx-12 text-muted"></p>
+                                        <p id="registryBalance" class="tx-12 text-muted"></p>
+                                        <p id="chat_id" class="tx-12 text-muted"></p>
+                                    </div>
+                                </div>
+                                <ul class="list-unstyled p-1">
+                                    <li class="dropdown-item py-2">
+                                        <a href="profile.html" class="text-body ms-0">
+                                            <i class="me-2 icon-md" data-feather="user"></i>
+                                            <span>پروفایل</span>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item py-2">
+                                        <a href="transaction.html" id="profile" class="text-body ms-0">
+                                            <i class="me-2 icon-md" data-feather="dollar-sign"></i>
+                                            <span>تراکنش ها</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="page-wrapper">
+        <div class="page-content py-1" style="min-height:0">
+            <ul class="nav nav-pills nav-fill pt-4">
+                <div class="nav-item">
+                    <p class="nav-link active">پروفایل</p>
+                </div>
+            </ul>
+        </div>
+
+        <div class="page-content">
+            <div class="row">
+                <div class="col grid-margin stretch-card">
+                    <div class="card" id="agent_information">
+                        <div class="card-body">
+                            <h5 class="card-title">اطلاعات نمایندگی</h5>
+                            <form id="edit-profile" novalidate="novalidate">
+                                <div class="d-flex align-items-start  py-3">
+                                    <div class="me-3 d-flex">
+                                        <label for="upload">
+                                            <div class="test" aria-hidden="true">
+                                                <img id="profileImg" class="imageProfile"
+                                                     src="./assets/images/Users.jpg" alt="پروفایل"/>
+                                                <div class="middle">
+                                                    <div class="editor" data-feather="edit-2"></div>
+                                                </div>
+                                            </div>
+                                            <input type="file" id="upload" style="display:none">
+                                        </label>
+                                    </div>
+                                    <div class="w-100">
+                                        <div class="d-flex justify-content-between">
+                                            <p class="card-text text-muted" id="agent-brand-name"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="firstName" class="form-label">نام</label>
+                                            <input type="text" name="firstName" id="first-name"
+                                                   class="form-control" placeholder="نام خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="lastName" class="form-label">نام خانوادگی</label>
+                                            <input type="text" name="lastName" id="last-name"
+                                                   class="form-control" placeholder="نام خانوادگی خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="mobile" class="form-label">شماره مبایل</label>
+                                            <input type="text" name="mobile" id="mobile"
+                                                   class="form-control" placeholder="شماره مبایل خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">ایمیل</label>
+                                            <input type="email" name="email" id="email"
+                                                   class="form-control" placeholder="ایمیل خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">آدرس</label>
+                                            <input type="text" name="address" id="address"
+                                                   class="form-control" placeholder="آدرس خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col grid-margin stretch-card">
+                                        <div class="btn-group col">
+                                            <button type="submit" class="w-100 btn btn-outline-primary">
+                                                <i data-feather="edit-3"></i>
+                                                ثبت پروفایل
+                                            </button>
+                                            <a class="w-100 btn btn-outline-primary" href="./index.html"
+                                               role="button">
+                                                <i data-feather="x"></i>
+                                                برگشت</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loading-container" class="d-none"
+         style="height: 100vh;width: 100%;top: 0;position: fixed;z-index: 99999;background-color: rgba(0, 0, 0, .5);">
+        <div class="d-flex h-100 align-items-center justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">بارگزاری...</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./assets/vendors/apexcharts/apexcharts.min.js"></script>
+<script src="./assets/vendors/core/core.js"></script>
+<script src="./assets/vendors/feather-icons/feather.min.js"></script>
+<script src="./assets/js/template.js"></script>
+<script src="./assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+<script src="./assets/vendors/inputmask/jquery.inputmask.min.js"></script>
+<script src="./assets/vendors/jquery-tags-input/jquery.tagsinput.min.js"></script>
+<script src="./assets/js/dashboard-dark.js"></script>
+<script src="./assets/js/notifications.js"></script>
+<script type="module" src="./assets/js/profile.js"></script>
+
+
+</body>
+
+</html>

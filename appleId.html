@@ -1,317 +1,86 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <meta
-            name="description"
-            content="Responsive HTML Admin Dashboard Template based on Bootstrap 5"
-    />
+    <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5"/>
     <meta name="author" content="NobleUI"/>
-    <meta
-            name="keywords"
-            content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"
-    />
-    <title>مدیریت AppleId</title>
+    <meta name="keywords"
+          content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"/>
+    <title></title>
     <link rel="stylesheet" href="./assets/vendors/core/core.css"/>
-    <link
-            rel="stylesheet"
-            href="./assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css"
-    />
-    <link
-            rel="stylesheet"
-            href="./assets/fonts/feather-font/css/iconfont.css"
-    />
-    <link
-            rel="stylesheet"
-            href="./assets/vendors/flag-icon-css/css/flag-icon.min.css"
-    />
-    <link rel="stylesheet" href="./assets/css/demo2/style-rtl.min.css"/>
-    <link
-            rel="stylesheet"
-            href="./assets/vendors/jquery-tags-input/jquery.tagsinput.min.css"
-    />
-    <link
-            rel="stylesheet"
-            href="./assets/vendors/pickr/themes/classic.min.css"
-    />
-    <link
-            rel="stylesheet"
-            href="./assets/vendors/flatpickr/flatpickr.min.css"
-    />
+    <link rel="stylesheet" href="./assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css"/>
+    <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css"/>
+    <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css"/>
+    <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css">
+    <link rel="stylesheet" href="./assets/vendors/jquery-tags-input/jquery.tagsinput.min.css"/>
+    <link rel="stylesheet" href="./assets/vendors/pickr/themes/classic.min.css"/>
+    <link rel="stylesheet" href="./assets/vendors/flatpickr/flatpickr.min.css"/>
     <link rel="stylesheet" href="./assets/css/notifications.css"/>
 </head>
 
 <body>
 <div class="main-wrapper">
-    <!-- partial:../../partials/_sidebar.html -->
-    <nav class="sidebar">
-        <div class="sidebar-header">
-            <a href="#" class="sidebar-brand"> Apple<span>Id</span> </a>
-            <div class="sidebar-toggler not-active">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        <div class="sidebar-body">
-            <ul class="nav">
-                <li class="nav-item nav-category">محصولات</li>
-                <li class="nav-item active">
-                    <a href="./index.html" class="nav-link">
-                        <i class="link-icon" data-feather="box"></i>
-                        <span class="link-title">اپل آیدی ها</span>
+    <div class="horizontal-menu">
+        <nav class="navbar top-navbar">
+            <div class="container">
+                <div class="navbar-content">
+                    <a id="bot_name" class="navbar-brand">
+                        <span>Bot</span>
                     </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+                    <ul class="navbar-nav">
+                        <li id="notification-container" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="bell"></i>
+                                <div class="indicator">
+                                    <div class="circle"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img id="profileSetMain" class="wd-30 ht-30 rounded-circle" src=""
+                                     alt="profile">
+                            </a>
 
-    <div class="page-wrapper">
-        <nav class="navbar">
-            <a href="#" class="sidebar-toggler">
-                <i data-feather="menu"></i>
-            </a>
-            <div class="navbar-content">
-                <form class="search-form">
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <i data-feather="search"></i>
-                        </div>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="navbarForm"
-                                placeholder="جستجو ..."
-                        />
-                    </div>
-                </form>
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a
-                                class="nav-link dropdown-toggle"
-                                href="#"
-                                id="languageDropdown"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                        >
-                            <i class="flag-icon flag-icon-ir mt-1" title="فارسی"></i>
-                            <span class="ms-1 me-1 d-none d-md-inline-block">فارسی</span>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="languageDropdown">
-                            <a href="javascript:;" class="dropdown-item py-2"
-                            ><i
-                                    class="flag-icon flag-icon-ir"
-                                    title="فارسی"
-                                    id="us"
-                            ></i>
-                                <span class="ms-1"> فارسی </span></a
-                            >
-                            <a href="javascript:;" class="dropdown-item py-2"
-                            ><i
-                                    class="flag-icon flag-icon-us"
-                                    title="انگلیسی"
-                                    id="fr"
-                            ></i>
-                                <span class="ms-1"> انگلیسی </span></a
-                            >
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a
-                                class="nav-link dropdown-toggle"
-                                href="#"
-                                id="notificationDropdown"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                        >
-                            <i data-feather="bell"></i>
-                            <div class="indicator">
-                                <div class="circle"></div>
-                            </div>
-                        </a>
-                        <div
-                                class="dropdown-menu p-0"
-                                aria-labelledby="notificationDropdown"
-                        >
-                            <div
-                                    class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom"
-                            >
-                                <p>6 اعلان جدید</p>
-                                <a href="javascript:;" class="text-muted">پاک کردن همه</a>
-                            </div>
-                            <div class="p-1">
-                                <a
-                                        href="javascript:;"
-                                        class="dropdown-item d-flex align-items-center py-2"
-                                >
-                                    <div
-                                            class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3"
-                                    >
-                                        <i class="icon-sm text-white" data-feather="gift"></i>
+                            <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
+                                <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
+                                    <div class="mb-3">
+                                        <img id="profileSet" class="wd-80 ht-80 rounded-circle"
+                                             src="" alt="profile">
                                     </div>
-                                    <div class="flex-grow-1 me-2">
-                                        <p>سفارش جدید دریافت شد</p>
-                                        <p class="tx-12 text-muted">30 دقیقه پیش</p>
+                                    <div class="text-center">
+                                        <p id="fullName" class="tx-16 fw-bolder"></p>
+                                        <p id="balance" class="tx-12 text-muted"></p>
                                     </div>
-                                </a>
-                                <a
-                                        href="javascript:;"
-                                        class="dropdown-item d-flex align-items-center py-2"
-                                >
-                                    <div
-                                            class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3"
-                                    >
-                                        <i
-                                                class="icon-sm text-white"
-                                                data-feather="alert-circle"
-                                        ></i>
-                                    </div>
-                                    <div class="flex-grow-1 me-2">
-                                        <p>محدودیت سرور!</p>
-                                        <p class="tx-12 text-muted">1 ساعت پیش</p>
-                                    </div>
-                                </a>
-                                <a
-                                        href="javascript:;"
-                                        class="dropdown-item d-flex align-items-center py-2"
-                                >
-                                    <div
-                                            class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3"
-                                    >
-                                        <img
-                                                class="wd-30 ht-30 rounded-circle"
-                                                src="./assets/images/faces/face6.jpg"
-                                                alt="userr"
-                                        />
-                                    </div>
-                                    <div class="flex-grow-1 me-2">
-                                        <p>کاربر جدید ثبت نام کرد</p>
-                                        <p class="tx-12 text-muted">2 ثانیه پیش</p>
-                                    </div>
-                                </a>
-                                <a
-                                        href="javascript:;"
-                                        class="dropdown-item d-flex align-items-center py-2"
-                                >
-                                    <div
-                                            class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3"
-                                    >
-                                        <i class="icon-sm text-white" data-feather="layers"></i>
-                                    </div>
-                                    <div class="flex-grow-1 me-2">
-                                        <p>برنامه ها نیاز به به روز رسانی دارند</p>
-                                        <p class="tx-12 text-muted">5 ساعت پیش</p>
-                                    </div>
-                                </a>
-                                <a
-                                        href="javascript:;"
-                                        class="dropdown-item d-flex align-items-center py-2"
-                                >
-                                    <div
-                                            class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3"
-                                    >
-                                        <i
-                                                class="icon-sm text-white"
-                                                data-feather="download"
-                                        ></i>
-                                    </div>
-                                    <div class="flex-grow-1 me-2">
-                                        <p>دانلود تکمیل شد</p>
-                                        <p class="tx-12 text-muted">6 ساعت پیش</p>
-                                    </div>
-                                </a>
-                            </div>
-                            <div
-                                    class="px-3 py-2 d-flex align-items-center justify-content-center border-top"
-                            >
-                                <a href="javascript:;">مشاهده همه</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a
-                                class="nav-link dropdown-toggle"
-                                href="#"
-                                id="profileDropdown"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                        >
-                            <img
-                                    class="wd-30 ht-30 rounded-circle"
-                                    src="./assets/images/faces/face1.jpg"
-                                    alt="profile"
-                            />
-                        </a>
-                        <div
-                                class="dropdown-menu p-0"
-                                aria-labelledby="profileDropdown"
-                        >
-                            <div
-                                    class="d-flex flex-column align-items-center border-bottom px-5 py-3"
-                            >
-                                <div class="mb-3">
-                                    <img
-                                            class="wd-80 ht-80 rounded-circle"
-                                            src="./assets/images/faces/face1.jpg"
-                                            alt=""
-                                    />
                                 </div>
-                                <div class="text-center">
-                                    <p class="tx-16 fw-bolder">آرزو محبی</p>
-                                    <p class="tx-12 text-muted">arezomohebi@gmail.com</p>
-                                </div>
+                                <ul class="list-unstyled p-1">
+                                    <li class="dropdown-item py-2">
+                                        <a href="profile.html" class="text-body ms-0">
+                                            <i class="me-2 icon-md" data-feather="user"></i>
+                                            <span>پروفایل</span>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item py-2">
+                                        <a href="transaction.html" id="profile" class="text-body ms-0">
+                                            <i class="me-2 icon-md" data-feather="dollar-sign"></i>
+                                            <span>تراکنش ها</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
-                            <ul class="list-unstyled p-1">
-                                <li class="dropdown-item py-2">
-                                    <a href="profile.html" class="text-body ms-0">
-                                        <i class="me-2 icon-md" data-feather="user"></i>
-                                        <span>پروفایل</span>
-                                    </a>
-                                </li>
-                                <li class="dropdown-item py-2">
-                                    <a href="javascript:;" class="text-body ms-0">
-                                        <i class="me-2 icon-md" data-feather="edit"></i>
-                                        <span>ویرایش پروفایل</span>
-                                    </a>
-                                </li>
-                                <li class="dropdown-item py-2">
-                                    <a href="javascript:;" class="text-body ms-0">
-                                        <i class="me-2 icon-md" data-feather="repeat"></i>
-                                        <span>تغییر کاربر</span>
-                                    </a>
-                                </li>
-                                <li class="dropdown-item py-2">
-                                    <a href="javascript:;" class="text-body ms-0">
-                                        <i class="me-2 icon-md" data-feather="log-out"></i>
-                                        <span>خروج</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
-        <!-- partial -->
-
+    </div>
+    <div class="page-wrapper">
         <div class="page-content">
-            <nav class="page-breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">محصولات</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">
-                        اپل آیدی ها
-                    </li>
-                </ol>
-            </nav>
-
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
@@ -321,14 +90,9 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label for="appleIdTypeId" class="form-label"
-                                            >نوع اپل آیدی</label
-                                            >
-                                            <select
-                                                    class="form-select form-select"
-                                                    name="appleIdTypeId"
-                                                    id="appleIdTypeId"
-                                            >
+                                            <label for="appleIdTypeId" class="form-label">نوع اپل آیدی</label>
+                                            <select class="form-select form-select" name="appleIdTypeId"
+                                                    id="appleIdTypeId">
                                                 <option selected disabled>
                                                     لطفا یه آیتم را انتخاب کنید
                                                 </option>
@@ -340,150 +104,83 @@
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">شماره</label>
-                                            <input
-                                                    name="phone"
-                                                    type="number"
-                                                    class="form-control"
-                                                    placeholder="شماره اپل آیدی را وارد کنید"
-                                                    id="phone"
-                                            />
+                                            <input name="phone" type="number" class="form-control"
+                                                   placeholder="شماره اپل آیدی را وارد کنید"
+                                                   id="phone"/>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div
-                                                class="input-group mb-3 flatpickr"
-                                                id="birthdate-content"
-                                        >
-                                            <label class="form-label d-block w-100"
-                                            >تاریخ تولد میلادی</label
-                                            >
-                                            <input
-                                                    name="birthdate_content"
-                                                    type="text"
-                                                    class="form-control flatpickr-input"
-                                                    placeholder="انتخاب تاریخ"
-                                                    data-input=""
-                                                    readonly="readonly"
-                                                    id="birthday"
-                                            />
-                                            <span
-                                                    class="input-group-text input-group-addon"
-                                                    data-toggle=""
-                                            ><svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
+                                        <div class="input-group mb-3 flatpickr" id="birthdate-content">
+                                            <label class="form-label d-block w-100">تاریخ تولد میلادی</label>
+                                            <input name="birthdate_content" type="text"
+                                                   class="form-control flatpickr-input"
+                                                   placeholder="انتخاب تاریخ" data-input="" readonly="readonly"
+                                                   id="birthday"/>
+                                            <span class="input-group-text input-group-addon" data-toggle=""><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                     stroke-linejoin="round"
-                                                    class="feather feather-calendar"
-                                            >
-                              <rect
-                                      x="3"
-                                      y="4"
-                                      width="18"
-                                      height="18"
-                                      rx="2"
-                                      ry="2"
-                              ></rect>
-                              <line x1="16" y1="2" x2="16" y2="6"></line>
-                              <line x1="8" y1="2" x2="8" y2="6"></line>
-                              <line x1="3" y1="10" x2="21" y2="10"></line></svg
-                                            ></span>
+                                                    class="feather feather-calendar">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                    <line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                            </span>
                                         </div>
                                     </div>
-                                    <!-- Col -->
                                 </div>
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="email" class="form-label">ایمیل</label>
-                                            <input
-                                                    name="email"
-                                                    type="text"
-                                                    class="form-control"
-                                                    placeholder="ایمیل اپل آیدی را وارد کنید"
-                                                    id="email"
-                                            />
+                                            <input name="email" type="text" class="form-control"
+                                                   placeholder="ایمیل اپل آیدی را وارد کنید"
+                                                   id="email"/>
                                         </div>
                                     </div>
-                                    <!-- Col -->
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="mb-3">
-                                            <label for="password" class="form-label"
-                                            >کلمه عبور</label
-                                            >
-                                            <input
-                                                    name="password"
-                                                    type="password"
-                                                    class="form-control"
-                                                    placeholder="لطفا کلمه عبور را وارد کنید"
-                                                    id="password"
-                                            />
+                                            <label for="password" class="form-label">کلمه عبور</label>
+                                            <input name="password" type="password" class="form-control"
+                                                   placeholder="لطفا کلمه عبور را وارد کنید" id="password"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-3">
-                                            <label for="comparePassword" class="form-label"
-                                            >تکرار کلمه عبور</label
-                                            >
-                                            <input
-                                                    name="comparePassword"
-                                                    type="password"
-                                                    class="form-control"
-                                                    placeholder="لطفا کلمه عبور را وارد کنید"
-                                                    id="comparePassword"
-                                            />
+                                            <label for="comparePassword" class="form-label">تکرار کلمه عبور</label>
+                                            <input name="comparePassword" type="password" class="form-control"
+                                                   placeholder="لطفا کلمه عبور را وارد کنید" id="comparePassword"/>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Row -->
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label for="question1" class="form-label"
-                                        >سوال یک</label
-                                        >
-                                        <select
-                                                style="direction: ltr"
-                                                name="question_1"
-                                                class="form-select form-select"
-                                                id="question1"
-                                        >
+                                        <label for="question1" class="form-label">سوال یک</label>
+                                        <select style="direction: ltr" name="question_1" class="form-select form-select"
+                                                id="question1">
                                             <option selected disabled>
                                                 لطفا یه آیتم را انتخاب کنید
                                             </option>
-                                            <option
-                                                    value="What is the first name of your best friend in high school?"
-                                            >
+                                            <option value="What is the first name of your best friend in high school?">
                                                 What is the first name of your best friend in high
                                                 school?
                                             </option>
                                             <option value="What was the name of your first pet?">
                                                 What was the name of your first pet?
                                             </option>
-                                            <option
-                                                    value="What was the first thing you learned to cook?"
-                                            >
+                                            <option value="What was the first thing you learned to cook?">
                                                 What was the first thing you learned to cook?
                                             </option>
-                                            <option
-                                                    value="What was the first film you saw in the theater?"
-                                            >
+                                            <option value="What was the first film you saw in the theater?">
                                                 What was the first film you saw in the theater?
                                             </option>
-                                            <option
-                                                    value="Where did you go the first time you flew on a plane?"
-                                            >
+                                            <option value="Where did you go the first time you flew on a plane?">
                                                 Where did you go the first time you flew on a plane?
                                             </option>
-                                            <option
-                                                    value="What is the last name of your favorite elementary school teacher?"
-                                            >
+                                            <option value="What is the last name of your favorite elementary school teacher?">
                                                 What is the last name of your favorite elementary
                                                 school teacher?
                                             </option>
@@ -491,38 +188,23 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-3">
-                                            <label for="answer1" class="form-label"
-                                            >جواب یک</label
-                                            >
-                                            <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="answer_1"
-                                                    id="answer1"
-                                            />
+                                            <label for="answer1" class="form-label">جواب یک</label>
+                                            <input type="text" class="form-control" name="answer_1" id="answer1"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label for="question2" class="form-label"
-                                        >سوال دو</label
-                                        >
-                                        <select
-                                                style="direction: ltr"
-                                                name="question_2"
-                                                class="form-select form-select"
-                                                id="question2"
-                                        >
+                                        <label for="question2" class="form-label">سوال دو</label>
+                                        <select style="direction: ltr" name="question_2" class="form-select form-select"
+                                                id="question2">
                                             <option selected disabled>
                                                 لطفا یه آیتم را انتخاب کنید
                                             </option>
                                             <option value="What is your dream job?">
                                                 What is your dream job?
                                             </option>
-                                            <option
-                                                    value="What is your favorite children’s book?"
-                                            >
+                                            <option value="What is your favorite children’s book?">
                                                 What is your favorite children’s book?
                                             </option>
                                             <option value="What was the model of your first car?">
@@ -531,88 +213,54 @@
                                             <option value="What was your childhood nickname?">
                                                 What was your childhood nickname?
                                             </option>
-                                            <option
-                                                    value="Who was your favorite film star or character in school?"
-                                            >
+                                            <option value="Who was your favorite film star or character in school?">
                                                 Who was your favorite film star or character in
                                                 school?
                                             </option>
-                                            <option
-                                                    value="Who was your favorite singer or band in high school?"
-                                            >
+                                            <option value="Who was your favorite singer or band in high school?">
                                                 Who was your favorite singer or band in high school?
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-3">
-                                            <label for="answer2" class="form-label"
-                                            >جواب دو</label
-                                            >
-                                            <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="answer_2"
-                                                    id="answer2"
-                                            />
+                                            <label for="answer2" class="form-label">جواب دو</label>
+                                            <input type="text" class="form-control" name="answer_2" id="answer2"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label for="question3" class="form-label"
-                                        >سوال سه</label
-                                        >
-                                        <select
-                                                style="direction: ltr"
-                                                name="question_3"
-                                                class="form-select form-select"
-                                                id="question3"
-                                        >
+                                        <label for="question3" class="form-label">سوال سه</label>
+                                        <select style="direction: ltr" name="question_3" class="form-select form-select"
+                                                id="question3">
                                             <option selected disabled>
                                                 لطفا یه آیتم را انتخاب کنید
                                             </option>
                                             <option value="In what city did your parents meet?">
                                                 In what city did your parents meet?
                                             </option>
-                                            <option
-                                                    value="What was the first name of your first boss?"
-                                            >
+                                            <option value="What was the first name of your first boss?">
                                                 What was the first name of your first boss?
                                             </option>
-                                            <option
-                                                    value="What is the name of the street where you grew up?"
-                                            >
+                                            <option value="What is the name of the street where you grew up?">
                                                 What is the name of the street where you grew up?
                                             </option>
-                                            <option
-                                                    value="What is the name of the first beach you visited?"
-                                            >
+                                            <option value="What is the name of the first beach you visited?">
                                                 What is the name of the first beach you visited?
                                             </option>
-                                            <option
-                                                    value="What was the first album that you purchased?"
-                                            >
+                                            <option value="What was the first album that you purchased?">
                                                 What was the first album that you purchased?
                                             </option>
-                                            <option
-                                                    value="What is the name of your favorite sports team?"
-                                            >
+                                            <option value="What is the name of your favorite sports team?">
                                                 What is the name of your favorite sports team?
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-3">
-                                            <label for="answer3" class="form-label"
-                                            >جواب سه</label
-                                            >
-                                            <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="answer_3"
-                                                    id="answer3"
-                                            />
+                                            <label for="answer3" class="form-label">جواب سه</label>
+                                            <input type="text" class="form-control" name="answer_3" id="answer3"/>
                                         </div>
                                     </div>
                                 </div>
@@ -624,25 +272,35 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
+                            <div class="d-flex justify-content-between">
                             <h6 class="card-title">آپل آیدی</h6>
-                            <p class="text-muted mb-3">
-                                لیست همه اپل ایدی ها برای مدیرت ساده تر آورده شده است
-                            </p>
-                            <div class="col-sm-12">
-                                <div id="appleIdTable" class="dataTables_wrapper">
-                                    <label
-                                    ><input
-                                            type="search"
-                                            class="form-control"
-                                            placeholder="جستجو"
-                                    /></label>
+                            <p class="text-muted" id="allEntity"></p>
+                            </div>
+                            <div class="d-flex">
+                                <select id="type-apple-id" class="form-select form-select-sm w-50 me-1">
+                                    <option value="1">قدیمی</option>
+                                    <option value="2">جدید</option>
+                                    <option selected value="null">همه اپل آیدی ها</option>
+                                </select>
+                                <select id="status-apple-id" class="form-select form-select-sm w-50 ms-1">
+                                    <option value="0">فروخته نشده</option>
+                                    <option value="1">فروخته شده</option>
+                                    <option value="2">مشکل دار</option>
+                                    <option selected value="null">همه وضعیت ها</option>
+                                </select>
+                            </div>
+                            <div class="input-group mt-3">
+                                <input id="appleId-table-filter" type="text" class="form-control form-control-sm"
+                                       placeholder="جستجو ...">
+                                <div class="input-group-text">
+                                    <i data-feather="search"></i>
                                 </div>
                             </div>
+
                             <div class="table-responsive">
                                 <table id="appleIdTable" class="table table-hover">
                                     <thead>
@@ -663,20 +321,15 @@
                                         <th>زمان ویرایش</th>
                                         <th>ایجاد شده توسط</th>
                                         <th>ویرایش شده توسط</th>
+                                        <th>فروخته شده</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
                                 <div class="row m-3">
                                     <div class="col-sm-12">
-                                        <div
-                                                class="dataTables_paginate paging_simple_numbers"
-                                                id="appleId_paginate"
-                                        >
-                                            <ul
-                                                    class="pagination"
-                                                    id="appleId_pagination_container"
-                                            ></ul>
+                                        <div class="dataTables_paginate paging_simple_numbers" id="appleId_paginate">
+                                            <ul class="pagination" id="appleId_pagination_container"></ul>
                                         </div>
                                     </div>
                                 </div>
@@ -689,195 +342,109 @@
     </div>
 </div>
 
-<div
-        class="modal fade show"
-        id="edit_appleId_form_modal"
-        tabindex="-1"
-        aria-labelledby="edit_appleId_form_modalLabel"
-        aria-hidden="true"
->
+
+<div class="modal fade show" id="edit_appleId_form_modal" tabindex="-1" aria-labelledby="edit_appleId_form_modalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="edit_appleId_form_modalLabel">
                     اطلاعات اپل آیدی
                 </h5>
-                <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="btn-close"
-                ></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
             <div class="modal-body">
                 <form id="edit-apple-id-form" novalidate="novalidate">
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <label for="appleIdTypeId" class="form-label"
-                                >نوع اپل آیدی</label
-                                >
-                                <select
-                                        class="form-select form-select"
-                                        name="editappleIdTypeId"
-                                        id="editappleIdTypeId"
-                                >
-                                    <option selected></option>
+                                <label for="editAppleIdTypeId" class="form-label">نوع اپل آیدی</label>
+                                <select class="form-select form-select" name="editAppleIdTypeId" id="editAppleIdTypeId">
+                                    <option value="2">جدید</option>
+                                    <option value="1">قدیمی</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <label for="editemail" class="form-label">ایمیل</label>
-                                <input
-                                        name="editemail"
-                                        type="text"
-                                        class="form-control"
-                                        id="editemail"
-                                />
+                                <label for="editStatus" class="form-label">وضعیت اپل آیدی</label>
+                                <select class="form-select form-select" name="editStatus" id="editStatus">
+                                    <option value="2">مشکل دار</option>
+                                    <option value="1">فروخته شده</option>
+                                    <option value="0">فروخته نشده</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="editstatus" class="form-label"
-                                >وضعیت اپل آیدی</label
-                                >
-                                <input
-                                        name="editstatus"
-                                        type="text"
-                                        class="form-control"
-                                        id="editstatus"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="editphone" class="form-label">شماره</label>
-                                <input
-                                        name="editphone"
-                                        type="number"
-                                        class="form-control"
-                                        id="editphone"
-                                />
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div
-                                    class="input-group mb-3 flatpickr"
-                                    id="birthdate-content"
-                            >
-                                <label class="form-label d-block w-100"
-                                >تاریخ تولد میلادی</label
-                                >
-                                <input
-                                        name="editbirthdate_content"
-                                        type="text"
-                                        class="form-control flatpickr-input"
-                                        data-input=""
-                                        readonly="readonly"
-                                        id="editbirthday"
-                                />
-                                <span
-                                        class="input-group-text input-group-addon"
-                                        data-toggle=""
-                                ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="feather feather-calendar"
-                                >
-                        <rect
-                                x="3"
-                                y="4"
-                                width="18"
-                                height="18"
-                                rx="2"
-                                ry="2"
-                        ></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line></svg
-                                ></span>
-                            </div>
-                        </div>
+
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col">
                             <div class="mb-3">
-                                <label for="editpassword" class="form-label"
-                                >کلمه عبور</label
-                                >
-                                <input
-                                        name="editpassword"
-                                        type="password"
-                                        class="form-control"
-                                        id="editpassword"
-                                />
+                                <label for="editEmail" class="form-label">ایمیل</label>
+                                <input name="editEmail" type="text" class="form-control" id="editEmail"/>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="editPhone" class="form-label">شماره</label>
+                                <input name="editPhone" type="number" class="form-control" id="editPhone"/>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col">
+                            <div class="input-group mb-3 flatpickr" id="editBirthdateContent">
+                                <label class="form-label d-block w-100">تاریخ تولد میلادی</label>
+                                <input name="birthdate_content" type="text" class="form-control flatpickr-input"
+                                       placeholder="انتخاب تاریخ" data-input="" readonly="readonly" id="editBirthday"/>
+                                <span class="input-group-text input-group-addon" data-toggle=""><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-calendar">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
                             <div class="mb-3">
-                                <label for="comparePassword" class="form-label"
-                                >تکرار کلمه عبور</label
-                                >
-                                <input
-                                        name="editcomparePassword"
-                                        type="password"
-                                        class="form-control"
-                                        id="editcomparePassword"
-                                />
+                                <label for="editPassword" class="form-label">کلمه عبور</label>
+                                <input name="editPassword" type="text" class="form-control" id="editPassword"/>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <label for="question1" class="form-label">سوال یک</label>
-                            <select
-                                    style="direction: ltr"
-                                    name="question_1"
-                                    class="form-select form-select"
-                                    id="question1"
-                            >
+                            <label for="editQuestion1" class="form-label">سوال یک</label>
+                            <select style="direction: ltr" name="editQuestion1" class="form-select form-select"
+                                    id="editQuestion1">
                                 <option selected disabled>
                                     لطفا یه آیتم را انتخاب کنید
                                 </option>
-                                <option
-                                        value="What is the first name of your best friend in high school?"
-                                >
+                                <option value="What is the first name of your best friend in high school?">
                                     What is the first name of your best friend in high school?
                                 </option>
                                 <option value="What was the name of your first pet?">
                                     What was the name of your first pet?
                                 </option>
-                                <option
-                                        value="What was the first thing you learned to cook?"
-                                >
+                                <option value="What was the first thing you learned to cook?">
                                     What was the first thing you learned to cook?
                                 </option>
-                                <option
-                                        value="What was the first film you saw in the theater?"
-                                >
+                                <option value="What was the first film you saw in the theater?">
                                     What was the first film you saw in the theater?
                                 </option>
-                                <option
-                                        value="Where did you go the first time you flew on a plane?"
-                                >
+                                <option value="Where did you go the first time you flew on a plane?">
                                     Where did you go the first time you flew on a plane?
                                 </option>
-                                <option
-                                        value="What is the last name of your favorite elementary school teacher?"
-                                >
+                                <option value="What is the last name of your favorite elementary school teacher?">
                                     What is the last name of your favorite elementary school
                                     teacher?
                                 </option>
@@ -885,25 +452,16 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="answer1" class="form-label">جواب یک</label>
-                                <input
-                                        type="text"
-                                        class="form-control"
-                                        name="answer_1"
-                                        id="answer1"
-                                />
+                                <label for="editAnswer1" class="form-label">جواب یک</label>
+                                <input type="text" class="form-control" name="editAnswer1" id="editAnswer1"/>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <label for="question2" class="form-label">سوال دو</label>
-                            <select
-                                    style="direction: ltr"
-                                    name="question_2"
-                                    class="form-select form-select"
-                                    id="question2"
-                            >
+                            <label for="editQuestion2" class="form-label">سوال دو</label>
+                            <select style="direction: ltr" name="editQuestion2" class="form-select form-select"
+                                    id="editQuestion2">
                                 <option selected disabled>
                                     لطفا یه آیتم را انتخاب کنید
                                 </option>
@@ -919,39 +477,26 @@
                                 <option value="What was your childhood nickname?">
                                     What was your childhood nickname?
                                 </option>
-                                <option
-                                        value="Who was your favorite film star or character in school?"
-                                >
+                                <option value="Who was your favorite film star or character in school?">
                                     Who was your favorite film star or character in school?
                                 </option>
-                                <option
-                                        value="Who was your favorite singer or band in high school?"
-                                >
+                                <option value="Who was your favorite singer or band in high school?">
                                     Who was your favorite singer or band in high school?
                                 </option>
                             </select>
                         </div>
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="answer2" class="form-label">جواب دو</label>
-                                <input
-                                        type="text"
-                                        class="form-control"
-                                        name="answer_2"
-                                        id="answer2"
-                                />
+                                <label for="editAnswer2" class="form-label">جواب دو</label>
+                                <input type="text" class="form-control" name="editAnswer2" id="editAnswer2"/>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <label for="question3" class="form-label">سوال سه</label>
-                            <select
-                                    style="direction: ltr"
-                                    name="question_3"
-                                    class="form-select form-select"
-                                    id="question3"
-                            >
+                            <label for="editQuestion3" class="form-label">سوال سه</label>
+                            <select style="direction: ltr" name="editQuestion3" class="form-select form-select"
+                                    id="editQuestion3">
                                 <option selected disabled>
                                     لطفا یه آیتم را انتخاب کنید
                                 </option>
@@ -961,111 +506,40 @@
                                 <option value="What was the first name of your first boss?">
                                     What was the first name of your first boss?
                                 </option>
-                                <option
-                                        value="What is the name of the street where you grew up?"
-                                >
+                                <option value="What is the name of the street where you grew up?">
                                     What is the name of the street where you grew up?
                                 </option>
-                                <option
-                                        value="What is the name of the first beach you visited?"
-                                >
+                                <option value="What is the name of the first beach you visited?">
                                     What is the name of the first beach you visited?
                                 </option>
-                                <option
-                                        value="What was the first album that you purchased?"
-                                >
+                                <option value="What was the first album that you purchased?">
                                     What was the first album that you purchased?
                                 </option>
-                                <option
-                                        value="What is the name of your favorite sports team?"
-                                >
+                                <option value="What is the name of your favorite sports team?">
                                     What is the name of your favorite sports team?
                                 </option>
                             </select>
                         </div>
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="answer3" class="form-label">جواب سه</label>
-                                <input
-                                        type="text"
-                                        class="form-control"
-                                        name="answer_3"
-                                        id="answer3"
-                                />
+                                <label for="editAnswer3" class="form-label">جواب سه</label>
+                                <input type="text" class="form-control" name="editAnswer3" id="editAnswer3"/>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="createDate" class="form-label"
-                                >زمان ایجاد</label
-                                >
-                                <input
-                                        name="createDate"
-                                        type="text"
-                                        class="form-control"
-                                        id="createDate"
-                                />
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="modifiedDate" class="form-label">
-                                    زمان ویرایش
-                                </label>
-                                <input
-                                        name="modifiedDate"
-                                        type="text"
-                                        class="form-control"
-                                        id="modifiedDate"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="createBy" class="form-label"
-                                >ایجاد شده توسط</label
-                                >
-                                <input
-                                        name="createBy"
-                                        type="text"
-                                        class="form-control"
-                                        id="createBy"
-                                />
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="modifyBy" class="form-label">
-                                    ویرایش شده توسط</label
-                                >
-                                <input
-                                        name="modifyBy"
-                                        type="text"
-                                        class="form-control"
-                                        id="modifyBy"
-                                />
-                            </div>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            بستن
+                        </button>
+                        <button type="submit" class="btn btn-primary">ارسال تغییرات</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                >
-                    بستن
-                </button>
-                <button type="button" class="btn btn-primary">ارسال تغییرات</button>
             </div>
         </div>
     </div>
 </div>
+
+
 <script src="./assets/vendors/core/core.js"></script>
 <script src="./assets/vendors/feather-icons/feather.min.js"></script>
 <script src="./assets/js/template.js"></script>
@@ -1074,7 +548,9 @@
 <script src="./assets/vendors/jquery-tags-input/jquery.tagsinput.min.js"></script>
 <script src="./assets/js/notifications.js"></script>
 <script type="module" src="./assets/js/appleId.js"></script>
+<script type="module" src="./assets/js/main.js"></script>
 <script src="./assets/vendors/pickr/pickr.min.js"></script>
 <script src="./assets/vendors/flatpickr/flatpickr.min.js"></script>
 </body>
+
 </html>

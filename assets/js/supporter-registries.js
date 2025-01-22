@@ -200,7 +200,7 @@ $(document).ready(async () => {
             // Attach the input event to both elements using a comma-separated selector.
             $("#price, #profit").on("input", function () {
                 // Calculate the total value from the input fields.
-                let total = (+price.val()) + (+profit.val());
+                let total = (+price.val()) + (+profit.val()).toLocaleString();
 
                 // Update the HTML content of the target element.
                 $("#calculator-profit").html(total + " مبلغ تمام شده");

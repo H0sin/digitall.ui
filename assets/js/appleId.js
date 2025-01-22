@@ -1,24 +1,44 @@
-import * as digitall from "./base-digitall.js";
+import * as main from "./main.js";
+
 
 $(async function () {
     'use strict';
+
+    let statusType = "null";
+    let appleIdType = "null";
+    let searchEmail = "null";
+    let allEntitiesCount = 0;
+    let currentPage = 1;
+    let debounceTimeout;
+
+
+    function formatBirthDate(birthDate) {
+        let fullDate = new Date(birthDate);
+        let getMonth = fullDate.getMonth() + 1;
+        let getDate = fullDate.getDate();
+
+        if (getMonth < 10) getMonth = "0" + getMonth;
+        if (getDate < 10) getDate = "0" + getDate;
+
+        return fullDate.getFullYear() + "/" + getMonth + "/" + getDate;
+    }
 
     async function loadPage() {
         await filterAppleId();
         await fixedOption();
     }
 
-    const getFilterAppleIdUrl = digitall.baseApiRequest + "/Apple/FilterAppleId";
-    const addAppleIdUrl = digitall.baseApiRequest + "/Apple/AddAppleId";
-    const getAppleIdType = digitall.baseApiRequest + "/Apple/GetAppleIdType";
+    const getFilterAppleIdUrl = "/Apple/FilterAppleId";
+    const addAppleIdUrl = "/Apple/AddAppleId";
+    const getAppleIdType = "/Apple/GetAppleIdType";
+
     const appleIdTypeId = $("#appleIdTypeId");
     const appleIdForm = $("#add-apple-id-form");
     const table_body = $("#appleIdTable > tbody");
     const paginationContainer = $("#appleId_pagination_container");
-    const get_appleId_by_Id = digitall.baseApiRequest + "/Apple/GetAppleIdById";
 
     function createPagination(data) {
-        const { page, pageCount } = data;
+        const {page, pageCount} = data;
 
         const $pagination = $("#appleId_pagination_container");
         $pagination.empty();
@@ -80,59 +100,152 @@ $(async function () {
             <td>${obj.phone ?? "-"}</td>
             <td>${obj.password ?? "-"}</td>
             <td>${obj.null ?? "-"}</td>
-            <td>${obj.birthDay ?? "-"}</td>
+            <td>${formatBirthDate(obj.birthDay)}</td>
             <td>${obj.question1 ?? "-"}</td>
             <td>${obj.answer1 ?? "-"}</td>
             <td>${obj.question2 ?? "-"}</td>
             <td>${obj.answer2 ?? "-"}</td>
             <td>${obj.question3 ?? "-"}</td>
             <td>${obj.answer3 ?? "-"}</td>
-            <td>${digitall.gregorianToJalali(obj.createDate ?? "-")}</td>
-            <td>${digitall.gregorianToJalali(obj.modifiedDate ?? "-")}</td>
+            <td>${main.gregorianToJalali(obj.createDate ?? "-")}</td>
+            <td>${main.gregorianToJalali(obj.modifiedDate ?? "-")}</td>
             <td>${obj.createBy ?? "-"}</td>
             <td>${obj.modifyBy ?? "-"}</td>
+            <td>${obj.buyer ?? "-"}</td>
         </tr>`
 
         return row;
     }
 
-    const editAppleId = async () => {
-        await digitall.getDigitallApi(get_appleId_by_Id).then()
-    }
-
 
     const fixedOption = async () => {
-        await digitall.getDigitallApi(getAppleIdType).then(async result => {
-            result.data.forEach(type => {
+        await main.getDigitallApi(getAppleIdType).then(async result => {
+            result.forEach(type => {
                 appleIdTypeId.append(`<option value="${type.id}">${type.title}</option>`);
             });
         });
     }
+    $("#type-apple-id").on("change", async function (e) {
+        appleIdType = e.target.value;
+        await main.showLoading();
+        currentPage = 1;
+        $("#appleIdTable > tbody").html('');
+        await filterAppleId(currentPage);
+        await main.hiddenLoading();
+    });
+
+    $("#status-apple-id").on("change", async function (e) {
+        statusType = e.target.value;
+        await main.showLoading();
+        currentPage = 1;
+        $("#appleIdTable > tbody").html('');
+        await filterAppleId(currentPage);
+        await main.hiddenLoading();
+    });
+
+    $("#appleId-table-filter").on("input", function (event) {
+        searchEmail = event.target.value.trim();
+        clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            currentPage = 1;
+            $("#appleIdTable > tbody").html('');
+            await main.showLoading();
+            await filterAppleId(currentPage);
+            await main.hiddenLoading();
+        }, 500);
+    });
 
     const filterAppleId = async (page = 1) => {
-        let query = `?page=${page}`
-        await digitall.getDigitallApi(getFilterAppleIdUrl + query).then(async result => {
-            $(table_body).html("");
-
-            await $.each(result.data.entities, async function (index, value) {
-                let row = generateRow(value);
-                await $(table_body).append(row);
+        let data = await main.getDigitallApi(`${getFilterAppleIdUrl}?takeEntity=10&page=${page}${statusType != "null" ? `&status=${statusType}` : ""}${appleIdType != "null" ? `&type=${appleIdType}` : ""}${searchEmail != "null" ? `&email=${searchEmail}` : ""}`, false);
+        allEntitiesCount = data.allEntitiesCount;
+        if (allEntitiesCount === 0) {
+            $(table_body).html("<h4 class='text-center p-4'>هیچ اپل آی‌دی یافت نشد</h4>");
+        } else {
+            $(table_body).empty();
+             $.each(data.entities, function(index, value) {
+                 let row = generateRow(value);
+                $(table_body).append(row);
+                $("#allEntity").html("تعداد : " + allEntitiesCount)
             });
-            debugger;
-            createPagination(result.data);
+        }
 
-            const appleIdRow = $("#appleIdTable > tbody > tr");
-            $(appleIdRow).css("cursor", "pointer");
-
-            $(appleIdRow).dblclick(function () {
-                $(this).css("background-color", "red");
-                $("#edit_appleId_form_modal").modal('show');
-            });
-        });
+        createPagination(data);
     }
 
 
+    // $('#appleId-table-filter').on('keyup', function () {
+    //     searchEmail = $(this).val();
+    //     filterAppleId();
+    // });
 
+    let appleId;
+    const edit_appleId_Type_Id = $('#editAppleIdTypeId');
+    const edit_status = $('#editStatus');
+    const edit_email = $('#editEmail');
+    const edit_phone = $('#editPhone');
+    const edit_birthday = $('#editBirthday');
+    const edit_password = $('#editPassword');
+    const edit_question1 = $('#editQuestion1');
+    const edit_answer1 = $('#editAnswer1');
+    const edit_question2 = $('#editQuestion2');
+    const edit_answer2 = $('#editAnswer2');
+    const edit_question3 = $('#editQuestion3');
+    const edit_answer3 = $('#editAnswer3');
+
+    $('#edit_appleId_form_modal').on('shown.bs.modal', function () {
+        flatpickr("#editBirthday", {
+            dateFormat: "Y/m/d",
+        });
+    });
+
+    $(document).on('dblclick', '#appleIdTable > tbody > tr', async function () {
+        const appleIdRow = $(this);
+        const id = appleIdRow.children('td').first().text();
+        appleId = id;
+
+        const response = await main.getDigitallApi(`/Apple/GetAppleIdById/${id}`, false);
+
+        edit_appleId_Type_Id.val(response.appleIdTypeId);
+        edit_email.val(response.email);
+        edit_status.val(response.status);
+        edit_phone.val(response.phone);
+        edit_birthday.val(formatBirthDate(response.birthDay));
+        edit_password.val(response.password);
+        edit_question1.val(response.question1);
+        edit_answer1.val(response.answer1);
+        edit_question2.val(response.question2);
+        edit_answer2.val(response.answer2);
+        edit_question3.val(response.question3);
+        edit_answer3.val(response.answer3);
+
+        $("#edit_appleId_form_modal").modal('show');
+    });
+
+    $('#edit-apple-id-form').on("submit", async function (event) {
+        event.preventDefault();
+debugger;
+        let object = {
+            id:appleId,
+            appleIdTypeId: edit_appleId_Type_Id.val(),
+            email: edit_email.val(),
+            status: edit_status.val(),
+            phone: edit_phone.val(),
+            birthDay: edit_birthday.val(),
+            password: edit_password.val(),
+            question1: edit_question1.val(),
+            answer1: edit_answer1.val(),
+            question2: edit_question2.val(),
+            answer2: edit_answer2.val(),
+            question3: edit_question3.val(),
+            answer3: edit_answer3.val(),
+        };
+debugger;
+        await main.updateDigitallApi(`/Apple/UpdateAppleId`, object);
+
+        $("#edit_appleId_form_modal").modal('hide');
+        await filterAppleId();
+    });
 
     $(async function () {
 
@@ -219,13 +332,9 @@ $(async function () {
                 values.each((key, value) => {
                     appleId[value.id] = value.value;
                 });
-                var response = await digitall.postDigitallApi(addAppleIdUrl, appleId);
+                  await main.postDigitallApi(addAppleIdUrl, appleId);
 
-                if (response.statusCode == 0 | response.isSuccess == true) {
-                    digitall.notificationMessage(digitall.successTitle, response.message, digitall.successTheme)
-                } else {
-                    digitall.notificationMessage(digitall.errorTitle, response.message, digitall.errorTheme)
-                }
+
                 // window.location.reload();
             },
             errorPlacement: function (error, element) {
@@ -233,14 +342,11 @@ $(async function () {
 
                 if (element.parent('.input-group').length) {
                     error.insertAfter(element.parent());
-                }
-                else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                } else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
                     error.insertAfter(element.parent().parent());
-                }
-                else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                } else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
                     error.appendTo(element.parent().parent());
-                }
-                else {
+                } else {
                     error.insertAfter(element);
                 }
             },
