@@ -8,26 +8,45 @@ export let user_information = {};
 
 // Cookie Option -----------------------------------------------------------------------------------------------
 
-export function setCookie(name,value,minuts) {
+export function setCookie(name, value, minutes) {
     let expires = "";
-    if (minuts) {
+    if (minutes) {
         let date = new Date();
-        date.setTime(date.getTime() + (minuts*60*1000));
+        date.setTime(date.getTime() + (minutes * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
 export function getCookie(name) {
     let nameEQ = name + "=";
     let ca = document.cookie.split(';');
-    for(let i=0;i < ca.length;i++) {
+    for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
+
+(function checkLoginStatus() {
+    window.onload = function () {
+        let token = getCookie("token");
+
+        if (!token) {
+            window.location.href = "login.html";
+
+        }
+    };
+})();
+
+$(document).ready(function () {
+    $("#logOut").on("click", function (e) {
+        e.preventDefault();
+        setCookie("token", "", -1);
+        window.location.href = "login.html";
+    });
+});
 
 // path variable -----------------------------------------------------------------------------------------------
 
@@ -95,6 +114,7 @@ export function fullName(data) {
     if (data) return data.firstName ? ((data.firstName || "") + " " + (data.lastName || "")) : data.telegramUsername;
     return "";
 }
+
 export function avatar(data) {
     if (data) return data.avatar ? ((data.avatar || "")) : data.avatar;
     return "";
@@ -169,42 +189,27 @@ export function gregorianToJalali(dateString) {
 // end convert date ---------------------------------------------------------------------------------------
 
 // start login api -------------------------------------------------------------------------------------------
-export const DigitallLogin = async (action, credentials) => {
-    try {
-        const response = await fetch(baseUrl + action, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(credentials),
-        });
+export const postDigitallLogin = async (url, credentials, fire = true, authType = 'bearer ') => {
+    let response = null;
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    await $.ajax({
+        type: "POST",
+        url: baseApiRequest + url,
+        data: JSON.stringify(credentials),
+        headers: {
+            "Content-Type": "application/json",
+        },
+        success: async function ({data, isSuccess, message, statusCode}) {
+            if (fire) autoNotification(statusCode, isSuccess, message);
+            response = {data, isSuccess, message};
+        },
+        error: async function (ex) {
+            notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
+            response = null;
+        },
+    });
 
-        const { data, isSuccess } = await response.json();
-
-        if (isSuccess) {
-            if (data) {
-                localStorage.setItem("token", data.data);
-                await notificationMessage(successTitle, "خوش آمدید", successTheme);
-                console.log("Token stored in localStorage:", data.data);
-            } else {
-                console.warn("No token received.");
-            }
-        } else {
-            notificationMessage(
-                errorTitle,
-                "کلمه عبور یا نام کاربری اشتباه است",
-                errorTheme
-            );
-        }
-        return data;
-    } catch (error) {
-        console.error("Login failed:", error);
-        return null;
-    }
+    return response;
 };
 
 // end login api -------------------------------------------------------------------------------------------
@@ -213,23 +218,30 @@ export const DigitallLogin = async (action, credentials) => {
 
 export const postDigitallApi = async (url, credentials, fire = true, authType = 'bearer ') => {
     let response;
+    let token = getCookie("token");
+    try {
+        if (token) {
+            await $.ajax({
+                type: "POST",
+                url: baseApiRequest + url,
+                data: JSON.stringify(credentials),
+                headers: {
+                    Authorization: authType + token,
+                    "Content-Type": "application/json",
+                },
+                success: async function ({data, isSuccess, message, statusCode}) {
+                    if (fire) autoNotification(statusCode, isSuccess, message);
+                    response = data;
+                },
+                error: async function (ex) {
+                    notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
+                },
+            });
+        }
+    } catch (error) {
+        console.log(error);
+    }
 
-    await $.ajax({
-        type: "POST",
-        url: baseApiRequest + url,
-        data: JSON.stringify(credentials),
-        headers: {
-            Authorization: authType + getCookie("token"),
-            "Content-Type": "application/json",
-        },
-        success: async function ({ data, isSuccess, message, statusCode }) {
-            if (fire) autoNotification(statusCode, isSuccess, message);
-            response = data;
-        },
-        error: async function (ex) {
-            notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
-        },
-    });
 
     return response;
 };
@@ -240,25 +252,28 @@ export const postDigitallApi = async (url, credentials, fire = true, authType = 
 
 export const getDigitallApi = async (url, fire = true, authType = 'bearer ') => {
     let response;
+    let token = getCookie("token");
     try {
-        await $.ajax({
-            type: "GET",
-            url: baseApiRequest + url,
-            headers: {
-                Authorization: authType + getCookie("token"),
-                "Content-Type": "application/json",
-            },
-            success: async function ({ data, isSuccess, message, statusCode }) {
-                if (fire) autoNotification(statusCode, isSuccess, message);
-                response = data;
-            },
-            error: async function (ex) {
-                notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
-            },
-        });
-    } catch (ex) {
-        // In case of unexpected errors
-        return response;
+        if (token) {
+            await $.ajax({
+                type: "GET",
+                url: baseApiRequest + url,
+                headers: {
+                    Authorization: authType + token,
+                    "Content-Type": "application/json",
+                },
+                success: async function ({data, isSuccess, message, statusCode}) {
+                    if (fire) autoNotification(statusCode, isSuccess, message);
+                    response = data;
+                },
+                error: async function (error) {
+                    notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
+                },
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
     }
 
     return response;
@@ -271,22 +286,32 @@ export const getDigitallApi = async (url, fire = true, authType = 'bearer ') => 
 
 export const updateDigitallApi = async (url, credentials, id = 0, fire = true, authType = 'bearer ') => {
     let response;
-    await $.ajax({
-        type: "PUT",
-        url: baseApiRequest + url,
-        data: JSON.stringify(credentials),
-        headers: {
-            Authorization: authType + getCookie("token"),
-            "Content-Type": "application/json",
-        },
-        success: async function ({ data, isSuccess, message, statusCode }) {
-            if (fire) autoNotification(statusCode, isSuccess, message);
-            response = data;
-        },
-        error: async function (ex) {
-            notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
-        },
-    });
+    let token = getCookie("token");
+
+    try {
+        if (token) {
+            await $.ajax({
+                type: "PUT",
+                url: baseApiRequest + url,
+                data: JSON.stringify(credentials),
+                headers: {
+                    Authorization: authType + token,
+                    "Content-Type": "application/json",
+                },
+                success: async function ({data, isSuccess, message, statusCode}) {
+                    if (fire) autoNotification(statusCode, isSuccess, message);
+                    response = data;
+                },
+                error: async function (error) {
+                    notificationMessage("خطا", "خطا در ارتباط با سرور", warningTheme);
+                },
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+
 
     return response;
 }
@@ -311,7 +336,7 @@ export const updateProfileDigitallApi = async (url, credentials, id = 0, fire = 
         headers: {
             Authorization: authType + getCookie("token"),
         },
-        success: function ({ data, isSuccess, message, statusCode }) {
+        success: function ({data, isSuccess, message, statusCode}) {
             if (fire) autoNotification(statusCode, isSuccess, message);
             response = data;
         },
