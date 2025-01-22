@@ -24,7 +24,6 @@ let isConnecting = false;
 
 // --------------------------------------- SIGNALR CONFIG ---------------------------------------
 
-
 /**
  * Initializes and starts SignalR connections for PaymentHub and SupporterOnlineHub.
  */
