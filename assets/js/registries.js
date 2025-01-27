@@ -82,7 +82,7 @@ function generateRegistryAdminItem(item, isSupporter = false) {
     return `<div class="d-flex align-items-center border-bottom py-3">
                     <div class="w-100">
                           <div class="d-flex justify-content-between">
-                          <a href="../../digitall.ui/registry/registry-information.html?id=${item.id}">
+                          <a href="registry-information.html?id=${item.id}">
                                 <div id="registry-box-${item.id}">
                                   <p class="d-none" id="model-${item.id}">${item.model}</p>  
                                   <p class="d-none" id="forWho-${item.id}">${item.forWho}</p>
