@@ -1,5 +1,4 @@
-import * as api from "./main.js";
-import {baseUrl} from "./main.js";
+import {baseUrl , getDigitallApi , updateProfileDigitallApi , showLoading , hiddenLoading}  from "./main.js";
 
 $(function() {
     $(':file').change(function() {
@@ -27,7 +26,7 @@ let address = $("#address");
 let img_upload = $("#upload");
 
 $(document).ready(async function () {
-     api.getDigitallApi("/User/GetInformation" , false).then(( data ) => {
+     getDigitallApi("/User/GetInformation" , false).then(( data ) => {
         let avatarPath = data.avatar;
         let cleanedAvatarPath = avatarPath ? avatarPath.replace('/app/wwwroot', baseUrl) : './assets/images/Users.jpg';
         $(first_name).val(data.firstName);
@@ -83,7 +82,7 @@ $(async function () {
             // },
             submitHandler: async function (form, event) {
                 event.preventDefault();
-               await api.showLoading();
+               await showLoading();
 
                 let obj = {
                     firstName: first_name.val(),
@@ -94,11 +93,11 @@ $(async function () {
                     avatar: img_upload[0].files[0]
                 }
 
-                await api.updateProfileDigitallApi("/User/UpdateProfile", obj)
+                await updateProfileDigitallApi("/User/UpdateProfile", obj)
 
                 window.location.href = "index.html"
 
-               await api.hiddenLoading();
+               await hiddenLoading();
             },
             errorPlacement: function (error, element) {
                 error.addClass("invalid-feedback");

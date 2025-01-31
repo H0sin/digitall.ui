@@ -1,4 +1,5 @@
 import * as api from "./main.js";
+import {baseUrl, getUserInformation} from "./main.js";
 
 $(document).ready(async function () {
     let currentPage = 1;
@@ -37,25 +38,22 @@ $(document).ready(async function () {
                 allUserCount = allEntitiesCount;
                 if (allUserCount > 0) {
                     $.each(entities, function (index, user) {
-                        let user_info = $(`<a
-                    href="./user-information.html?id=${user.id}"
-                    class="d-flex align-items-center border-bottom py-3">
-                    <div class="me-3">
-                      <img
-                        src="../assets/images/faces/face6.jpg"
-                        class="rounded-circle wd-35"
-                        alt="user"
-                      />
-                    </div>
-                    <div class="w-100">
-                      <div class="d-flex justify-content-between">
-                        <h6 class="text-body mb-2"><span class="text-muted tx-13"> نام کاربری : </span>${user.firstName}</h6>
-                        <p class="text-muted tx-12"><span class="text-muted tx-14">موجودی : </span>${user.balance.toLocaleString()}</p>
-                      </div>
-                      <h6 class="text-body mb-2"><span class="text-muted tx-13">  ایدی تلگرام : </span>${user.telegramUsername || " ثبت نشده"}</h6>
-                      <p class="text-muted tx-13">${user.isAgent ? "نماینده" : "کاربر عادی"}</p>
-                    </div>
-                </a>`);
+                        const userAvatarUrl = user.avatar
+                            ? baseUrl + '/images/UserAvatar/thumb/'+ user.avatar
+                            : './assets/images/Users.jpg';
+                                let user_info = $(`<a href="./user-information.html?id=${user.id}" class="d-flex align-items-center border-bottom py-3">
+                                    <div class="me-3">
+                                        <img src="${userAvatarUrl}" class="rounded-circle wd-35" alt="user" />
+                                    </div>
+                                       <div class="w-100">
+                                          <div class="d-flex justify-content-between">
+                                            <h6 class="text-body mb-2"><span class="text-muted tx-13"> نام کاربری : </span>${user.firstName}</h6>
+                                            <p class="text-muted tx-12"><span class="text-muted tx-14">موجودی : </span>${user.balance.toLocaleString()}</p>
+                                          </div>
+                                            <h6 class="text-body mb-2"><span class="text-muted tx-13">  ایدی تلگرام : </span>${user.telegramUsername || " ثبت نشده"}</h6>
+                                            <p class="text-muted tx-13">${user.isAgent ? "نماینده" : "کاربر عادی"}</p>
+                                       </div>
+                                </a>`);
                         $("#user-container").append(user_info);
                     });
                 } else $("#user-container").append("<h4 class='text-center'>کاربری یافت نشد</h4>");

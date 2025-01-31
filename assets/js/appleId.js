@@ -119,7 +119,7 @@ $(async function () {
 
 
     const fixedOption = async () => {
-        await main.getDigitallApi(getAppleIdType).then(async result => {
+        await main.getDigitallApi(getAppleIdType , false).then(async result => {
             result.forEach(type => {
                 appleIdTypeId.append(`<option value="${type.id}">${type.title}</option>`);
             });
@@ -173,12 +173,6 @@ $(async function () {
         createPagination(data);
     }
 
-
-    // $('#appleId-table-filter').on('keyup', function () {
-    //     searchEmail = $(this).val();
-    //     filterAppleId();
-    // });
-
     let appleId;
     const edit_appleId_Type_Id = $('#editAppleIdTypeId');
     const edit_status = $('#editStatus');
@@ -224,7 +218,7 @@ $(async function () {
 
     $('#edit-apple-id-form').on("submit", async function (event) {
         event.preventDefault();
-debugger;
+
         let object = {
             id:appleId,
             appleIdTypeId: edit_appleId_Type_Id.val(),
@@ -240,7 +234,7 @@ debugger;
             question3: edit_question3.val(),
             answer3: edit_answer3.val(),
         };
-debugger;
+
         await main.updateDigitallApi(`/Apple/UpdateAppleId`, object);
 
         $("#edit_appleId_form_modal").modal('hide');

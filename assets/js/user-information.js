@@ -94,6 +94,16 @@ $(document).ready(async function () {
             isActive: true,
             btnEvent: async () => window.location.href = "transaction.html",
         },
+        roles: {
+            text: "نقش ها",
+            isActive: true,
+            btnEvent: async () => window.location.href = "roles.html",
+        },
+        permissions: {
+            text: "دسترسی های کاربر",
+            isActive: true,
+            btnEvent: async () => window.location.href = "permissions.html",
+        },
         description: {
             text: "افزودن توضیحات",
             classes: "col-12",
@@ -207,6 +217,9 @@ $(document).ready(async function () {
             btns.specialPercent.isActive = data.isAgent;
             btns.agencyInformation.isActive = data.isAgent;
             btns.transaction.btnEvent = () => window.location.href = `./transaction.html?id=${data.id}`;
+            btns.roles.btnEvent = () => window.location.href = `./roles.html?id=${data.id}`;
+            btns.permissions.btnEvent = () => window.location.href = `./permissions.html?id=${data.id}`;
+
             const btns_container = $("#user-action-btns-container");
 
             btns_container.html('');
@@ -219,9 +232,10 @@ $(document).ready(async function () {
             let convertToAgent_btn = generateButton(btns.convertToAgent);
             let specialPercent_btn = generateButton(btns.specialPercent);
             let agencyInformation_btn = generateButton(btns.agencyInformation);
-            let transaction_btn = generateButton(btns.transaction);
             let description_btn = generateButton(btns.description);
-
+            let transaction_btn = generateButton(btns.transaction);
+            let roles_btn = generateButton(btns.roles);
+            let permissions_btn = generateButton(btns.permissions);
 
             btns_container.append(increase_btn);
             btns_container.append(decrease_btn);
@@ -233,6 +247,8 @@ $(document).ready(async function () {
             btns_container.append(convertToAgent_btn);
             btns_container.append(specialPercent_btn);
             btns_container.append(transaction_btn);
+            btns_container.append(roles_btn);
+            btns_container.append(permissions_btn);
         });
     }
 
