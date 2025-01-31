@@ -40,31 +40,6 @@ export function getCookie(name) {
     };
 })();
 
-$(document).ready(function () {
-    $("#logOut").on("click", function (e) {
-        e.preventDefault();
-        setCookie("token", "", -1);
-        setCookie("registry-token", "", -1)
-
-        localStorage.clear();
-        sessionStorage.clear();
-
-        window.location.href = "./login.html";
-    });
-
-    $("#logOutRegistry").on("click", function (e) {
-        e.preventDefault();
-
-        setCookie("token", "", -1);
-        setCookie("registry-token", "", -1)
-
-        localStorage.clear();
-        sessionStorage.clear();
-
-        window.location.href = "../login.html";
-    });
-});
-
 //--------------------------------------------------------------------------------------------------------------
 
 // duplicate values---------------------------------------------------------------------------------------
@@ -509,6 +484,30 @@ export const getAgentUserInformation = new Promise(async resolve => {
 });
 
 $(document).ready(async function () {
+
+    $("#logOut").on("click", function (e) {
+        e.preventDefault();
+        setCookie("token", "", -1);
+        setCookie("registry-token", "", -1)
+
+        localStorage.clear();
+        sessionStorage.clear();
+
+        window.location.href = "./login.html";
+    });
+
+    $("#logOutRegistry").on("click", function (e) {
+        e.preventDefault();
+
+        setCookie("token", "", -1);
+        setCookie("registry-token", "", -1)
+
+        localStorage.clear();
+        sessionStorage.clear();
+
+        window.location.href = "../login.html";
+    });
+
     await getUserInformation;
     await loadNotificaciones();
 });
