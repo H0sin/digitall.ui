@@ -2,54 +2,22 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5"/>
-    <meta name="author" content="NobleUI"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="NobleUI">
     <meta name="keywords"
-          content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"/>
+          content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
     <title></title>
-    <link rel="stylesheet" href="./assets/vendors/core/core.css"/>
-    <link rel="stylesheet" href="./assets/css/persian-datepicker-0.4.5-dark.min.css">
-    <link rel="stylesheet" href="./assets/vendors/flatpickr/flatpickr.min.css">
-    <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css"/>
-    <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css"/>
-    <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css"/>
-    <link rel="stylesheet" href="./assets/css/notifications.css"/>
-    <style>
-        .distance p {
-            margin-bottom: 10px;
-        }
+    <link rel="stylesheet" href="../assets/vendors/core/core.css">
+    <link rel="stylesheet" href="../assets/css/persian-datepicker-0.4.5-dark.min.css">
+    <link rel="stylesheet" href="../assets/fonts/feather-font/css/iconfont.css">
+    <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../assets/css/demo4/style-rtl.min.css">
+    <link rel="stylesheet" href="../assets/css/notifications.css">
 
-        .datepicker-plot-area {
-            z-index: 2;
-        }
-
-        .container-transaction {
-            /*background-image: url(../assets/images/faces/face3.jpg);*/
-            height: 100px;
-            width: 100px;
-            justify-content: center;
-            position: relative;
-            align-items: center;
-        }
-
-        .container-transaction > .bg-container-transaction {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.78);
-            z-index: 0;
-        }
-
-        .container-transaction > button {
-            position: absolute;
-            z-index: 1;
-        }
-    </style>
 </head>
-
 <body>
 <div class="main-wrapper">
     <div class="horizontal-menu">
@@ -91,19 +59,19 @@
                                 </div>
                                 <ul class="list-unstyled p-1">
                                     <li class="dropdown-item py-2">
-                                        <a href="profile.html" class="text-body ms-0">
+                                        <a href="../profile.html" class="text-body ms-0">
                                             <i class="me-2 icon-md" data-feather="user"></i>
                                             <span>پروفایل</span>
                                         </a>
                                     </li>
                                     <li class="dropdown-item py-2">
-                                        <a href="transaction.html" id="profile" class="text-body ms-0">
+                                        <a href="../transaction.html" id="profile" class="text-body ms-0">
                                             <i class="me-2 icon-md" data-feather="dollar-sign"></i>
                                             <span>تراکنش ها</span>
                                         </a>
                                     </li>
                                     <li class="dropdown-item py-2">
-                                        <a href="login.html" type="submit" id="logOut" class="text-body ms-0">
+                                        <a href="../login.html" type="submit" id="logOut" class="text-body ms-0">
                                             <i class="me-2 icon-md" data-feather="log-out"></i>
                                             <span>خروج</span>
                                         </a>
@@ -120,7 +88,7 @@
         <div class="page-content py-1" style="min-height: 0">
             <ul class="nav nav-pills nav-fill pt-4">
                 <li class="nav-item">
-                    <button class="nav-link active">گزارش تراکنش ها</button>
+                    <button class="nav-link active">محصولات</button>
                 </li>
             </ul>
         </div>
@@ -131,15 +99,11 @@
                         <div class="card-body">
                             <div class="row mb-2">
                                 <div class="d-flex">
-                                    <select id="type-transaction" class="form-select form-select-sm w-50 me-1">
-                                        <option value="1">کارت به کارت</option>
-                                        <option value="2">افزایش دستی</option>
-                                        <option value="3">کاهش دستی</option>
-                                        <option selected value="null">همه تراکنش ها</option>
+                                    <select id="all-product" class="form-select form-select-sm w-50 me-1">
                                     </select>
                                     <select id="status-transaction" class="form-select form-select-sm w-50 ms-1">
-                                        <option value="1">موفق</option>
-                                        <option value="3">منتظر تایید</option>
+                                        <option value="1">خریداری شده</option>
+                                        <option value="3">ثبت شده</option>
                                         <option value="2">رد شده</option>
                                         <option selected value="null">همه وضعیت ها</option>
                                     </select>
@@ -154,7 +118,7 @@
                                     <span class="input-group-text input-group-addon" data-toggle><i
                                             data-feather="calendar"></i></span>
                                 </div>
-                                <div class="input-group mt-3">
+                                <div class="input-group mt-3 mb-3">
                                     <input id="details-filter" type="text" class="form-control form-control-sm"
                                            placeholder="جستجو ...">
                                     <div class="input-group-text">
@@ -162,15 +126,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="transaction-container"
-                                 style="max-height: 65vh; overflow-x: hidden; overflow-y: auto"
-                                 class="col-12 d-flex flex-column">
-                            </div>
+                            <div id="product-container"></div>
                         </div>
                         <div class="row">
                             <div class="col stretch-card">
                                 <div class="col btn-group">
-                                    <a class="w-100 btn btn-primary" href="./index.html"
+                                    <a class="w-100 btn btn-primary" href="../index.html"
                                        role="button">
                                         <i data-feather="x"></i>
                                         برگشت</a>
@@ -182,58 +143,25 @@
             </div>
         </div>
     </div>
-</div>
-<div id="loading-container" class="d-none" style="
-      height: 100vh;
-      width: 100%;
-      top: 0;
-      position: fixed;
-      z-index: 99999;
-      background-color: rgba(0, 0, 0, 0.5);
-    ">
-    <div class="d-flex h-100 align-items-center justify-content-center">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">بارگزاری...</span>
-        </div>
-    </div>
-</div>
-<div id="modal_form_details">
-    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detailsModalLabel">جزئیات تراکنش</h5>
-                </div>
-                <div class="modal-body">
-                    <img class="w-100 p-2 mb-2" id="avatar-transaction">
-                    <div class="text-center distance">
-                        <p class="card-text text-muted" id="user-id"></p>
-                        <p class="card-text" id="title"></p>
-                        <p class="card-text" id="transaction-change"></p>
-                        <p class="card-text" id="transaction-time"></p>
-                        <p class="card-text" id="transaction-confirmation"></p>
-                        <p class="card-text" id="user-name"></p>
-                        <p class="card-text" id="first-name"></p>
-                        <p class="card-text" id="last-name"></p>
-                        <p class="card-text" id="description"></p>
-                    </div>
-                </div>
-                <div class="modal-footer" id="detailsUser">
-                </div>
+
+    <div id="loading-container" class="d-none"
+         style="height: 100vh;width: 100%;top: 0;position: fixed;z-index: 99999;background-color: rgba(0, 0, 0, .5);">
+        <div class="d-flex h-100 align-items-center justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">بارگزاری...</span>
             </div>
         </div>
     </div>
 </div>
 
-<script src="./assets/vendors/core/core.js"></script>
-<script src="./assets/vendors/feather-icons/feather.min.js"></script>
-<script src="./assets/vendors/flatpickr/flatpickr.min.js"></script>
-<script src="./assets/js/template.js"></script>
-<script src="./assets/js/dashboard-dark.js"></script>
-<script src="./assets/js/notifications.js"></script>
-<script type="module" src="./assets/js/transaction.js"></script>
-<script src="./assets/js/persian-date-0.1.8.min.js"></script>
-<script src="./assets/js/persian-datepicker-0.4.5.min.js"></script>
-</body>
+<script src="../assets/vendors/core/core.js"></script>
+<script src="../assets/vendors/feather-icons/feather.min.js"></script>
+<script src="../assets/js/template.js"></script>
+<script src="../assets/js/dashboard-dark.js"></script>
+<script src="../assets/js/notifications.js"></script>
+<script type="module" src="../assets/js/buy-product.js"></script>
+<script src="../assets/js/persian-date-0.1.8.min.js"></script>
+<script src="../assets/js/persian-datepicker-0.4.5.min.js"></script>
 
+</body>
 </html>

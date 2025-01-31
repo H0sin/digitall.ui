@@ -44,9 +44,31 @@ $(document).ready(function () {
     $("#logOut").on("click", function (e) {
         e.preventDefault();
         setCookie("token", "", -1);
-        window.location.href = "login.html";
+        setCookie("registry-token", "", -1)
+
+        localStorage.clear();
+        sessionStorage.clear();
+
+        window.location.href = "./login.html";
+    });
+
+    $("#logOutRegistry").on("click", function (e) {
+        e.preventDefault();
+
+        setCookie("token", "", -1);
+        setCookie("registry-token", "", -1)
+
+        localStorage.clear();
+        sessionStorage.clear();
+
+        window.location.href = "../login.html";
     });
 });
+
+//--------------------------------------------------------------------------------------------------------------
+
+// duplicate values---------------------------------------------------------------------------------------
+
 
 // path variable -----------------------------------------------------------------------------------------------
 
@@ -241,7 +263,6 @@ export const postDigitallApi = async (url, credentials, fire = true, authType = 
     } catch (error) {
         console.log(error);
     }
-
 
     return response;
 };
@@ -469,7 +490,7 @@ async function loadNotificaciones() {
 export const getUserInformation = new Promise(async resolve => {
 
     user_information = await getDigitallApi("/User/GetInformation", false);
-    const avatarUrl = avatar(user_information).replace('/app/wwwroot', baseUrl);
+    const avatarUrl = avatar(user_information) ? avatar(user_information).replace('/app/wwwroot', baseUrl) : './assets/images/Users.jpg';
 
     $("#fullName").html(" نام کاربری :" + " " + fullName(user_information));
     $("#balance").html("موجودی : " + (user_information.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "));

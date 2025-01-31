@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" xmlns="http://www.w3.org/1999/html">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
@@ -10,11 +10,11 @@
     <meta name="keywords"
           content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
     <title></title>
-    <link rel="stylesheet" href="./assets/vendors/core/core.css">
-    <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css">
-    <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" href="./assets/css/demo4/style-rtl.min.css">
-    <link rel="stylesheet" href="./assets/css/notifications.css">
+    <link rel="stylesheet" href="../assets/vendors/core/core.css">
+    <link rel="stylesheet" href="../assets/fonts/feather-font/css/iconfont.css">
+    <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../assets/css/demo4/style-rtl.min.css">
+    <link rel="stylesheet" href="../assets/css/notifications.css">
 
 </head>
 <body>
@@ -58,19 +58,19 @@
                                 </div>
                                 <ul class="list-unstyled p-1">
                                     <li class="dropdown-item py-2">
-                                        <a href="profile.html" class="text-body ms-0">
+                                        <a href="../profile.html" class="text-body ms-0">
                                             <i class="me-2 icon-md" data-feather="user"></i>
                                             <span>پروفایل</span>
                                         </a>
                                     </li>
                                     <li class="dropdown-item py-2">
-                                        <a href="transaction.html" id="profile" class="text-body ms-0">
+                                        <a href="../transaction.html" id="profile" class="text-body ms-0">
                                             <i class="me-2 icon-md" data-feather="dollar-sign"></i>
                                             <span>تراکنش ها</span>
                                         </a>
                                     </li>
                                     <li class="dropdown-item py-2">
-                                        <a href="login.html" type="submit" id="logOut" class="text-body ms-0">
+                                        <a href="../login.html" type="submit" id="logOut" class="text-body ms-0">
                                             <i class="me-2 icon-md" data-feather="log-out"></i>
                                             <span>خروج</span>
                                         </a>
@@ -84,52 +84,36 @@
         </nav>
     </div>
     <div class="page-wrapper">
-        <div class="page-content py-1" style="min-height:0">
-            <ul class="nav nav-pills nav-fill pt-4">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">نمایندگی</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="users.html">کاربران</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="report.html">گزارشات</a>
-                </li>
-            </ul>
-        </div>
-
         <div class="page-content">
             <div class="row">
-                <div class="col justify-content-center grid-margin grid-margin-xl-0 stretch-card">
+                <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title mb-2">عضویت در ربات</h5>
-                            <p class="text-muted"> زمان هفتگی عضویت</p>
-                            <div id="weeklySalesChartRTL"></div>
+
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div id="loading-container" class="d-none"
-                 style="height: 100vh;width: 100%;top: 0;position: fixed;z-index: 99999;background-color: rgba(0, 0, 0, .5);">
-                <div class="d-flex h-100 align-items-center justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">بارگزاری...</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="loading-container" class="d-none"
+         style="height: 100vh;width: 100%;top: 0;position: fixed;z-index: 99999;background-color: rgba(0, 0, 0, .5);">
+        <div class="d-flex h-100 align-items-center justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">بارگزاری...</span>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script src="./assets/vendors/core/core.js"></script>
-<script src="./assets/vendors/feather-icons/feather.min.js"></script>
-<script src="./assets/vendors/apexcharts/apexcharts.min.js"></script>
-<script src="./assets/vendors/jquery-validation/jquery.validate.min.js"></script>
-<script src="./assets/js/template.js"></script>
-<script src="./assets/js/dashboard-dark.js"></script>
-<script src="./assets/js/notifications.js"></script>
-<script type="module" src="./assets/js/report.js"></script>
-</body>
+<script src="../assets/vendors/core/core.js"></script>
+<script src="../assets/vendors/feather-icons/feather.min.js"></script>
+<script src="../assets/js/template.js"></script>
+<script src="../assets/js/dashboard-dark.js"></script>
+<script src="../assets/js/notifications.js"></script>
+<script type="module" src="../assets/js/wireguard.js"></script>
 
+
+</body>
 </html>

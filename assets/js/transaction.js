@@ -143,7 +143,10 @@ $(document).ready(async function () {
     transaction_container.html('');
 
     const loadTransaction = async (page) => {
-        let {allEntitiesCount: counts, entities} = await api.getDigitallApi(`/Transaction/FilterTransaction?takeEntity=8&page=${page}${type_transaction != "null" ? `&type=${type_transaction}` : ""}${status_transaction != "null" ? `&status=${status_transaction}` : ""}${start_date != "null" ? `&startDate=${start_date}` : ""}${end_date != "null" ? `&endDate=${end_date}` : ""}${details_filter != "null" ? `&details=${details_filter}` : ""}${id ? `&userId=${id}` : ""}`,false);
+        let {
+            allEntitiesCount: counts,
+            entities
+        } = await api.getDigitallApi(`/Transaction/FilterTransaction?takeEntity=8&page=${page}${type_transaction != "null" ? `&type=${type_transaction}` : ""}${status_transaction != "null" ? `&status=${status_transaction}` : ""}${start_date != "null" ? `&startDate=${start_date}` : ""}${end_date != "null" ? `&endDate=${end_date}` : ""}${details_filter != "null" ? `&details=${details_filter}` : ""}${id ? `&userId=${id}` : ""}`, false);
 
         allEntitiesCount = counts;
 
@@ -182,7 +185,7 @@ $(document).ready(async function () {
         await api.showLoading();
 
         const id = $(this).attr("id").replace("details-id-", " ");
-        let data = await api.getDigitallApi(`/Transaction/GetTransaction/${id}`,false);
+        let data = await api.getDigitallApi(`/Transaction/GetTransaction/${id}`, false);
 
         if (data.avatarTransaction) {
             $("#avatar-transaction").attr("src", api.transactionImagePath(data.avatarTransaction));
@@ -209,9 +212,9 @@ $(document).ready(async function () {
 
         details_user.html("");
         modal_footer.html("");
-        details_user.append(`<button type="button" class="btn btn-info" data-bs-dismiss="modal"><a href="./users.html">مشاهده اطلاعات کاربر</a></button>`);
-        modal_footer.append(`<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>`);
 
+        details_user.append(`<button type="button" class="btn btn-info" data-bs-dismiss="modal"><a href="user-information.html?id=${data.userId}">مشاهده اطلاعات کاربر</a></button>`);
+        modal_footer.append(`<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>`);
         let accept_button = `<button type="button" id="transaction-id-${data.id}" class="btn btn-success">تایید رسید</button>`;
         let reject_button = `<button type="button" id="transaction-id-${data.id}" class="btn btn-danger">عدم تایید</button>`;
 
