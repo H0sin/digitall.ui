@@ -511,4 +511,3 @@ $(document).ready(async function () {
     await getUserInformation;
     await loadNotificaciones();
 });
-
