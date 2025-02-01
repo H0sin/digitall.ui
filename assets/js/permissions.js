@@ -61,12 +61,15 @@ function trigger_roles_event() {
     })
 }
 
-const check_box_generator = ({permissionId, permissionName, isAssigned}) =>
-    `<div class="form-check form-check-inline mt-2 mb-2">
-         <input ${isAssigned ? 'checked' : ''} type="checkbox" name="skill_check" class="form-check-input" id="${permissionId}">
-         <label class="form-check-label" for="${permissionId}">${permissionName}</label>
-    </div>
-`
+const check_box_generator = ({ permissionId, permissionName, isAssigned }) =>
+    `<div class="col-sm-6 col-xl-3">
+        <input ${isAssigned ? 'checked' : ''} type="checkbox" 
+               name="skill_check" class="form-check-input" id="${permissionId}">
+        <label class="form-check-label" for="${permissionId}">
+            ${permissionName}
+        </label>
+    </div>`;
+
 
 
 function getUserId() {

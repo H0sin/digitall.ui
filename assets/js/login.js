@@ -1,22 +1,13 @@
-import {setCookie, postDigitallLogin, getDigitallApi} from "./main.js";
+import {setCookie, postDigitallLogin, getDigitallApi, getCookie} from "./main.js";
 
 window.onload = function () {
-    if (document.cookie.includes("token")) {
+    if (getCookie("token")) {
         window.location.href = "index.html";
     } else {
-        const currentUrl = window.location.href;
-        const url = new URL(currentUrl);
-        const params = new URLSearchParams(url.search);
-        let token = params.get("token");
         let login_form = $("#login_form");
-        let isSubmitting = false;
 
         $(login_form).on("submit", function (e) {
             e.preventDefault();
-
-            if (isSubmitting) return;
-
-            isSubmitting = true;
 
             let chatId = $("#chatId").val();
             let password = $("#userPassword").val();
@@ -47,11 +38,8 @@ window.onload = function () {
                     });
 
                 }
-
-                isSubmitting = false;
             });
 
-            isSubmitting = false;
         });
     }
 };

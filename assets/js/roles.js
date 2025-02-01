@@ -7,7 +7,7 @@ $(document).ready(async function () {
 
     let forms = roles.map(({roleId, roleName, isAssigned}) => {
         return `
-            <div class="form-check form-check-inline mt-2 mb-2 ms-3">
+            <div class="form-check form-check-inline col-sm-6 col-xl-3">
                 <input ${isAssigned ? "checked" : ""} type="checkbox" class="form-check-input" id="${roleId}">
                 <label class="form-check-label" for="${roleId}">${roleName}</label>
             </div>`;
