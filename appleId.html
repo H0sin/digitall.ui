@@ -46,7 +46,6 @@
                                 <img id="profileSetMain" class="wd-30 ht-30 rounded-circle" src=""
                                      alt="profile">
                             </a>
-
                             <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                                     <div class="mb-3">
@@ -285,8 +284,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                            <h6 class="card-title">آپل آیدی</h6>
-                            <p class="text-muted" id="allEntity"></p>
+                                <h6 class="card-title">آپل آیدی</h6>
+                                <p class="text-muted" id="allEntity"></p>
                             </div>
                             <div class="d-flex">
                                 <select id="type-apple-id" class="form-select form-select-sm w-50 me-1">
@@ -297,7 +296,10 @@
                                 <select id="status-apple-id" class="form-select form-select-sm w-50 ms-1">
                                     <option value="0">فروخته نشده</option>
                                     <option value="1">فروخته شده</option>
-                                    <option value="2">مشکل دار</option>
+                                    <option value="2">درحال برسی گارانتی</option>
+                                    <option value="3">Disabled</option>
+                                    <option value="4">Lock</option>
+                                    <option value="5">Not Active</option>
                                     <option selected value="null">همه وضعیت ها</option>
                                 </select>
                             </div>
@@ -308,7 +310,6 @@
                                     <i data-feather="search"></i>
                                 </div>
                             </div>
-
                             <div class="table-responsive">
                                 <table id="appleIdTable" class="table table-hover">
                                     <thead>
@@ -350,15 +351,12 @@
     </div>
 </div>
 
-
 <div class="modal fade show" id="edit_appleId_form_modal" tabindex="-1" aria-labelledby="edit_appleId_form_modalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="edit_appleId_form_modalLabel">
-                    اطلاعات اپل آیدی
-                </h5>
+                <h5 class="modal-title" id="edit_appleId_form_modalLabel">اطلاعات اپل آیدی</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
             <div class="modal-body">
@@ -377,22 +375,22 @@
                             <div class="mb-3">
                                 <label for="editStatus" class="form-label">وضعیت اپل آیدی</label>
                                 <select class="form-select form-select" name="editStatus" id="editStatus">
-                                    <option value="2">مشکل دار</option>
-                                    <option value="1">فروخته شده</option>
                                     <option value="0">فروخته نشده</option>
+                                    <option value="1">فروخته شده</option>
+                                    <option value="2">درحال برسی گارانتی</option>
+                                    <option value="3">Disabled</option>
+                                    <option value="4">Lock</option>
+                                    <option value="5">Not Active</option>
                                 </select>
                             </div>
                         </div>
-
                     </div>
-
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
                                 <label for="editEmail" class="form-label">ایمیل</label>
                                 <input name="editEmail" type="text" class="form-control" id="editEmail"/>
                             </div>
-
                         </div>
                     </div>
                     <div class="row">
@@ -411,16 +409,15 @@
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="feather feather-calendar">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6"></line>
-            <line x1="8" y1="2" x2="8" y2="6"></line>
-            <line x1="3" y1="10" x2="21" y2="10"></line>
-        </svg></span>
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                </span>
                             </div>
                         </div>
-
                     </div>
-
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
