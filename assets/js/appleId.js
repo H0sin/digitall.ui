@@ -1,4 +1,14 @@
 import * as main from "./main.js";
+// import {component_access} from "./main.js";
+
+
+// $(document).ready(async function () {
+//     if ($("#add-apple-id").length) {
+//         await component_access("add_apple_id");
+//
+//     }
+// });
+
 
 
 $(async function () {

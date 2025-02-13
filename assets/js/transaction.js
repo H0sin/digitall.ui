@@ -1,17 +1,17 @@
 import * as api from "./main.js";
-import jMoment from 'https://cdn.skypack.dev/moment-jalaali'
-import {notificationMessage, successTitle} from "./main.js";
+import jMoment from 'https://cdn.skypack.dev/moment-jalaali';
+import {component_access, notificationMessage, successTitle} from "./main.js";
 
 function fixedTransactionType(type) {
     switch (type) {
         case 0:
-            return `<span class="badge border border-light text-light">کاهش</span>`
+            return `<span class="badge border border-light text-light">کاهش</span>`;
         case 1:
-            return `<span class="badge border border-success text-success ">کارت به کارت</span>`
+            return `<span class="badge border border-success text-success ">کارت به کارت</span>`;
         case 2:
-            return `<span class="badge border border-success text-success ">افزایش دستی</span>`
+            return `<span class="badge border border-success text-success ">افزایش دستی</span>`;
         case 3:
-            return `<span class="badge border border-danger text-danger ">کاهش دستی</span>`
+            return `<span class="badge border border-danger text-danger ">کاهش دستی</span>`;
         default:
             break;
     }
@@ -20,11 +20,11 @@ function fixedTransactionType(type) {
 function fixedTransactionStatus(status) {
     switch (status) {
         case 1:
-            return `<span class="badge border border-success text-success ">موفق</span>`
+            return `<span class="badge border border-success text-success ">موفق</span>`;
         case 2:
-            return `<span class="badge border border-danger text-danger">رد شده</span>`
+            return `<span class="badge border border-danger text-danger">رد شده</span>`;
         case 3:
-            return `<span class="badge border border-warning">منتظر تایید</span>`
+            return `<span class="badge border border-warning">منتظر تایید</span>`;
         default:
             break;
     }
@@ -39,7 +39,7 @@ function generateTransactionItem(item) {
                     <div class="me-3 d-flex">
                       <div class="d-flex container-transaction" style="background-image: url(${backgroundImage})">
                         <div class="bg-container-transaction"></div>
-                        <button type="button"  id="details-id-${item.id}" class="btn btn-outline-primary btn-icon" >جزئیات
+                        <button type="button"  id="details-id-${item.id}" class="btn btn-outline-primary btn-icon">جزئیات
                         </button>
                       </div>
                     </div>
@@ -58,9 +58,11 @@ function generateTransactionItem(item) {
 
 $(document).ready(async function () {
 
-    await api.showLoading();
+    if ($("#edit-form").length) {
+        await component_access("edit_form");
+        showEditForm();
+    }
 
-    const transaction_container = $("#transaction-container");
     let type_transaction = "null";
     let currentPage = 1;
     let allEntitiesCount = 0;
@@ -70,12 +72,15 @@ $(document).ready(async function () {
     let debounceTimeout;
     let details_filter = "null";
 
+    await api.showLoading();
+
+    const transaction_container = $("#transaction-container");
+
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
     const params = new URLSearchParams(url.search);
     const id = params.get("id");
 
-    // date picker
     if ($('#start-date').length) {
         $('#start-date > input').val("تاریخ شروع را انتخاب کنید");
     }
@@ -83,7 +88,6 @@ $(document).ready(async function () {
     if ($('#end-date').length) {
         $('#end-date > input').val("تاریخ پایان را انتخاب کنید");
     }
-
 
     $('#end-date > input').change(async function (e) {
         const jalaliDate = e.target.value;
@@ -107,7 +111,6 @@ $(document).ready(async function () {
         await loadTransaction(currentPage);
         await api.hiddenLoading();
     });
-
 
     $("#type-transaction").on("change", async function (e) {
         type_transaction = e.target.value;
@@ -140,7 +143,6 @@ $(document).ready(async function () {
         }, 500);
     });
 
-    transaction_container.html('');
 
     const loadTransaction = async (page) => {
         let {
@@ -158,11 +160,17 @@ $(document).ready(async function () {
                 transaction_container.append(transaction);
             });
         }
+    };
+
+    if ($("#transaction-container").length) {
+        await component_access("transaction_container");
+        await loadTransaction(1);
     }
 
-    await loadTransaction(1);
-
-    await api.hiddenLoading();
+    if ($("#filter-transaction").length) {
+        await component_access("filter_transaction");
+        $("#type-transaction, #status-transaction, #start-date > input, #end-date > input, #details-filter").prop("disabled", false);
+    }
 
     transaction_container.on("scroll", async function () {
         const container = $(this);
@@ -195,12 +203,10 @@ $(document).ready(async function () {
             $("#avatar-transaction").addClass("d-none");
         }
 
-
         $("#user-id").html("ایدی عددی : " + (data.userId || "ثبت نشده"));
         $("#transaction-change").html("مبلغ درخواست : " + (data.price.toLocaleString() + " " + "تومان" || "ثبت نشده"));
         $("#title").html("نوع درخواست : " + fixedTransactionType((data.transactionType)));
         $("#transaction-time").html("زمان تراکنش : " + (new Date(data.transactionTime).toLocaleString("fa-IR")));
-        // $("#transaction-confirmation").html("زمان تایید : " + (new Date(data.).toLocaleString("fa-IR")));
         $("#user-name").html("نام کاربری : " + (data.username || "ثبت نشده"));
         $("#first-name").html("نام : " + (data.firstName || "ثبت نشده"));
         $("#last-name").html("نام خانوادگی : " + (data.lastName || "ثبت نشده"));
@@ -218,17 +224,24 @@ $(document).ready(async function () {
         let accept_button = `<button type="button" id="transaction-id-${data.id}" class="btn btn-success">تایید رسید</button>`;
         let reject_button = `<button type="button" id="transaction-id-${data.id}" class="btn btn-danger">عدم تایید</button>`;
 
-        modal_footer.on("click", ".btn-success", async function (e) {
+        if (await component_access("update_transaction")) {
+            if (data.transactionStatus == 3) {
+                modal_footer.append(accept_button);
+                modal_footer.append(reject_button);
+            }
+        }
+
+        modal_footer.off("click", ".btn-success").on("click", ".btn-success", async function (e) {
             let transactionId = e.currentTarget.id.split("-")[2];
 
             await api.showLoading();
 
-            let {message} = await api.updateDigitallApi("/Transaction/UpdateTransactionStatus", {
+            await api.updateDigitallApi("/Transaction/UpdateTransactionStatus", {
                 transactionId,
                 transactionStatus: 1
             });
 
-            await api.notificationMessage(api.successTitle, message, api.successTheme);
+
             transaction_container.html('');
             await loadTransaction(1);
 
@@ -236,7 +249,7 @@ $(document).ready(async function () {
             await api.hiddenLoading();
         });
 
-        modal_footer.on("click", ".btn-danger", async function (e) {
+        modal_footer.off("click", ".btn-danger").on("click", ".btn-danger", async function (e) {
             let transactionId = e.currentTarget.id.split("-")[2];
 
             await api.showLoading();
@@ -253,14 +266,8 @@ $(document).ready(async function () {
             await api.hiddenLoading();
         });
 
-        if (data.transactionStatus == 3) {
-            modal_footer.append(accept_button);
-            modal_footer.append(reject_button);
-        }
-
         details_modal.modal('show');
-
         await api.hiddenLoading();
     });
-
+    await api.hiddenLoading();
 });

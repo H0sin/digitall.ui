@@ -1,4 +1,4 @@
-import {postRegistryApi, updateRegistryApi} from "./main-registry.js";
+import { updateRegistryApi} from "./main-registry.js";
 (async function () {
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);

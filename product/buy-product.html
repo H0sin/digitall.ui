@@ -16,7 +16,24 @@
     <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="../assets/css/demo4/style-rtl.min.css">
     <link rel="stylesheet" href="../assets/css/notifications.css">
+<style>
+    /* استایل‌های سفارشی برای collapse */
+    .collapse {
+        transition: all 0.3s ease;
+    }
 
+    .collapse.show {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .collapse:not(.show) {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+    }
+</style>
 </head>
 <body>
 <div class="main-wrapper">
@@ -43,7 +60,6 @@
                                 <img id="profileSetMain" class="wd-30 ht-30 rounded-circle" src=""
                                      alt="profile">
                             </a>
-
                             <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                                     <div class="mb-3">
@@ -88,7 +104,7 @@
         <div class="page-content py-1" style="min-height: 0">
             <ul class="nav nav-pills nav-fill pt-4">
                 <li class="nav-item">
-                    <button class="nav-link active">محصولات</button>
+                    <p class="nav-link active">محصولات من</p>
                 </li>
             </ul>
         </div>
@@ -101,19 +117,15 @@
                                 <div class="d-flex">
                                     <select id="all-product" class="form-select form-select-sm w-50 me-1">
                                     </select>
-                                    <select id="status-transaction" class="form-select form-select-sm w-50 ms-1">
-                                        <option value="1">خریداری شده</option>
-                                        <option value="3">ثبت شده</option>
-                                        <option value="2">رد شده</option>
+                                    <select id="status-product" class="form-select form-select-sm w-50 ms-1">
+                                        <option value="1">active</option>
+                                        <option value="2">limited</option>
+                                        <option value="3">expired</option>
+                                        <option value="4">on hold</option>
                                         <option selected value="null">همه وضعیت ها</option>
                                     </select>
                                 </div>
                                 <div class="input-group flatpickr mt-3" id="start-date">
-                                    <input type="text" class="form-control tarikh">
-                                    <span class="input-group-text input-group-addon" data-toggle><i
-                                            data-feather="calendar"></i></span>
-                                </div>
-                                <div class="input-group flatpickr mt-3" id="end-date">
                                     <input type="text" class="form-control tarikh">
                                     <span class="input-group-text input-group-addon" data-toggle><i
                                             data-feather="calendar"></i></span>
@@ -125,8 +137,10 @@
                                         <i data-feather="search"></i>
                                     </div>
                                 </div>
+                                <div id="product-container" style="max-height: 65vh; overflow-x: hidden; overflow-y: auto"
+                                     class="col-12 d-flex flex-column"></div>
                             </div>
-                            <div id="product-container"></div>
+
                         </div>
                         <div class="row">
                             <div class="col stretch-card">

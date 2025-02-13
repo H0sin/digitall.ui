@@ -1,5 +1,5 @@
 import * as api from "./main.js";
-import {transactionImagePath, updateDigitallApi} from "./main.js";
+import {component_access, transactionImagePath, updateDigitallApi} from "./main.js";
 
 'use strict'
 
@@ -17,6 +17,7 @@ $(document).ready(async function () {
     const message_text = $("#message-text");
     const special_percent = $("#specialPercent");
     const description_text = $("#description-text");
+
 
     let user = {};
 
@@ -191,21 +192,21 @@ $(document).ready(async function () {
             description_text.val(data.description);
 
             $("#user-id").html("ایدی کاربر : " + data.id || "ثبت نشده");
-            $("#email-id").html("ایمیل : " + (data.email ? "null" : "ثبت نشده"));
-            $("#mobile").html("مبایل : " + (data.mobile ? "null" : "ثبت نشده"));
+            $("#email-id").html("ایمیل : " + (data.email ? data.email : "ثبت نشده"));
+            $("#mobile").html("مبایل : " + (data.mobile ? data.mobile : "ثبت نشده"));
             $("#is-mobile-active").html("نمایش شماره : " + (data.isMobileActive ? "فعال " : "غیر فعال"));
             $("#telegram-user-name").html("ایدی تلگرام : " + (data.telegramUsername || "ثبت نشده"));
             $("#first-name").html("نام کاربر  : " + (data.firstName || "ثبت نشده"));
             $("#last-name").html("نام خانوادگی کاربر  : " + (data.lastName || "ثبت نشده"));
-            $("#avatar").html("پروفایل  : " + (data.avatar ? "null" : "ثبت نشده"));
-            $("#address").html("ادرس  : " + (data.address ? "null" : "ثبت نشده"));
+            $("#avatar").html("پروفایل : " + (data.avatar ? data.avatar : "ثبت نشده"));
+            $("#address").html("آدرس : " + (data.address ? data.address : "ثبت نشده"));
             $("#agentId").html("ایدی عددی نماینده : " + (data.agentId || "ثبت نشده"));
             $("#create-date").html("زمان شروع کاربر : " + (api.gregorianToJalali(data.createDate ?? "-")));
             $("#modified-date").html("زمان ویرایش کاربر : " + (api.gregorianToJalali(data.modifiedDate ?? "-")));
             $("#chatId").html("ایدی عددی کاربر  : " + data.chatId || "ثبت نشده");
             $("#cardToCardPayment").html("نمایش شماره کارت  : " + (data.cardToCardPayment ? "فعال" : "غیر فعال"));
             $("#is-agent").html("عنوان : " + (data.isAgent ? "نماینده" : "کاربر عادی"));
-            $("#balance-user").html("موجودی : " + (data.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "بدهکار "));
+            $("#balance-user").html("موجودی : " + (data.balance !== undefined ? data.balance.toLocaleString().replace(/^-/, "بدهکار ") + " تومان" : "ثبت نشده"));
             $("#is-blocked").html(data.isBlocked ? `<span class="badge bg-danger">غیر فعال</span>` : `<span class="badge bg-success">فعال</span>`);
             $("#user-description").html("توضیحات : " + (data.description ? data.description.trim() : "ثبت نشده"));
 
@@ -224,31 +225,33 @@ $(document).ready(async function () {
 
             btns_container.html('');
 
-            let increase_btn = generateButton(btns.increaseBalance);
-            let decrease_btn = generateButton(btns.decreaseBalance);
-            let sendMessage_btn = generateButton(btns.sendMessage);
-            let blocked_btn = generateButton(btns.blocked);
-            let cardToCardPayment_btn = generateButton(btns.cardToCardPayment);
-            let convertToAgent_btn = generateButton(btns.convertToAgent);
-            let specialPercent_btn = generateButton(btns.specialPercent);
-            let agencyInformation_btn = generateButton(btns.agencyInformation);
             let description_btn = generateButton(btns.description);
-            let transaction_btn = generateButton(btns.transaction);
-            let roles_btn = generateButton(btns.roles);
-            let permissions_btn = generateButton(btns.permissions);
+            let sendMessage_btn = generateButton(btns.sendMessage);
 
-            btns_container.append(increase_btn);
-            btns_container.append(decrease_btn);
             btns_container.append(description_btn);
-            btns_container.append(agencyInformation_btn);
             btns_container.append(sendMessage_btn);
-            btns_container.append(blocked_btn);
-            btns_container.append(cardToCardPayment_btn);
-            btns_container.append(convertToAgent_btn);
-            btns_container.append(specialPercent_btn);
-            btns_container.append(transaction_btn);
-            btns_container.append(roles_btn);
-            btns_container.append(permissions_btn);
+
+
+            const buttons = [
+                {key: "blocked_btn", value: btns.blocked},
+                {key: "increaseBalance_btn", value: btns.increaseBalance},
+                {key: "decreaseBalance_btn", value: btns.decreaseBalance},
+                {key: "agencyInformation_btn", value: btns.agencyInformation},
+                {key: "cardToCardPayment_btn", value: btns.cardToCardPayment},
+                {key: "convertToAgent_btn", value: btns.convertToAgent},
+                {key: "specialPercent_btn", value: btns.specialPercent},
+                {key: "transaction_btn", value: btns.transaction},
+                {key: "roles_btn", value: btns.roles},
+                {key: "permissions_btn", value: btns.permissions},
+            ]
+
+
+            for (const btn of buttons) {
+                if (await component_access(btn.key)) {
+                    btns_container.append(generateButton(btn.value));
+                }
+            }
+
         });
     }
 
@@ -542,6 +545,5 @@ $(document).ready(async function () {
                 $(element).addClass("is-valid").removeClass("is-invalid");
             }
         }
-    });
+    })
 });
-

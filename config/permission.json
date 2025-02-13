@@ -1,0 +1,314 @@
+{
+  "components": {
+    "service_chart": {
+      "id": "service_chart",
+      "name": "service_chart",
+      "persian_name": "لحظه قطع شدن سرویس",
+      "permission": "GetInformation",
+      "request_url": "GetInformation",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#service_chart"
+    },
+    "profit_chart": {
+      "id": "profit_chart",
+      "name": "profit_chart",
+      "persian_name": "رشد فروش",
+      "permission": "GetInformation",
+      "request_url": "GetInformation",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#profit_chart"
+    },
+    "agent_information_details": {
+      "id": "agent_information_details",
+      "name": "agent_information_details",
+      "persian_name": "اطلاعات نمایندگی",
+      "permission": "GetAdminAgentInformation",
+      "request_url": "GetAdminAgentInformation",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#agent_information_details"
+    },
+    "agent_transaction_detail": {
+      "id": "agent_transaction_detail",
+      "name": "agent_transaction_detail",
+      "persian_name": "اطلاعات پرداخت",
+      "permission": "GetTransactionDetails",
+      "request_url": "GetTransactionDetails",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#agent_transaction_detail"
+    },
+    "edit_agent_information": {
+      "id": "edit_agent_information",
+      "name": "edit_agent_information",
+      "persian_name": "ویرایش اطلاعات نمایندگی",
+      "permission": "AgencyInformation",
+      "request_url": "AgencyInformation",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#edit_agent_information"
+    },
+    "edit_form": {
+      "id": "edit-form",
+      "name": "edit-form",
+      "persian_name": "ویرایش نماینده",
+      "permission": "AgencyInformation",
+      "request_url": "AgencyInformation",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#edit-form"
+    },
+    "submit_agent": {
+      "id": "submit-agent",
+      "name": "submit-agent",
+      "persian_name": "ثبت تغیبرات",
+      "permission": "Update",
+      "request_url": "Update",
+      "request_type": "PUT",
+      "default_show": true,
+      "selector": "#submit-agent"
+    },
+    "user_container": {
+      "id": "user-container",
+      "name": "user-container",
+      "persian_name": "کاربران",
+      "permission": "GetAgentUsersFilter",
+      "request_url": "GetAgentUsersFilter",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#user-container"
+    },
+    "type_user": {
+      "id": "type-user",
+      "name": "type-user",
+      "persian_name": "نوع کاربران",
+      "permission": "GetAgentUsersFilter",
+      "request_url": "GetAgentUsersFilter",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#type-user"
+    },
+    "username_search": {
+      "id": "username-search",
+      "name": "username-search",
+      "persian_name": "جستجو کاربران",
+      "permission": "GetAgentUsersFilter",
+      "request_url": "GetAgentUsersFilter",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#username-search"
+    },
+    "report_container": {
+      "id": "report-container",
+      "name": "report-container",
+      "persian_name": "عضویت هفتگی",
+      "permission": "InputUserReport",
+      "request_url": "InputUserReport",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#report-container"
+    },
+    "weekly_report": {
+      "id": "weekly-report",
+      "name": "weekly-report",
+      "persian_name": "عضویت هفتگی",
+      "permission": "InputUserReport",
+      "request_url": "InputUserReport",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#weekly-report"
+    },
+    "access_apple_id": {
+      "id": "access-apple-id",
+      "name": "access-apple-id",
+      "persian_name": "مشاهده اپل ایدی محصولات من",
+      "permission": "GetAppleIdById",
+      "request_url": "GetAppleIdById",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#access-apple-id"
+    },
+    "access_registry": {
+      "id": "access-registry",
+      "name": "access-registry",
+      "persian_name": "مشاهده رجیستری محصولات من",
+      "permission": "AllRegistryItem",
+      "request_url": "AllRegistryItem",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#access-registry"
+    },
+    "access_v2ray": {
+      "id": "access-v2ray",
+      "name": "access-v2ray",
+      "persian_name": "مشاهده وی تو ری محصولات من",
+      "permission": "BuyVpn",
+      "request_url": "BuyVpn",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#access-v2ray"
+    },
+    "access_wireguard": {
+      "id": "access-wireguard",
+      "name": "access-wireguard",
+      "persian_name": "مشاهده وایرگارد محصولات من",
+      "permission": "BuyVpn",
+      "request_url": "BuyVpn",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#access-wireguard"
+    },
+    "add_apple_id": {
+      "id": "add-apple-id",
+      "name": "add-apple-id",
+      "persian_name": "افزودن اپل ایدی",
+      "permission": "AddAppleId",
+      "request_url": "AddAppleId",
+      "request_type": "PUT",
+      "default_show": true,
+      "selector": "#add-apple-id"
+    },
+    "roles_btn": {
+      "id": "roles_btn",
+      "name": "roles_btn",
+      "persian_name": "نقش ها",
+      "permission": "GetRolesForUser",
+      "request_url": "GetRolesForUser",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#roles_btn"
+    },
+    "permissions_btn": {
+      "id": "permissions_btn",
+      "name": "permissions_btn",
+      "persian_name": "دسترسی های کاربر",
+      "permission": "GetPermissionsForRole",
+      "request_url": "GetPermissionsForRole",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#permissions_btn"
+    },
+    "transaction_btn": {
+      "id": "transaction_btn",
+      "name": "transaction_btn",
+      "persian_name": "تراکنش های کاربر",
+      "permission": "GetTransaction",
+      "request_url": "GetTransaction",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#transaction_btn"
+    },
+    "increaseBalance_btn": {
+      "id": "increaseBalance_btn",
+      "name": "increaseBalance_btn",
+      "persian_name": "افزایش موجودی",
+      "permission": "IncreaseBalance",
+      "request_url": "IncreaseBalance",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#increaseBalance_btn"
+    },
+    "decreaseBalance_btn": {
+      "id": "decreaseBalance_btn",
+      "name": "decreaseBalance_btn",
+      "persian_name": "کاهش موجودی",
+      "permission": "DecreaseBalance",
+      "request_url": "DecreaseBalance",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#decreaseBalance_btn"
+    },
+    "agencyInformation_btn": {
+      "id": "agencyInformation_btn",
+      "name": "agencyInformation_btn",
+      "persian_name": "اطلاعات نمایندگی",
+      "permission": "AgencyInformation",
+      "request_url": "AgencyInformation",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#agencyInformation_btn"
+    },
+    "blocked_btn": {
+      "id": "blocked_btn",
+      "name": "blocked_btn",
+      "persian_name": "فعالیت کاربر",
+      "permission": "GetUser",
+      "request_url": "GetUser",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#blocked_btn"
+    },
+    "cardToCardPayment_btn": {
+      "id": "cardToCardPayment_btn",
+      "name": "cardToCardPayment_btn",
+      "persian_name": "فعالیت کارت به کارت",
+      "permission": "GetUser",
+      "request_url": "GetUser",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#cardToCardPayment_btn"
+    },
+    "convertToAgent_btn": {
+      "id": "convertToAgent_btn",
+      "name": "convertToAgent_btn",
+      "persian_name": "نماینده کردن",
+      "permission": "AddAgent",
+      "request_url": "AddAgent",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#convertToAgent_btn"
+    },
+    "specialPercent_btn": {
+      "id": "specialPercent_btn",
+      "name": "specialPercent_btn",
+      "persian_name": "گذاشتن درصد ویژه برای نماینده",
+      "permission": "GetUser",
+      "request_url": "GetUser",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#specialPercent_btn"
+    },
+    "update_transaction": {
+      "id": "update-transaction",
+      "name": "update-transaction",
+      "persian_name": "به روز رسانی وضعیت تراکنش",
+      "permission": "UpdateTransactionStatus",
+      "request_url": "UpdateTransactionStatus",
+      "request_type": "PUT",
+      "default_show": true,
+      "selector": "#update-transaction"
+    },
+    "transaction_container": {
+      "id": "transaction-container",
+      "name": "transaction-container",
+      "persian_name": "دریافت تراکنش",
+      "permission": "GetTransaction",
+      "request_url": "GetTransaction",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#transaction-container"
+    },
+    "filter_transaction": {
+      "id": "filter-transaction",
+      "name": "filter-transaction",
+      "persian_name": "فیلتر کردن تراکنش ها",
+      "permission": "FilterTransaction",
+      "request_url": "FilterTransaction",
+      "request_type": "GET",
+      "default_show": true,
+      "selector": "#filter-transaction"
+    },
+    "profile_submit": {
+      "id": "profile-submit",
+      "name": "profile-submit",
+      "persian_name": "به روز رسانی پروفایل",
+      "permission": "UpdateProfile",
+      "request_url": "UpdateProfile",
+      "request_type": "PUT",
+      "default_show": true,
+      "selector": "#profile-submit"
+    }
+  }
+}

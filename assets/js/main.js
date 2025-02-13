@@ -4,7 +4,8 @@ export const baseUrl = "https://test.samanii.com";
 // export const baseUrl = "http://localhost:5176";
 export const api_version = "1";
 export const baseApiRequest = `${baseUrl}/api/v${api_version}`;
-export let user_information = {};
+export let user_information = null;
+export let authentication_information = null
 
 // Cookie Option -----------------------------------------------------------------------------------------------
 
@@ -463,19 +464,19 @@ async function loadNotificaciones() {
 
 
 export const getUserInformation = new Promise(async resolve => {
+    if (!user_information) {
+        user_information = await getDigitallApi("/User/GetInformation", false);
+        const avatarUrl = avatar(user_information) ? avatar(user_information).replace('/app/wwwroot', baseUrl) : './assets/images/Users.jpg';
 
-    user_information = await getDigitallApi("/User/GetInformation", false);
-    const avatarUrl = avatar(user_information) ? avatar(user_information).replace('/app/wwwroot', baseUrl) : './assets/images/Users.jpg';
+        $("#fullName").html(" نام کاربری :" + " " + fullName(user_information));
+        $("#balance").html("موجودی : " + (user_information.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "));
+        $("#profileSetMain").attr("src", avatarUrl);
+        $("#profileSet").attr("src", avatarUrl);
+        $("#bot_name").html(user_information.botName.replace("bot", "<span class='px-1'> Bot</span>"));
+        $("#bot_name").attr("href", user_information.botLink);
+    }
 
-    $("#fullName").html(" نام کاربری :" + " " + fullName(user_information));
-    $("#balance").html("موجودی : " + (user_information.balance.toLocaleString() + " " + "تومان" || "ثبت نشده").replace("-", "منفی "));
-    $("#profileSetMain").attr("src", avatarUrl);
-    $("#profileSet").attr("src", avatarUrl);
-    $("#bot_name").html(user_information.botName.replace("bot", "<span class='px-1'> Bot</span>"));
-    $("#bot_name").attr("href", user_information.botLink);
-    // feather.replace();
-
-    resolve();
+    resolve(user_information);
 });
 
 export const getAgentUserInformation = new Promise(async resolve => {
@@ -483,8 +484,23 @@ export const getAgentUserInformation = new Promise(async resolve => {
     resolve(user_agent_information);
 });
 
-$(document).ready(async function () {
+/**
+ *
+ * @type {Promise<object>}
+ */
+export const set_authentication = new Promise(async (resolve, reject) => {
+    try {
+        if (!authentication_information) {
+            authentication_information = await $.getJSON('config/permission.json');
+        }
+        resolve(authentication_information);
+    } catch (error) {
+        reject({});
+    }
+});
 
+
+$(document).ready(async function () {
     $("#logOut").on("click", function (e) {
         e.preventDefault();
         setCookie("token", "", -1);
@@ -510,4 +526,41 @@ $(document).ready(async function () {
 
     await getUserInformation;
     await loadNotificaciones();
+
+
+    if ($("#report-container").length) {
+        await component_access("report_container");
+        showReportButton()
+    }
+    function showReportButton() {
+        $("#report-container").append(`
+            <li class="nav-item">
+                <a class="nav-link" href="./report.html">گزارشات</a>
+            </li>
+        `);
+    }
 });
+
+
+/**
+
+ */
+export const component_access = async (components) => {
+    try {
+
+        await getUserInformation;
+        await set_authentication;
+        let component_information = authentication_information.components[components];
+        let permission = component_information["permission"];
+        let list_permissions = localStorage.getItem("permissions");
+
+        if (list_permissions.indexOf(permission) !== -1) {
+            return component_information;
+        } else $(component_information["selector"]).remove();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+//---------------------------------------Creating Permissions-----------------------------------------------

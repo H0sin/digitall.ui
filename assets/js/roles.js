@@ -4,7 +4,7 @@ $(document).ready(async function () {
 
     const id = getUserId();
     const roles = await getDigitallApi(`/Authorization/GetRolesForUser/user/${id}/roles`, false);
-
+    console.log(roles);
     let forms = roles.map(({roleId, roleName, isAssigned}) => {
         return `
             <div class="form-check form-check-inline col-sm-6 col-xl-3">
