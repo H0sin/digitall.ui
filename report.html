@@ -58,19 +58,19 @@
                                 </div>
                                 <ul class="list-unstyled p-1">
                                     <li class="dropdown-item py-2">
-                                        <a href="profile.html" class="text-body ms-0">
+                                        <a href="profile.html" class="text-body d-flex align-items-center w-100">
                                             <i class="me-2 icon-md" data-feather="user"></i>
                                             <span>پروفایل</span>
                                         </a>
                                     </li>
                                     <li class="dropdown-item py-2">
-                                        <a href="transaction.html" id="profile" class="text-body ms-0">
+                                        <a href="transaction.html" class="text-body d-flex align-items-center w-100">
                                             <i class="me-2 icon-md" data-feather="dollar-sign"></i>
-                                            <span>تراکنش ها</span>
+                                            <span>تراکنش‌ ها</span>
                                         </a>
                                     </li>
                                     <li class="dropdown-item py-2">
-                                        <a href="login.html" type="submit" id="logOut" class="text-body ms-0">
+                                        <a href="login.html" type="submit" id="logOut" class="text-body d-flex align-items-center w-100">
                                             <i class="me-2 icon-md" data-feather="log-out"></i>
                                             <span>خروج</span>
                                         </a>
@@ -97,8 +97,7 @@
                 </li>
             </ul>
         </div>
-
-        <div class="page-content">
+        <div class="page-content" id="weekly-report">
             <div class="row">
                 <div class="col justify-content-center grid-margin grid-margin-xl-0 stretch-card">
                     <div class="card">
@@ -110,13 +109,13 @@
                     </div>
                 </div>
             </div>
-            <div id="loading-container" class="d-none"
-                 style="height: 100vh;width: 100%;top: 0;position: fixed;z-index: 99999;background-color: rgba(0, 0, 0, .5);">
-                <div class="d-flex h-100 align-items-center justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">بارگزاری...</span>
-                    </div>
-                </div>
+        </div>
+    </div>
+    <div id="loading-container" class="d-none"
+         style="height: 100vh;width: 100%;top: 0;position: fixed;z-index: 99999;background-color: rgba(0, 0, 0, .5);">
+        <div class="d-flex h-100 align-items-center justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">بارگزاری...</span>
             </div>
         </div>
     </div>

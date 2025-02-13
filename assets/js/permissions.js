@@ -49,7 +49,11 @@ function generateRolesOptions(roles) {
 function trigger_roles_event() {
     $('#menuAuthorization').on('change', async function (e) {
         let id = e.target.value;
-        $('form').html('');
+
+        if (!id || id === "لطفا یک آیتم را انتخاب کنید") {
+            $('form').html('');
+            return;
+        }
 
         if (id) {
             const permissions = await getDigitallApi(`/Authorization/GetPermissionsForRole/role/${id}/permissions`, false);
@@ -61,12 +65,12 @@ function trigger_roles_event() {
     })
 }
 
-const check_box_generator = ({ permissionId, permissionName, isAssigned }) =>
+const check_box_generator = ({ permissionId, title, isAssigned }) =>
     `<div class="col-sm-6 col-xl-3">
         <input ${isAssigned ? 'checked' : ''} type="checkbox" 
                name="skill_check" class="form-check-input" id="${permissionId}">
-        <label class="form-check-label" for="${permissionId}">
-            ${permissionName}
+        <label class="form-check-label" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}" for="${permissionId}" style="text-wrap: nowrap ; overflow: hidden; text-overflow: ellipsis ; max-width: 68%" >
+            ${title}
         </label>
     </div>`;
 

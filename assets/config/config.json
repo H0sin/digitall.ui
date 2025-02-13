@@ -1,0 +1,13 @@
+{
+  "roles": {
+    "user": {
+      "pages": ["/index.html", "/profile.html"]
+    },
+    "agent": {
+      "pages": ["/index.html", "/profile.html", "/transaction.html", "/appleId.html" ]
+    },
+    "master": {
+      "pages": ["/index.html", "/profile.html", "/transaction.html", "/appleId.html"]
+    }
+  }
+}

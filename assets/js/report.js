@@ -1,8 +1,17 @@
 import * as main from "./main.js";
+import {component_access, getDigitallApi, hiddenLoading, showLoading} from "./main.js";
 
 
 $(document).ready(async function () {
-    await main.showLoading();
+    showLoading();
+    if ($("#weekly-report").length) {
+        await component_access("weekly_report");
+        showWeeklyReport()
+    }
+    hiddenLoading();
+});
+
+function showWeeklyReport() {
 
     if ($('#weeklySalesChartRTL').length) {
 
@@ -12,7 +21,7 @@ $(document).ready(async function () {
         endDate = endDate.toLocaleDateString("de-DE").split(".").reverse().join("/");
         startDate = startDate.toLocaleDateString("de-DE").split(".").reverse().join("/");
 
-        await main.getDigitallApi(`/Agent/InputUserReport?takeEntity=10&startDate=${startDate}&endDate=${endDate}`, false)
+        getDigitallApi(`/Agent/InputUserReport?takeEntity=10&startDate=${startDate}&endDate=${endDate}`, false)
             .then((data) => {
 
                 let categories = [];
@@ -36,87 +45,55 @@ $(document).ready(async function () {
                         toolbar: {
                             show: false
                         },
-                    },
-                    theme: {
+                    }, theme: {
                         mode: 'light'
-                    },
-                    tooltip: {
+                    }, tooltip: {
                         theme: 'light'
-                    },
-                    colors: [main.colors.primary],
-                    fill: {
+                    }, colors: [main.colors.primary], fill: {
                         opacity: .9
-                    },
-                    grid: {
+                    }, grid: {
                         padding: {
                             bottom: -4
-                        },
-                        borderColor: main.colors.gridBorder,
-                        xaxis: {
+                        }, borderColor: main.colors.gridBorder, xaxis: {
                             lines: {
                                 show: true
                             }
                         }
-                    },
-                    series: [{
-                        name: 'عضویت',
-                        data: count
-                    }],
-                    xaxis: {
-                        type: 'category',
-                        categories,
-                        axisBorder: {
+                    }, series: [{
+                        name: 'عضویت', data: count
+                    }], xaxis: {
+                        type: 'category', categories, axisBorder: {
+                            color: main.colors.gridBorder,
+                        }, axisTicks: {
                             color: main.colors.gridBorder,
                         },
-                        axisTicks: {
-                            color: main.colors.gridBorder,
-                        },
-                    },
-                    yaxis: {
-                        opposite: true,
-                        title: {
-                            text: 'تعداد عضویت',
-                            offsetX: -5,
-                            style: {
-                                size: 9,
-                                color: main.colors.muted
+                    }, yaxis: {
+                        opposite: true, title: {
+                            text: 'تعداد عضویت', offsetX: -5, style: {
+                                size: 9, color: main.colors.muted
                             }
-                        },
-                        labels: {
-                            align: 'left',
-                            offsetX: 10,
+                        }, labels: {
+                            align: 'left', offsetX: 10,
                         }
-                    },
-                    legend: {
+                    }, legend: {
                         show: true,
                         position: "top",
                         horizontalAlign: 'center',
                         fontFamily: main.fontFamily,
                         itemMargin: {
-                            horizontal: 8,
-                            vertical: 0
+                            horizontal: 8, vertical: 0
                         },
-                    },
-                    stroke: {
+                    }, stroke: {
                         width: 0
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        style: {
-                            fontSize: '10px',
-                            fontFamily: main.fontFamily,
+                    }, dataLabels: {
+                        enabled: true, style: {
+                            fontSize: '10px', fontFamily: main.fontFamily,
 
-                        },
-                        offsetY: -18,
-                        offsetX: -2,
-                    },
-                    plotOptions: {
+                        }, offsetY: -18, offsetX: -2,
+                    }, plotOptions: {
                         bar: {
-                            columnWidth: "20%",
-                            borderRadius: 4,
-                            dataLabels: {
-                                position: 'top',
-                                orientation: 'vertical',
+                            columnWidth: "20%", borderRadius: 4, dataLabels: {
+                                position: 'top', orientation: 'vertical',
                             }
                         },
                     },
@@ -125,7 +102,5 @@ $(document).ready(async function () {
                 chart.render();
             })
     }
-    await main.hiddenLoading();
 
-
-});
+}

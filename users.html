@@ -58,19 +58,19 @@
                                 </div>
                                 <ul class="list-unstyled p-1">
                                     <li class="dropdown-item py-2">
-                                        <a href="profile.html" class="text-body ms-0">
+                                        <a href="profile.html" class="text-body d-flex align-items-center w-100">
                                             <i class="me-2 icon-md" data-feather="user"></i>
                                             <span>پروفایل</span>
                                         </a>
                                     </li>
                                     <li class="dropdown-item py-2">
-                                        <a href="transaction.html" id="profile" class="text-body ms-0">
+                                        <a href="transaction.html" class="text-body d-flex align-items-center w-100">
                                             <i class="me-2 icon-md" data-feather="dollar-sign"></i>
-                                            <span>تراکنش ها</span>
+                                            <span>تراکنش‌ها</span>
                                         </a>
                                     </li>
                                     <li class="dropdown-item py-2">
-                                        <a href="login.html" type="submit" id="logOut" class="text-body ms-0">
+                                        <a href="login.html" type="submit" id="logOut" class="text-body d-flex align-items-center w-100">
                                             <i class="me-2 icon-md" data-feather="log-out"></i>
                                             <span>خروج</span>
                                         </a>
@@ -85,15 +85,12 @@
     </div>
     <div class="page-wrapper">
         <div class="page-content py-1" style="min-height: 0">
-            <ul class="nav nav-pills nav-fill pt-4">
+            <ul class="nav nav-pills nav-fill pt-4" id="report-container">
                 <li class="nav-item">
                     <a class="nav-link" href="index.html">نمایندگی</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="users.html">کاربران</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="report.html">گزارشات</a>
                 </li>
             </ul>
         </div>
@@ -107,7 +104,7 @@
                                 <option value="2">نماینده ها</option>
                                 <option selected value="0">همه کاربران</option>
                             </select>
-                            <div class="input-group">
+                            <div class="input-group" id="username-search">
                                 <input id="username-filter" type="text" class="form-control form-control-sm"
                                        placeholder="جستجو ...">
                                 <div class="input-group-text" style="padding: 7px">

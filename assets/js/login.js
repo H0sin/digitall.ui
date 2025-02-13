@@ -13,23 +13,26 @@ window.onload = function () {
             let password = $("#userPassword").val();
 
             postDigitallLogin("/User/Login", {chatId, password, email: ""}).then(function (response) {
+
                 if (response && response.isSuccess) {
                     setCookie("token", response.data.token, 820);
 
                     getDigitallApi(`/Authorization/GetUserRolePermissions`, false).then(function (roles) {
 
                         if (Array.isArray(roles) && roles.length > 0) {
-                            let rolesData = roles;
 
-                            rolesData.forEach(role => {
+                            let permissionsSet = new Set()
+
+                            roles.forEach(role => {
                                 let permissions = role.permissions;
-
                                 if (permissions && permissions.length > 0) {
-                                    let roleId = role.roleId;
-
-                                    localStorage.setItem(`permissions_user_${roleId}`, JSON.stringify(permissions));
+                                    permissions.forEach(permission => {
+                                        permissionsSet.add(permission.permissionName);
+                                    });
                                 }
                             });
+
+                            localStorage.setItem(`permissions`, JSON.stringify(Array.from(permissionsSet)));
                         }
 
                         setTimeout(function () {
