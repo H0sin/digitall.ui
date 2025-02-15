@@ -13,7 +13,7 @@ $(document).ready(async function () {
 
     showLoading();
 
-    if ($("#service_chart").length) {
+    if ($("#service-chart").length) {
         await component_access("service_chart");
         showService()
     }
