@@ -1,21 +1,21 @@
 {
   "components": {
     "service_chart": {
-      "id": "service_chart",
-      "name": "service_chart",
+      "id": "service-chart",
+      "name": "service-chart",
       "persian_name": "لحظه قطع شدن سرویس",
       "permission": "GetInformation",
       "request_url": "GetInformation",
       "request_type": "GET",
       "default_show": true,
-      "selector": "#service_chart"
+      "selector": "#service-chart"
     },
     "profit_chart": {
       "id": "profit_chart",
       "name": "profit_chart",
       "persian_name": "رشد فروش",
-      "permission": "GetInformation",
-      "request_url": "GetInformation",
+      "permission": "ProfitReport",
+      "request_url": "ProfitReport",
       "request_type": "GET",
       "default_show": true,
       "selector": "#profit_chart"
