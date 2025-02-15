@@ -35,37 +35,23 @@ $(document).ready(async function () {
             const created = orderDetail?.marzbanUsers?.[0]?.created_at || "-";
 
             productsHtml += `
-<div class="product-item card p-3 mb-3">
-    <p><strong>کاربر :</strong> ${product.userId ?? "-"}</p>
-    <p><strong>تاریخ پرداخت :</strong> ${product.paymentDate ? gregorianToJalali(product.paymentDate) : "-"}</p>
-    <p><strong>پرداخت : </strong>
-        ${product.isPaid ? `<i data-feather="check-circle" class="text-success ms-1" style="width: 18px ; height: 18px" ></i>` :
-                `<i data-feather="x-circle" class="text-danger ms-1" style="width: 18px ; height: 18px" ></i>`}
-    </p>
-    <p><strong>کد پیگیری :</strong> ${product.tracingCode ?? "-"}</p>
-    <p class="mb-2"><strong>توضیحات :</strong> ${product.description ?? "-"}</p>
-    ${orderDetailType == 1 ?
-                `<div class="d-flex align-items-center"> <span>نمایش جزئیات : </span>
-        <button class="btn btn-outline-primary rounded-pill btn-sm ms-1 p-0" 
-                data-bs-toggle="collapse" 
-                data-bs-target="#collapse-${orderDetail?.id}" style=" width: 18px ;  height: 18px">
-            <i class="link-arrow" data-feather="chevron-down" style="width: 12px ; height: 12px" ></i>
-        </button>
-        
-    </div>
-    <div class="collapse mt-2" id="collapse-${orderDetail?.id}">
-        <p><strong> ایدی عددی : </strong> ${orderDetail.id}</p>
-        <p><strong> نام کاربری : </strong> ${username}</p>
-        <p><strong> قیمت : </strong> ${(orderDetail.productPrice.toLocaleString() + " " + "تومان" || "ثبت نشده")}</p>
-        
-        <p><strong> وضعیت : </strong> ${status}</p>
-        <p><strong> تاریخ درخواست : </strong> ${gregorianToJalali(created)}</p>
-    </div>` 
-                : "<div><strong class='text-info'>جزئیات :  </strong><p><strong> قیمت : </strong> " +
-                (orderDetail.productPrice ? orderDetail.productPrice.toLocaleString() + " تومان" : "ثبت نشده") +
-                "</p> </div>"
-            }
-</div>`;
+                <div class="product-item card p-3 mb-3">
+                    <p><strong>کاربر :</strong> ${product.userId ?? "-"}</p>
+                    <p><strong>تاریخ پرداخت :</strong> ${product.paymentDate ? gregorianToJalali(product.paymentDate) : "-"}</p>
+                    <p><strong>پرداخت : </strong${product.isPaid ? `<i data-feather="check-circle" class="text-success ms-1" style="width: 18px ; height: 18px" ></i>` : `<i data-feather="x-circle" class="text-danger ms-1" style="width: 18px ; height: 18px" ></i>`}</p>
+                    <p><strong>کد پیگیری :</strong> ${product.tracingCode ?? "-"}</p>
+                    <p class="mb-2"><strong>توضیحات :</strong> ${product.description ?? "-"}</p>${orderDetailType == 1 ? `<div class="d-flex align-items-center"> <span>نمایش جزئیات : </span>
+                        <button class="btn btn-outline-primary rounded-pill btn-sm ms-1 p-0" data-bs-toggle="collapse" data-bs-target="#collapse-${orderDetail?.id}" style=" width: 18px ;  height: 18px">
+                    <i class="link-arrow" data-feather="chevron-down" style="width: 12px ; height: 12px" ></i>
+                        </button>
+                </div>
+                <div class="collapse mt-2" id="collapse-${orderDetail?.id}">
+                    <p><strong> ایدی عددی : </strong> ${orderDetail.id}</p>
+                    <p><strong> نام کاربری : </strong> ${username}</p>
+                    <p><strong> قیمت : </strong> ${(orderDetail.productPrice.toLocaleString() + " " + "تومان" || "ثبت نشده")}</p>
+                    <p><strong> وضعیت : </strong> ${status}</p>
+                    <p><strong> تاریخ درخواست : </strong> ${gregorianToJalali(created)}</p>
+                </div>` : "<div><strong class='text-info'>جزئیات :  </strong><p><strong> قیمت : </strong> " + (orderDetail.productPrice ? orderDetail.productPrice.toLocaleString() + " تومان" : "ثبت نشده") + "</p> </div>"}</div>`;
         });
         $("#product-container").append(productsHtml);
     }
