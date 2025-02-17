@@ -42,6 +42,13 @@ export function getCookie(name) {
 })();
 
 //--------------------------------------------------------------------------------------------------------------
+function ChangeAccess() {
+    setCookie("token", "", -1);
+    setCookie("registry-token", "", -1);
+    localStorage.removeItem("permissions");
+    sessionStorage.removeItem("sessionData");
+    window.location.href = "./login.html";
+}
 
 // duplicate values---------------------------------------------------------------------------------------
 
@@ -213,10 +220,10 @@ export const postDigitallLogin = async (url, credentials, fire = true, authType 
 // end login api -------------------------------------------------------------------------------------------
 
 // start post token from header ---------------------------------------------------------------------------
-
 export const postDigitallApi = async (url, credentials, fire = true, authType = 'bearer ') => {
     let response;
     let token = getCookie("token");
+
     try {
         if (token) {
             await $.ajax({
@@ -227,7 +234,11 @@ export const postDigitallApi = async (url, credentials, fire = true, authType = 
                     Authorization: authType + token,
                     "Content-Type": "application/json",
                 },
-                success: async function ({data, isSuccess, message, statusCode}) {
+                success: async function ({ data, isSuccess, message, statusCode }) {
+                    if (statusCode === -99) {
+                        ChangeAccess();
+                        return;
+                    }
                     if (fire) autoNotification(statusCode, isSuccess, message);
                     response = data;
                 },
@@ -242,6 +253,7 @@ export const postDigitallApi = async (url, credentials, fire = true, authType = 
 
     return response;
 };
+
 
 // end post token from header ---------------------------------------------------------------------------
 
@@ -259,7 +271,11 @@ export const getDigitallApi = async (url, fire = true, authType = 'bearer ') => 
                     Authorization: authType + token,
                     "Content-Type": "application/json",
                 },
-                success: async function ({data, isSuccess, message, statusCode}) {
+                success: async function ({ data, isSuccess, message, statusCode }) {
+                    if (statusCode === -99) {
+                        ChangeAccess();
+                        return;
+                    }
                     if (fire) autoNotification(statusCode, isSuccess, message);
                     response = data;
                 },
@@ -268,7 +284,6 @@ export const getDigitallApi = async (url, fire = true, authType = 'bearer ') => 
                 },
             });
         }
-
     } catch (error) {
         console.log(error);
     }
@@ -295,7 +310,11 @@ export const updateDigitallApi = async (url, credentials, id = 0, fire = true, a
                     Authorization: authType + token,
                     "Content-Type": "application/json",
                 },
-                success: async function ({data, isSuccess, message, statusCode}) {
+                success: async function ({ data, isSuccess, message, statusCode }) {
+                    if (statusCode === -99) {
+                        ChangeAccess();
+                        return;
+                    }
                     if (fire) autoNotification(statusCode, isSuccess, message);
                     response = data;
                 },
@@ -333,7 +352,11 @@ export const updateProfileDigitallApi = async (url, credentials, id = 0, fire = 
         headers: {
             Authorization: authType + getCookie("token"),
         },
-        success: function ({data, isSuccess, message, statusCode}) {
+        success: async function ({ data, isSuccess, message, statusCode }) {
+            if (statusCode === -99) {
+                ChangeAccess();
+                return;
+            }
             if (fire) autoNotification(statusCode, isSuccess, message);
             response = data;
         },
@@ -499,7 +522,6 @@ export const set_authentication = new Promise(async (resolve, reject) => {
     }
 });
 
-
 $(document).ready(async function () {
     $("#logOut").on("click", function (e) {
         e.preventDefault();
@@ -539,6 +561,7 @@ $(document).ready(async function () {
             </li>
         `);
     }
+
 });
 
 
