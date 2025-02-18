@@ -234,7 +234,7 @@ export const postDigitallApi = async (url, credentials, fire = true, authType = 
                     Authorization: authType + token,
                     "Content-Type": "application/json",
                 },
-                success: async function ({ data, isSuccess, message, statusCode }) {
+                success: async function ({data, isSuccess, message, statusCode}) {
                     if (statusCode === -99) {
                         ChangeAccess();
                         return;
@@ -271,7 +271,7 @@ export const getDigitallApi = async (url, fire = true, authType = 'bearer ') => 
                     Authorization: authType + token,
                     "Content-Type": "application/json",
                 },
-                success: async function ({ data, isSuccess, message, statusCode }) {
+                success: async function ({data, isSuccess, message, statusCode}) {
                     if (statusCode === -99) {
                         ChangeAccess();
                         return;
@@ -310,7 +310,7 @@ export const updateDigitallApi = async (url, credentials, id = 0, fire = true, a
                     Authorization: authType + token,
                     "Content-Type": "application/json",
                 },
-                success: async function ({ data, isSuccess, message, statusCode }) {
+                success: async function ({data, isSuccess, message, statusCode}) {
                     if (statusCode === -99) {
                         ChangeAccess();
                         return;
@@ -352,7 +352,7 @@ export const updateProfileDigitallApi = async (url, credentials, id = 0, fire = 
         headers: {
             Authorization: authType + getCookie("token"),
         },
-        success: async function ({ data, isSuccess, message, statusCode }) {
+        success: async function ({data, isSuccess, message, statusCode}) {
             if (statusCode === -99) {
                 ChangeAccess();
                 return;
@@ -455,7 +455,6 @@ async function generateNotificationItem(data) {
                 </a>
             </li>
 `;
-
 }
 
 async function loadNotificaciones() {
@@ -479,9 +478,18 @@ async function loadNotificaciones() {
         }
     }
 
-    notifications.append(`<div class="px-3 py-2 d-flex align-items-center justify-content-center border-top"><a href="/digitall.ui/notification.html">مشاهده همه</a></div>`);
+    let basePath = window.location.pathname.includes("/product") || window.location.pathname.includes("/registry")
+        ? "../notification.html"
+        : "notification.html";
+
+    notifications.append(`
+    <div class="px-3 py-2 d-flex align-items-center justify-content-center border-top">
+        <a href="${basePath}">مشاهده همه</a>
+    </div>
+`);
 
     notification_container.append(notifications);
+    feather.replace();
 
 }
 
@@ -554,6 +562,7 @@ $(document).ready(async function () {
         await component_access("report_container");
         showReportButton()
     }
+
     function showReportButton() {
         $("#report-container").append(`
             <li class="nav-item">
