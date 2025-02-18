@@ -230,30 +230,26 @@ $(document).ready(async function () {
                 modal_footer.append(reject_button);
             }
         }
-
-        modal_footer.off("click", ".btn-success").on("click", ".btn-success", async function (e) {
+        $(document).off("click", ".btn-success").on("click", ".btn-success", async function (e) {
             let transactionId = e.currentTarget.id.split("-")[2];
 
             await api.showLoading();
-
             await api.updateDigitallApi("/Transaction/UpdateTransactionStatus", {
                 transactionId,
                 transactionStatus: 1
             });
 
-
             transaction_container.html('');
             await loadTransaction(1);
 
-            api.hiddenModal();
+            $("#detailsModal").modal("hide");
             await api.hiddenLoading();
         });
 
-        modal_footer.off("click", ".btn-danger").on("click", ".btn-danger", async function (e) {
+        $(document).off("click", ".btn-danger").on("click", ".btn-danger", async function (e) {
             let transactionId = e.currentTarget.id.split("-")[2];
 
             await api.showLoading();
-
             await api.updateDigitallApi("/Transaction/UpdateTransactionStatus", {
                 transactionId,
                 transactionStatus: 2
@@ -262,7 +258,7 @@ $(document).ready(async function () {
             transaction_container.html('');
             await loadTransaction(1);
 
-            api.hiddenModal();
+            $("#detailsModal").modal("hide");
             await api.hiddenLoading();
         });
 
